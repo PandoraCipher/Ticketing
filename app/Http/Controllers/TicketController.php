@@ -12,7 +12,9 @@ class TicketController extends Controller
      */
     public function index()
     {
-        return view('tickets.list');
+        $tickets = Ticket::latest()->get();
+        //dd($tickets);
+        return view('tickets.list', compact('tickets'));
     }
 
     /**
@@ -20,7 +22,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        return view('tickets.create');
     }
 
     /**

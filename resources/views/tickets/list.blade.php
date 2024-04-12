@@ -18,7 +18,7 @@
 
     <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> --}}
 
-    <h2>Section title</h2>
+    <h2>Tickets list</h2>
     <div class="d-flex">
       <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
           <svg class="bi"><use xlink:href="#calendar3"/></svg>
@@ -33,119 +33,25 @@
       <table class="table table-striped table-sm">
         <thead>
           <tr>
-            <th scope="col">#id</th>
-            <th scope="col">Nom Client</th>
+            <th scope="col">#</th>
+            <th scope="col">Client</th>
             <th scope="col">Description</th>
             <th scope="col">Assignement</th>
             <th scope="col">Status</th>
-            <th scope="col">Date de modification</th>
+            <th scope="col">last update</th>
           </tr>
         </thead>
         <tbody>
+          @foreach($tickets as $ticket)
           <tr>
-            <td>1,001</td>
-            <td>random</td>
-            <td>data</td>
-            <td>placeholder</td>
-            <td>text</td>
-            <td>12/04/2024</td>
+            <td>{{ $ticket->id }}</td>
+            <td>{{ $ticket->name }}</td>
+            <td>{{ $ticket->description }}</td>
+            <td>{{ $ticket->assigned }}</td>
+            <td>{{ $ticket->status }}</td>
+            <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
           </tr>
-          <tr>
-            <td>1,002</td>
-            <td>placeholder</td>
-            <td>irrelevant</td>
-            <td>visual</td>
-            <td>layout</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>data</td>
-            <td>rich</td>
-            <td>dashboard</td>
-            <td>tabular</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>information</td>
-            <td>placeholder</td>
-            <td>illustrative</td>
-            <td>data</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,004</td>
-            <td>text</td>
-            <td>random</td>
-            <td>layout</td>
-            <td>dashboard</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,005</td>
-            <td>dashboard</td>
-            <td>irrelevant</td>
-            <td>text</td>
-            <td>placeholder</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,006</td>
-            <td>dashboard</td>
-            <td>illustrative</td>
-            <td>rich</td>
-            <td>data</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,007</td>
-            <td>placeholder</td>
-            <td>tabular</td>
-            <td>information</td>
-            <td>irrelevant</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,008</td>
-            <td>random</td>
-            <td>data</td>
-            <td>placeholder</td>
-            <td>text</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,009</td>
-            <td>placeholder</td>
-            <td>irrelevant</td>
-            <td>visual</td>
-            <td>layout</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,010</td>
-            <td>data</td>
-            <td>rich</td>
-            <td>dashboard</td>
-            <td>tabular</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,011</td>
-            <td>information</td>
-            <td>placeholder</td>
-            <td>illustrative</td>
-            <td>data</td>
-            <td>12/04/2024</td>
-          </tr>
-          <tr>
-            <td>1,012</td>
-            <td>text</td>
-            <td>placeholder</td>
-            <td>layout</td>
-            <td>dashboard</td>
-            <td>12/04/2024</td>
-          </tr>
+          @endforeach
         </tbody>
       </table>
     </div>
