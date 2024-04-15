@@ -1,4 +1,5 @@
-<head><script src="../assets/js/color-modes.js"></script>
+<head>
+    <script src="../assets/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +10,8 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.1/css/all.css')}}">
+    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.1/css/all.css') }}">
+    <link href="{{ asset('css/create.css') }}" rel="stylesheet">
     <script src="{{ asset('js/dashboard.js') }}"></script>
 
 
@@ -17,13 +19,11 @@
 
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
-    <style>
-      
-    </style>
 
-    
     <!-- Custom styles for this template -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
-  </head>
+    @include('components.head.tinymce-config')
+    <x-head.tinymce-config />
+</head>

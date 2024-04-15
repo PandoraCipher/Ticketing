@@ -1,3 +1,5 @@
+
+
 .bi {
   display: inline-block;
   width: 1rem;
@@ -17,6 +19,9 @@
   .navbar-search {
     display: block;
   }
+  .sidebar{
+  height: auto;
+  } 
 }
 
 .sidebar .nav-link {

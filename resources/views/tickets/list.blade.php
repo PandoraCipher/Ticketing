@@ -21,13 +21,18 @@
     <h2>Tickets list</h2>
     <div class="d-flex">
       <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-          <svg class="bi"><use xlink:href="#calendar3"/></svg>
+          <svg class="bi"><use xlink:href="gear-wide-connected"/></svg>
           Filter
         </button>
       <input class="rounded border border-dark mx-3" type="text" name="" id="">
       <button type="button" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
           <svg class="bi"><use xlink:href="#search"/></svg>
-    </div>
+      </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
+          <svg class="bi"><use xlink:href="plus-circle"/></svg>
+
+        </button>
+        </div>
 
     <div class="table-responsive small">
       <table class="table table-striped table-sm">
