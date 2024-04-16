@@ -47,6 +47,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Priority</th>
                         <th scope="col">Client</th>
+                        <th scope="col">Subject</th>
                         <th scope="col">Description</th>
                         <th scope="col">Assignement</th>
                         <th scope="col">Status</th>
@@ -60,6 +61,7 @@
                             <td>{{ $ticket->id }}</td>
                             <td>{{ $ticket->priority }}</td>
                             <td>{{ $ticket->name }}</td>
+                            <td>{{ $ticket->subject }}</td>
                             <td>{{ $ticket->description }}</td>
                             <td>{{ $ticket->assigned }}</td>
                             <td>{{ $ticket->status }}</td>

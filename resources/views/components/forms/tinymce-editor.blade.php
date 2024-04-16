@@ -1,3 +1,6 @@
 <div>
-    <textarea id="description" name="description">Hello world!</textarea>
+    <textarea id="descriptionid" name="description"></textarea>
+    {{-- <div class="form-container m-0 p-0">
+        <textarea id="descriptionid" name="description">{!! $ticket->description !!}</textarea>
+    </div> --}}
 </div>

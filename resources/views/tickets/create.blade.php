@@ -20,7 +20,8 @@
                 </div>
                 <label class="text-start" for="description">Description:</label>
                 <div class="form-container m-0 p-0">
-                    <x-forms.tinymce-editor name="description" />
+                    {{-- <x-forms.tinymce-editor name="description" :content="html_entity_decode($ticket->description)" /> --}}
+                    <textarea class="input" name="description" id="description" cols="30" rows="30"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="formFile" class="text-start">Attach file:</label>
@@ -28,7 +29,12 @@
                 </div>
                 <label class="text-start" for="priority">Priority:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="priority" placeholder="Priority" required>
+                    {{-- <input type="text" class="input" name="priority" placeholder="Priority" required> --}}
+                    <select class="input" name="priority" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
                 </div>
                 <button type="submit">Submit</button>
             </form>

@@ -41,6 +41,7 @@ class TicketController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'priority' => 'required|string',
+            'subject' => 'required|string',
             'assigned' => 'required|string',
             'description' => 'required|string',
             'file' => 'file|mimes:pdf,docx|max:2048',
@@ -48,6 +49,7 @@ class TicketController extends Controller
     
         Ticket::create([
             'name' => $data['name'],
+            'subject' => $data['subject'],
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
             'status' => 'Open',
@@ -81,6 +83,7 @@ class TicketController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'priority' => 'required|string',
+            'subject' => 'required|string',
             'assigned' => 'required|string',
             'status' => 'required|string',
             'description' => 'required|string',
@@ -90,6 +93,7 @@ class TicketController extends Controller
         $ticket->update([
             'name' => $data['name'],
             'priority' => $data['priority'],
+            'subject' => $data['subject'],
             'assigned' => $data['assigned'],
             'status' => $data['status'],
             'description' => $data['description'],

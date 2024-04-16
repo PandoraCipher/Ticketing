@@ -17,7 +17,17 @@
 
                 <label class="text-start" for="priority">Priority:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="priority" value="{{ old('priority', $ticket->priority) }}">
+                    {{-- <input type="text" class="input" name="priority" value="{{ old('priority', $ticket->priority) }}"> --}}
+                    <select class="input" name="priority" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+
+                <label class="text-start" for="subject">Subject:</label>
+                <div class="form-container m-0 p-0">
+                    <input type="text" class="input" name="subject" value="{{ old('subject', $ticket->subject) }}">
                 </div>
 
                 <label class="text-start" for="assigned">To:</label>
@@ -32,7 +42,7 @@
 
                 <label class="text-start" for="description">Description:</label>
                 <div class="form-container m-0 p-0">
-                    <x-forms.tinymce-editor name="description" :content="$ticket->description" />
+                    <textarea class="input" id="descriptionid" name="description">{!! old('description', html_entity_decode($ticket->description ?? '')) !!}</textarea>
                 </div>
 
                 <div class="mb-3">
