@@ -31,9 +31,9 @@
                 <div class="form-container m-0 p-0">
                     {{-- <input type="text" class="input" name="priority" placeholder="Priority" required> --}}
                     <select class="input" name="priority" required>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
                     </select>
                 </div>
                 <button type="submit">Submit</button>

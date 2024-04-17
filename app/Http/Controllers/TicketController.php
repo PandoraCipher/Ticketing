@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -12,7 +13,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::latest()->get();
+        $tickets = Ticket::orderBy('id', 'asc')->get();
         //dd($tickets);
         return view('tickets.list', compact('tickets'));
     }
@@ -44,18 +45,27 @@ class TicketController extends Controller
             'subject' => 'required|string',
             'assigned' => 'required|string',
             'description' => 'required|string',
-            'file' => 'file|mimes:pdf,docx|max:2048',
+            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
-    
-        Ticket::create([
+
+        $ticket = new Ticket([
             'name' => $data['name'],
             'subject' => $data['subject'],
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
             'status' => 'Open',
             'description' => $data['description'],
-            'file' => $data['file'] ?? null,
         ]);
+        if ($request->hasFile('file')) {
+            // Enregistrer le fichier dans le dossier de stockage public/files
+            $filePath = $request->file('file')->store('public/files');
+    
+            // Sauvegarder le chemin du fichier dans l'instance du ticket
+            $ticket->file = $filePath;
+        }
+    
+        // Enregistrer le ticket dans la base de données
+        $ticket->save();
         return redirect()->route('tickets.list');
     }
 
@@ -87,7 +97,7 @@ class TicketController extends Controller
             'assigned' => 'required|string',
             'status' => 'required|string',
             'description' => 'required|string',
-            // 'file' => 'file|mimes:pdf,docx|max:2048',  Validation du fichier (exemple: PDF, DOCX, taille maximale 2048 Ko)
+            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240', //Validation du fichier (exemple: PDF, DOCX, taille maximale 2048 Ko)
         ]);
 
         $ticket->update([
@@ -98,11 +108,11 @@ class TicketController extends Controller
             'status' => $data['status'],
             'description' => $data['description'],
         ]);
-        // if ($request->hasFile('file')) {
-        //     $filePath = $request->file('file')->store('tickets/files');
-        //     $ticket->file = $filePath;
+        if ($request->hasFile('file')) {
             
-        // }
+            $filePath = $request->file('file')->store('public/files');
+            $ticket->file = $filePath;
+        }
         $ticket->save();
         return redirect()->route('tickets.list');
     }
@@ -113,5 +123,19 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         //
+    }
+
+    public function download($filename)
+    {
+        // Récupérer le chemin complet du fichier
+        $filePath = storage_path('app/public/files/' . $filename);
+
+        // Vérifier si le fichier existe
+        if (!Storage::exists('public/files/' . $filename)) {
+            abort(404);
+        }
+    
+        // Télécharger le fichier en utilisant le nom original
+        return response()->download($filePath, $filename);
     }
 }

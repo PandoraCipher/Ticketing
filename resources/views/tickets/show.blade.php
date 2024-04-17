@@ -19,10 +19,11 @@
                 <div class="form-container m-0 p-0">
                     {{-- <input type="text" class="input" name="priority" value="{{ old('priority', $ticket->priority) }}"> --}}
                     <select class="input" name="priority" required>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
+                        <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium</option>
+                        <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>
                     </select>
+
                 </div>
 
                 <label class="text-start" for="subject">Subject:</label>
@@ -37,7 +38,11 @@
 
                 <label class="text-start" for="status">Status:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="status" value="{{ old('status', $ticket->status) }}">
+                    {{-- <input type="text" class="input" name="status" value="{{ old('status', $ticket->status) }}"> --}}
+                    <select name="status" id="status" class="input" value="{{ old('status', $ticket->status) }}">
+                        <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
+                        <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
+                    </select>
                 </div>
 
                 <label class="text-start" for="description">Description:</label>
@@ -47,6 +52,12 @@
 
                 <div class="mb-3">
                     <label for="file" class="text-start">Attach file:</label>
+                    @if ($ticket->file)
+                        <p>{{ $ticket->file }}</p>
+                        <a href="{{ route('tickets.download', ['filename' => $ticket->file]) }}" class="btn btn-primary">Télécharger le fichier</a>
+                    @else
+                        <p>No file attached</p>
+                    @endif
                     <input type="file" class="form-control" id="formFile" name="file">
                 </div>
 

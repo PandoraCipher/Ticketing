@@ -20,12 +20,15 @@
 
         <h2>Tickets list</h2>
         <div class="d-flex">
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+            <select id="sortSelect" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
                 <svg class="bi">
                     <use xlink:href="#gear-wide-connected" />
                 </svg>
-                Filter
-            </button>
+                <option value="byID">by ID</option>
+                <option value="byPriority">by priority</option>
+                <option value="byAssignement">by assignement</option>
+            </select>
+
             <input class="rounded border border-dark mx-3" type="text" name="" id="">
             <button type="button" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                 <svg class="bi">
@@ -37,7 +40,7 @@
                     <use xlink:href="#plus-circle" />
                 </svg>
                 New ticket
-              </a>
+            </a>
         </div>
 
         <div class="table-responsive small">
@@ -59,12 +62,22 @@
                     @foreach ($tickets as $ticket)
                         <tr>
                             <td>{{ $ticket->id }}</td>
-                            <td>{{ $ticket->priority }}</td>
+                            <td>
+                                <span
+                                    class="{{ $ticket->priority === 'Low' ? 'text-primary' : ($ticket->priority === 'Medium' ? 'text-warning' : 'text-danger') }}">
+                                    {{ $ticket->priority }}
+                                </span>
+                            </td>
                             <td>{{ $ticket->name }}</td>
                             <td>{{ $ticket->subject }}</td>
                             <td>{{ $ticket->description }}</td>
                             <td>{{ $ticket->assigned }}</td>
-                            <td>{{ $ticket->status }}</td>
+                            <td>
+                                <span
+                                    class="{{ $ticket->status === 'Open' ? 'rounded p-1 text-white bg-danger' : 'rounded p-1 text-white bg-success' }}">
+                                    {{ $ticket->status }}
+                                </span>
+                            </td>
                             <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
                             <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">Update</a></td>
                         </tr>
@@ -73,4 +86,50 @@
             </table>
         </div>
     </main>
+    {{-- <script>
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            var selectedValue = this.value;
+            var rows = document.querySelectorAll('table tbody tr');
+
+            // Fonction de tri personnalisée
+            function customSortByProperty(property) {
+                return function(a, b) {
+                    var valueA = a.querySelector('.' + property).innerText;
+                    var valueB = b.querySelector('.' + property).innerText;
+                    return valueA.localeCompare(valueB);
+                };
+            }
+
+            // Tri des lignes de tableau en fonction de l'option sélectionnée
+            if (selectedValue === 'byID') {
+                rows.forEach(function(row) {
+                    row.remove(); // Supprimer les lignes existantes
+                });
+                // Ré-ajouter les lignes triées par ID
+                rows.forEach(function(row) {
+                    document.querySelector('table tbody').appendChild(row);
+                });
+            } else if (selectedValue === 'byPriority') {
+                // Tri par priorité
+                var sortedRows = Array.from(rows).sort(customSortByProperty('priority'));
+                rows.forEach(function(row) {
+                    row.remove(); // Supprimer les lignes existantes
+                });
+                // Ré-ajouter les lignes triées par priorité
+                sortedRows.forEach(function(row) {
+                    document.querySelector('table tbody').appendChild(row);
+                });
+            } else if (selectedValue === 'byAssignement') {
+                // Tri par assignement
+                var sortedRows = Array.from(rows).sort(customSortByProperty('assignement'));
+                rows.forEach(function(row) {
+                    row.remove(); // Supprimer les lignes existantes
+                });
+                // Ré-ajouter les lignes triées par assignement
+                sortedRows.forEach(function(row) {
+                    document.querySelector('table tbody').appendChild(row);
+                });
+            }
+        });
+    </script> --}}
 @endsection
