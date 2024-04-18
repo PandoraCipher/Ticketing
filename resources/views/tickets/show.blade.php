@@ -10,6 +10,7 @@
                 <span class="title">Edit ticket</span>
                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
 
+                <label for="reference" class="text-start"><h3>[ticket #{{ $ticket->id }}] {{ $ticket->subject }}</h2></label>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input" name="name" value="{{ old('name', $ticket->name) }}">
@@ -33,7 +34,12 @@
 
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="assigned" value="{{ old('assigned', $ticket->assigned) }}">
+                    {{-- <input type="text" class="input" name="assigned" value="{{ old('assigned', $ticket->assigned) }}"> --}}
+                    <select name="assigned" class="input" required>
+                        <option value="User1" {{ $ticket->assigned === 'User1' ? 'selected' : '' }}>User1</option>
+                        <option value="User2" {{ $ticket->assigned === 'User2' ? 'selected' : '' }}>User2</option>
+                        <option value="User3" {{ $ticket->assigned === 'User3' ? 'selected' : '' }}>User3</option>
+                    </select>
                 </div>
 
                 <label class="text-start" for="status">Status:</label>

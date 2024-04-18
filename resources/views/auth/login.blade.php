@@ -12,9 +12,9 @@
 </head>
 
 <body>
-    <div class="container">
-
-        <form class="form card">
+    <div class="card">
+        <form class="form card" action="{{ route('auth.login') }}" method="POST">
+            @csrf
             <div class="card_header">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z"></path>
@@ -25,18 +25,24 @@
                 <h1 class="form_heading">Login</h1>
             </div>
             <div class="field">
-                <label for="username">Username</label>
-                <input class="input" name="username" type="text" placeholder="Username" id="username">
+                <label for="email">email</label>
+                <input class="input" name="email" type="email" placeholder="email" id="email"
+                    value="{{ old('email') }}">
+                @error('email')
+                    <label class="text-danger" for="">{{ $message }}</label>
+                @enderror
             </div>
             <div class="field">
                 <label for="password">Password</label>
-                <input class="input" name="user_password" type="password" placeholder="Password" id="password">
+                <input class="input" name="password" type="password" placeholder="Password" id="password">
+                @error('password')
+                    <label class="text-danger" for="">{{ $message }}</label>
+                @enderror
             </div>
             <div class="field">
                 <button class="button">Login</button>
             </div>
         </form>
-
     </div>
 
 </body>
