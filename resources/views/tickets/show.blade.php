@@ -3,7 +3,7 @@
 @section('content')
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="form-box">
-            <form class="form" method="POST" action="{{ route('tickets.update', $ticket) }}" enctype="multipart/form-data">
+            <form class="form" method="POST" action="{{ route('tickets.update', $ticket,) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -36,9 +36,14 @@
                 <div class="form-container m-0 p-0">
                     {{-- <input type="text" class="input" name="assigned" value="{{ old('assigned', $ticket->assigned) }}"> --}}
                     <select name="assigned" class="input" required>
-                        <option value="User1" {{ $ticket->assigned === 'User1' ? 'selected' : '' }}>User1</option>
+                        {{-- <option value="User1" {{ $ticket->assigned === 'User1' ? 'selected' : '' }}>User1</option>
                         <option value="User2" {{ $ticket->assigned === 'User2' ? 'selected' : '' }}>User2</option>
-                        <option value="User3" {{ $ticket->assigned === 'User3' ? 'selected' : '' }}>User3</option>
+                        <option value="User3" {{ $ticket->assigned === 'User3' ? 'selected' : '' }}>User3</option> --}}
+                        @foreach ($users as $user)
+                            <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
+                                {{ $user->name }} <!-- Affiche le nom de l'utilisateur -->
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 

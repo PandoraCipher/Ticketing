@@ -27,7 +27,8 @@ class TicketController extends Controller
     public function create()
     {
         $ticket = new Ticket();
-        return view('tickets.create', ['ticket' => $ticket]);
+        $users = User::all();
+        return view('tickets.create', ['ticket' => $ticket], ['users' => $users]);
     }
 
     /**
@@ -35,13 +36,6 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        // Ticket::create([
-        //     'name' => request('name'),
-        //     'priority' => request('priority'),
-        //     'assigned' => request('assigned'),
-        //     'status' => request('status'),
-        //     'description' => request('description'),
-        // ]);
         $data = $request->validate([
             'name' => 'required|string',
             'priority' => 'required|string',
@@ -77,7 +71,8 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        return view('tickets.show', compact('ticket'));
+        $users = User::all();
+        return view('tickets.show', compact('ticket', 'users'));
     }
 
     /**

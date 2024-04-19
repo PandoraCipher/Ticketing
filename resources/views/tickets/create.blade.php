@@ -12,11 +12,12 @@
                 </div>
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">
-                    {{-- <input type="text" class="input" name="assigned" placeholder="Assignement" required> --}}
                     <select name="assigned" class="input" required>
-                        <option value="User1" {{ $ticket->assigned === 'User1' ? 'selected' : '' }}>User1</option>
-                        <option value="User2" {{ $ticket->assigned === 'User2' ? 'selected' : '' }}>User2</option>
-                        <option value="User3" {{ $ticket->assigned === 'User3' ? 'selected' : '' }}>User3</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <label class="text-start" for="subject">Subject:</label>
@@ -34,7 +35,6 @@
                 </div>
                 <label class="text-start" for="priority">Priority:</label>
                 <div class="form-container m-0 p-0">
-                    {{-- <input type="text" class="input" name="priority" placeholder="Priority" required> --}}
                     <select class="input" name="priority" required>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>

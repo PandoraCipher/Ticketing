@@ -79,7 +79,7 @@
                                 </span>
                             </td>
                             <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
-                            <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">Update</a></td>
+                            <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">check</a></td>
                         </tr>
                     @endforeach
                 </tbody>
