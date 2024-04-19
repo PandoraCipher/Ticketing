@@ -24,20 +24,21 @@
                 </svg>
                 <h1 class="form_heading">Login</h1>
             </div>
+            @error('email')
+                <label class="text-danger" for="">{{ $message }}</label>
+            @enderror
             <div class="field">
                 <label for="email">email</label>
                 <input class="input" name="email" type="email" placeholder="email" id="email"
                     value="{{ old('email') }}">
-                @error('email')
-                    <label class="text-danger" for="">{{ $message }}</label>
-                @enderror
+
             </div>
             <div class="field">
                 <label for="password">Password</label>
                 <input class="input" name="password" type="password" placeholder="Password" id="password">
-                @error('password')
+                {{-- @error('password')
                     <label class="text-danger" for="">{{ $message }}</label>
-                @enderror
+                @enderror --}}
             </div>
             <div class="field">
                 <button class="button">Login</button>
