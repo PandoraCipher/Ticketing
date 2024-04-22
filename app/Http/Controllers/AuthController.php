@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\loginRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +17,7 @@ class AuthController extends Controller
         return to_route('auth.login');
     }
 
-    public function doLogin(loginRequest $request){
+    public function doLogin(LoginRequest $request){
         $credential = $request->validated();
 
         if(Auth::attempt($credential)){

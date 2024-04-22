@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchTicketsRequest;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,11 +15,35 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SearchTicketsRequest $request)
     {
-        $tickets = Ticket::orderBy('id', 'asc')->get();
-        //dd($tickets);
-        return view('tickets.list', compact('tickets'));
+        $query = Ticket::orderBy('id', 'asc');
+
+        if ($request->input('id') != "") {
+            $id = $request->input('id');
+            
+            $query->where('id', $id);
+        }
+        if ($request->input('client') != "") {
+            $name= $request->input('client');
+            
+            $query->where('name', $name);
+        }
+        if ($request->input('assigned') != "") {
+            $assigned= $request->input('assigned');
+            
+            $query->where('assigned', $assigned);
+        }
+        if ($request->input('status') != "") {
+            $status = $request->input('status');
+            
+            $query->where('status', $status);
+        }
+
+        $tickets = $query->paginate(10);
+        $input = $request->validated();
+
+        return view('tickets.list', compact('tickets', 'input'));
     }
 
     /**
@@ -56,11 +81,11 @@ class TicketController extends Controller
         if ($request->hasFile('file')) {
             // Enregistrer le fichier dans le dossier de stockage public/files
             $filePath = $request->file('file')->store('public/files');
-    
+
             // Sauvegarder le chemin du fichier dans l'instance du ticket
             $ticket->file = $filePath;
         }
-    
+
         // Enregistrer le ticket dans la base de données
         $ticket->save();
         return redirect()->route('tickets.list');
@@ -107,7 +132,6 @@ class TicketController extends Controller
             'description' => $data['description'],
         ]);
         if ($request->hasFile('file')) {
-            
             $filePath = $request->file('file')->store('public/files');
             $ticket->file = $filePath;
         }
@@ -132,7 +156,7 @@ class TicketController extends Controller
         if (!Storage::exists('public/files/' . $filename)) {
             abort(404);
         }
-    
+
         // Télécharger le fichier en utilisant le nom original
         return response()->download($filePath, $filename);
     }

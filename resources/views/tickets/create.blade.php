@@ -8,7 +8,7 @@
                 <span class="title">New ticket</span>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="name" placeholder="Name" required>
+                    <input type="text" class="input" name="name" placeholder="Name" value=" {{ Auth::user()->name }} " required>
                 </div>
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">

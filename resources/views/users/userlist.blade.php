@@ -14,18 +14,21 @@
             <option value="byAssignement">by assignement</option>
         </select> --}}
 
-            <input class="rounded border border-dark mx-3" type="text" name="" id="">
+            <input class="rounded border border-dark mx-3" type="text" name="name" placeholder="name" id="">
             <button type="button" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                 <svg class="bi">
                     <use xlink:href="#search" />
                 </svg>
             </button>
-            <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/users/usercreate">
-                <svg class="bi">
-                    <use xlink:href="#plus-circle" />
-                </svg>
-                New user
-            </a>
+            @if (Auth::user()->role == 'Admin')
+                <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/users/usercreate">
+                    <svg class="bi">
+                        <use xlink:href="#plus-circle" />
+                    </svg>
+                    New user
+                </a>
+            @endif
+
         </div>
 
         <div class="table-responsive small">
