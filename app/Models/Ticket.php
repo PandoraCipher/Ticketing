@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'priority', 'subject', 'status', 'assigned', 'description'];
+    protected $fillable = ['name', 'priority', 'subject', 'status', 'assigned'];
+
+    public function notes(){
+        return $this->hasMany(Note::class);
+    }
 }
+

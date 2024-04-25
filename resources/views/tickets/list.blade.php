@@ -21,17 +21,18 @@
         <h2>Tickets list</h2>
         <div class="container d-flex gap-2">
             <form action="" method="get">
-                <input class="rounded border border-dark mx-3" type="number" name="id" placeholder="id"
-                    id="" value="{{ $input['id'] ?? '' }}">
+                <input class="rounded border border-dark mx-3" type="number" name="id" placeholder="id" id=""
+                    value="{{ $input['id'] ?? '' }}">
                 <input class="rounded border border-dark mx-3" type="text" name="client" placeholder="Client"
                     id="" value="{{ $input['client'] ?? '' }}">
                 <input class="rounded border border-dark mx-3" type="text" name="assigned" placeholder="assigned"
                     id="" value="{{ $input['assigned'] ?? '' }}">
-                    <select name="status" class="rounded border border-dark mx-3" id="">
-                        <option value=""></option>
-                        <option value="Open">Open</option>
-                        <option value="Closed">Closed</option>
-                    </select>
+                <select name="status" class="rounded border border-dark mx-3" id="">
+                    <option value="">status</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                
                 <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                     <svg class="bi">
                         <use xlink:href="#search" />
@@ -52,9 +53,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Priority</th>
-                        <th scope="col">Client</th>
+                        <th scope="col">Name</th>
                         <th scope="col">Subject</th>
-                        <th scope="col">Description</th>
+                        {{-- <th scope="col">Description</th> --}}
                         <th scope="col">Assignement</th>
                         <th scope="col">Status</th>
                         <th scope="col">last update</th>
@@ -79,8 +80,16 @@
                                     <td>{{ $ticket->assigned }}</td>
                                     <td>
                                         <span
-                                            class="{{ $ticket->status === 'Open' ? 'rounded p-1 text-white bg-danger' : 'rounded p-1 text-white bg-success' }}">
-                                            {{ $ticket->status }}
+                                            class="rounded p-1 text-white
+                                            @if ($ticket->status !== 'Closed') bg-danger
+                                            @else bg-success 
+                                            @endif
+">
+                                            @if ($ticket->status === 'Closed')
+                                                {{ 'Closed' }}
+                                            @else
+                                                {{ 'Open' }}
+                                            @endif">
                                         </span>
                                     </td>
                                     <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
@@ -98,7 +107,7 @@
                                 </td>
                                 <td>{{ $ticket->name }}</td>
                                 <td>{{ $ticket->subject }}</td>
-                                <td>{{ $ticket->description }}</td>
+                                {{-- <td>{{ $ticket->description }}</td> --}}
                                 <td>{{ $ticket->assigned }}</td>
                                 <td>
                                     <span
@@ -110,7 +119,7 @@
                                 <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">check</a></td>
                             </tr>
                         @endif
-                        @empty
+                    @empty
                         <tr>
                             <td><b>No ticket found</b></h3></label></td>
                         </tr>
@@ -131,50 +140,5 @@
 
         </div>
     </main>
-    {{-- <script>
-        document.getElementById('sortSelect').addEventListener('change', function() {
-            var selectedValue = this.value;
-            var rows = document.querySelectorAll('table tbody tr');
 
-            // Fonction de tri personnalisée
-            function customSortByProperty(property) {
-                return function(a, b) {
-                    var valueA = a.querySelector('.' + property).innerText;
-                    var valueB = b.querySelector('.' + property).innerText;
-                    return valueA.localeCompare(valueB);
-                };
-            }
-
-            // Tri des lignes de tableau en fonction de l'option sélectionnée
-            if (selectedValue === 'byID') {
-                rows.forEach(function(row) {
-                    row.remove(); // Supprimer les lignes existantes
-                });
-                // Ré-ajouter les lignes triées par ID
-                rows.forEach(function(row) {
-                    document.querySelector('table tbody').appendChild(row);
-                });
-            } else if (selectedValue === 'byPriority') {
-                // Tri par priorité
-                var sortedRows = Array.from(rows).sort(customSortByProperty('priority'));
-                rows.forEach(function(row) {
-                    row.remove(); // Supprimer les lignes existantes
-                });
-                // Ré-ajouter les lignes triées par priorité
-                sortedRows.forEach(function(row) {
-                    document.querySelector('table tbody').appendChild(row);
-                });
-            } else if (selectedValue === 'byAssignement') {
-                // Tri par assignement
-                var sortedRows = Array.from(rows).sort(customSortByProperty('assignement'));
-                rows.forEach(function(row) {
-                    row.remove(); // Supprimer les lignes existantes
-                });
-                // Ré-ajouter les lignes triées par assignement
-                sortedRows.forEach(function(row) {
-                    document.querySelector('table tbody').appendChild(row);
-                });
-            }
-        });
-    </script> --}}
 @endsection

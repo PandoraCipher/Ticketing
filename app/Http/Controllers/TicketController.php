@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchTicketsRequest;
+use App\Models\Note;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,26 +18,26 @@ class TicketController extends Controller
      */
     public function index(SearchTicketsRequest $request)
     {
-        $query = Ticket::orderBy('id', 'asc');
+        $query = Ticket::orderBy('id', 'desc');
 
-        if ($request->input('id') != "") {
+        if ($request->input('id') != '') {
             $id = $request->input('id');
-            
+
             $query->where('id', $id);
         }
-        if ($request->input('client') != "") {
-            $name= $request->input('client');
-            
+        if ($request->input('client') != '') {
+            $name = $request->input('client');
+
             $query->where('name', $name);
         }
-        if ($request->input('assigned') != "") {
-            $assigned= $request->input('assigned');
-            
+        if ($request->input('assigned') != '') {
+            $assigned = $request->input('assigned');
+
             $query->where('assigned', $assigned);
         }
-        if ($request->input('status') != "") {
+        if ($request->input('status') != '') {
             $status = $request->input('status');
-            
+
             $query->where('status', $status);
         }
 
@@ -66,7 +67,6 @@ class TicketController extends Controller
             'priority' => 'required|string',
             'subject' => 'required|string',
             'assigned' => 'required|string',
-            'description' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
 
@@ -76,7 +76,6 @@ class TicketController extends Controller
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
             'status' => 'Open',
-            'description' => $data['description'],
         ]);
         if ($request->hasFile('file')) {
             // Enregistrer le fichier dans le dossier de stockage public/files
@@ -88,6 +87,14 @@ class TicketController extends Controller
 
         // Enregistrer le ticket dans la base de données
         $ticket->save();
+        
+        $note = new Note();
+        $note->ticket_id = $ticket->id;
+        $note->author = $request->user()->name;
+        $note->assigned = $data['assigned'];
+        $note->content = "Ouverture du ticket" ;
+        $note->status = "Open";
+        $note->save();
         return redirect()->route('tickets.list');
     }
 
@@ -97,7 +104,8 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $users = User::all();
-        return view('tickets.show', compact('ticket', 'users'));
+        $notes = Note::where('ticket_id', $ticket->id)->get();
+        return view('tickets.show', compact('ticket', 'users', 'notes'));
     }
 
     /**
@@ -117,9 +125,9 @@ class TicketController extends Controller
             'name' => 'required|string',
             'priority' => 'required|string',
             'subject' => 'required|string',
+            'note' => 'required|string',
             'assigned' => 'required|string',
             'status' => 'required|string',
-            'description' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240', //Validation du fichier (exemple: PDF, DOCX, taille maximale 2048 Ko)
         ]);
 
@@ -129,14 +137,22 @@ class TicketController extends Controller
             'subject' => $data['subject'],
             'assigned' => $data['assigned'],
             'status' => $data['status'],
-            'description' => $data['description'],
         ]);
         if ($request->hasFile('file')) {
             $filePath = $request->file('file')->store('public/files');
             $ticket->file = $filePath;
         }
         $ticket->save();
-        return redirect()->route('tickets.list');
+
+        $note = new Note();
+        $note->ticket_id = $ticket->id;
+        $note->author = $request->user()->name;
+        $note->assigned = $data['assigned'];
+        $note->content = $data['note'] ;
+        $note->status = $data['status'];
+        $note->save();
+
+        return redirect()->route('tickets.show', $ticket->id);
     }
 
     /**
