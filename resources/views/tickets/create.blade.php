@@ -10,6 +10,12 @@
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input" name="name" placeholder="Name" value=" {{ Auth::user()->name }} " required>
                 </div>
+
+                <label class="text-start" for="name">Client:</label>
+                <div class="form-container m-0 p-0">
+                    <input type="text" class="input" name="client" placeholder="client" value="" required>
+                </div>
+
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input" required>

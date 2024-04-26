@@ -37,8 +37,23 @@ class TicketController extends Controller
         }
         if ($request->input('status') != '') {
             $status = $request->input('status');
+            if ($status == 'Open' || $status == 'AAR' || $status == 'ACR') {
+                $query->where('status', $status)->orWhere('status', 'AAR')->orWhere('status', 'ACR');
+            } else {
+                $query->where('status', $status);
+            }
+            session()->put('status', $request->input('status'));
+        }
 
-            $query->where('status', $status);
+        if ($request->input('begin') != '') {
+            $begin = $request->input('begin');
+
+            $query->whereDate('created_at', '>=', $begin);
+        }
+        if ($request->input('end') != '') {
+            $end = $request->input('end');
+
+            $query->whereDate('created_at', '<=', $end);
         }
 
         $tickets = $query->paginate(10);
@@ -64,14 +79,17 @@ class TicketController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
+            'client' => 'required|string',
             'priority' => 'required|string',
             'subject' => 'required|string',
+            'note' => 'required|string',
             'assigned' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
 
         $ticket = new Ticket([
             'name' => $data['name'],
+            'client' => $data['client'],
             'subject' => $data['subject'],
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
@@ -87,13 +105,13 @@ class TicketController extends Controller
 
         // Enregistrer le ticket dans la base de données
         $ticket->save();
-        
+
         $note = new Note();
         $note->ticket_id = $ticket->id;
         $note->author = $request->user()->name;
         $note->assigned = $data['assigned'];
-        $note->content = "Ouverture du ticket" ;
-        $note->status = "Open";
+        $note->content = $data['note'];
+        $note->status = 'Open';
         $note->save();
         return redirect()->route('tickets.list');
     }
@@ -123,6 +141,7 @@ class TicketController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
+            'client' => 'required|string',
             'priority' => 'required|string',
             'subject' => 'required|string',
             'note' => 'required|string',
@@ -133,6 +152,7 @@ class TicketController extends Controller
 
         $ticket->update([
             'name' => $data['name'],
+            'client' => $data['client'],
             'priority' => $data['priority'],
             'subject' => $data['subject'],
             'assigned' => $data['assigned'],
@@ -148,7 +168,7 @@ class TicketController extends Controller
         $note->ticket_id = $ticket->id;
         $note->author = $request->user()->name;
         $note->assigned = $data['assigned'];
-        $note->content = $data['note'] ;
+        $note->content = $data['note'];
         $note->status = $data['status'];
         $note->save();
 

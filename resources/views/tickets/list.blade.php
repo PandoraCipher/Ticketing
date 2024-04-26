@@ -21,30 +21,43 @@
         <h2>Tickets list</h2>
         <div class="container d-flex gap-2">
             <form action="" method="get">
-                <input class="rounded border border-dark mx-3" type="number" name="id" placeholder="id" id=""
-                    value="{{ $input['id'] ?? '' }}">
-                <input class="rounded border border-dark mx-3" type="text" name="client" placeholder="Client"
-                    id="" value="{{ $input['client'] ?? '' }}">
-                <input class="rounded border border-dark mx-3" type="text" name="assigned" placeholder="assigned"
-                    id="" value="{{ $input['assigned'] ?? '' }}">
-                <select name="status" class="rounded border border-dark mx-3" id="">
-                    <option value="">status</option>
-                    <option value="Open">Open</option>
-                    <option value="Closed">Closed</option>
-                </select>
-                
-                <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
-                    <svg class="bi">
-                        <use xlink:href="#search" />
-                    </svg>
-                </button>
+                <div class="container p-0">
+                    <div class="container d-flex mx-0 my-1">
+                        <input class="rounded border border-dark mx-1" type="number" name="id" placeholder="id"
+                            id="" value="{{ $input['id'] ?? '' }}">
+                        <input class="rounded border border-dark mx-1" type="text" name="client" placeholder="Client"
+                            id="" value="{{ $input['client'] ?? '' }}">
+                        <input class="rounded border border-dark mx-1" type="text" name="assigned" placeholder="assigned"
+                            id="" value="{{ $input['assigned'] ?? '' }}">
+                        <select name="status" class="rounded border border-dark mx-3" id="">
+                            <option value="">Status</option>
+                            <option value="Open" {{ session('status') == 'Open' ? 'selected' : '' }}>Open</option>
+                            <option value="Closed" {{ session('status') == 'Closed' ? 'selected' : '' }}>Closed</option>
+                        </select>
+                    </div>
+                    <label for=""><b>du:</b></label>
+                        <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
+                            id="" value="{{ $input['begin'] ?? '' }}">
+                        <label for=""><b>au:</b></label>
+                        <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
+                            id="" value="{{ $input['end'] ?? '' }}">
+                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
+                        <svg class="bi">
+                            <use xlink:href="#plus-circle" />
+                        </svg>
+                        New ticket
+                    </a>
+
+                    <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
+                        <svg class="bi">
+                            <use xlink:href="#search" />
+                        </svg>
+                    </button>
+                    
+                </div>
+
             </form>
-            <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
-                <svg class="bi">
-                    <use xlink:href="#plus-circle" />
-                </svg>
-                New ticket
-            </a>
+            
         </div>
 
         <div class="table-responsive small">
@@ -54,6 +67,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Priority</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Client</th>
                         <th scope="col">Subject</th>
                         {{-- <th scope="col">Description</th> --}}
                         <th scope="col">Assignement</th>
@@ -75,21 +89,20 @@
                                         </span>
                                     </td>
                                     <td>{{ $ticket->name }}</td>
+                                    <td>{{ $ticket->client }}</td>
                                     <td>{{ $ticket->subject }}</td>
-                                    <td>{{ $ticket->description }}</td>
                                     <td>{{ $ticket->assigned }}</td>
                                     <td>
                                         <span
                                             class="rounded p-1 text-white
                                             @if ($ticket->status !== 'Closed') bg-danger
-                                            @else bg-success 
-                                            @endif
+                                            @else bg-success @endif
 ">
                                             @if ($ticket->status === 'Closed')
                                                 {{ 'Closed' }}
                                             @else
                                                 {{ 'Open' }}
-                                            @endif">
+                                            @endif
                                         </span>
                                     </td>
                                     <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
@@ -106,13 +119,21 @@
                                     </span>
                                 </td>
                                 <td>{{ $ticket->name }}</td>
+                                <td>{{ $ticket->client }}</td>
                                 <td>{{ $ticket->subject }}</td>
                                 {{-- <td>{{ $ticket->description }}</td> --}}
                                 <td>{{ $ticket->assigned }}</td>
                                 <td>
                                     <span
-                                        class="{{ $ticket->status === 'Open' ? 'rounded p-1 text-white bg-danger' : 'rounded p-1 text-white bg-success' }}">
-                                        {{ $ticket->status }}
+                                        class="rounded p-1 text-white
+                                        @if ($ticket->status !== 'Closed') bg-danger
+                                        @else bg-success @endif
+">
+                                        @if ($ticket->status === 'Closed')
+                                            {{ 'Closed' }}
+                                        @else
+                                            {{ 'Open' }}
+                                        @endif
                                     </span>
                                 </td>
                                 <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>

@@ -13,9 +13,15 @@
                 <label for="reference" class="text-start">
                     <h3>[ticket #{{ $ticket->id }}] {{ $ticket->subject }}</h2>
                 </label>
-                <label class="text-start" for="name"><b>Name:</b></label>
-                <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="name" value="{{ old('name', $ticket->name) }}">
+
+                <div class="container d-flex p-0">
+                    <label class="text-start" for="name"><b>Name:&nbsp;</b></label>
+                    <label for="name">{{ $ticket->name }}</label>
+                </div>
+
+                <div class="container d-flex p-0">
+                    <label class="text-start" for="name"><b>Client:&nbsp;</b></label>
+                    <label for="client">{{ $ticket->client }}</label>
                 </div>
 
                 <div class="container d-flex column p-0">
@@ -34,9 +40,11 @@
                         <select name="status" id="status" class="input" value="{{ old('status', $ticket->status) }}">
                             <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
                             <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
-                            <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer reply</option>
-                            <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent reply</option>
-                            
+                            <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
+                                reply</option>
+                            <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent reply
+                            </option>
+
                         </select>
                     </div>
                 </div>
@@ -50,7 +58,7 @@
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input" required>
                         @foreach ($users as $user)
-                            <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
+                            <option value="{{ $user->name }}" {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
                                 {{ $user->name }} <!-- Affiche le nom de l'utilisateur -->
                             </option>
                         @endforeach
@@ -93,9 +101,9 @@
                         <tr>
                             <td>{{ $note->updated_at->format('Y-m-d H:i') }}</td>
                             <td><span
-                                class="{{ $note->status === 'Open' ? 'rounded p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
-                                {{ $note->status }}
-                            </span></td>
+                                    class="{{ $note->status === 'Open' ? 'rounded p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
+                                    {{ $note->status }}
+                                </span></td>
                             <td>{{ $note->author }}</td>
                             <td>{{ $note->content }}</td>
                             <td>{{ $note->assigned }}</td>

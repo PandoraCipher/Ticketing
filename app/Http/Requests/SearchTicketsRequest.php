@@ -25,7 +25,8 @@ class SearchTicketsRequest extends FormRequest
             'id' => ['numeric', 'nullable'],
             'client' =>['string', 'nullable'],
             'assigned' =>['string', 'nullable'],
-            'status' =>['string', 'nullable']
+            'status' =>['string', 'nullable'],
+            'begin' =>['date', '']
         ];
     }
 }
