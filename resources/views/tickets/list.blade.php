@@ -2,22 +2,6 @@
 
 @section('content')
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        {{-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h1 class="h2">Dashboard</h1>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-          <svg class="bi"><use xlink:href="#calendar3"/></svg>
-          This week
-        </button>
-      </div>
-    </div>
-
-    <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> --}}
-
         <h2>Tickets list</h2>
         <div class="container d-flex gap-2">
             <form action="" method="get">
@@ -31,16 +15,20 @@
                             id="" value="{{ $input['assigned'] ?? '' }}">
                         <select name="status" class="rounded border border-dark mx-3" id="">
                             <option value="">Status</option>
-                            <option value="Open" {{ session('status') == 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="Closed" {{ session('status') == 'Closed' ? 'selected' : '' }}>Closed</option>
+                            <option value="Open"
+                                {{ isset($input['status']) && $input['status'] == 'Open' ? 'selected' : '' }}>Open</option>
+                            <option value="Closed"
+                                {{ isset($input['status']) && $input['status'] == 'Closed' ? 'selected' : '' }}>Closed
+                            </option>
                         </select>
                     </div>
                     <label for=""><b>du:</b></label>
-                        <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
-                            id="" value="{{ $input['begin'] ?? '' }}">
-                        <label for=""><b>au:</b></label>
-                        <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
-                            id="" value="{{ $input['end'] ?? '' }}">
+                    <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
+                        id="" value="{{ old('begin') ?? ($input['begin'] ?? '') }}">
+                    <label for=""><b>au:</b></label>
+                    <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
+                        id="" value="{{ old('end') ?? ($input['end'] ?? '') }}">
+
                     <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
                         <svg class="bi">
                             <use xlink:href="#plus-circle" />
@@ -52,15 +40,16 @@
                         <svg class="bi">
                             <use xlink:href="#search" />
                         </svg>
+                        search
                     </button>
-                    
+
                 </div>
 
             </form>
-            
+
         </div>
 
-        <div class="table-responsive small">
+        <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
@@ -79,66 +68,11 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         @if (Auth::user()->role == 'User')
-                            @if ($ticket->name == Auth::user()->name)
-                                <tr>
-                                    <td>{{ $ticket->id }}</td>
-                                    <td>
-                                        <span
-                                            class="{{ $ticket->priority === 'Low' ? 'text-primary' : ($ticket->priority === 'Medium' ? 'text-warning' : 'text-danger') }}">
-                                            {{ $ticket->priority }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $ticket->name }}</td>
-                                    <td>{{ $ticket->client }}</td>
-                                    <td>{{ $ticket->subject }}</td>
-                                    <td>{{ $ticket->assigned }}</td>
-                                    <td>
-                                        <span
-                                            class="rounded p-1 text-white
-                                            @if ($ticket->status !== 'Closed') bg-danger
-                                            @else bg-success @endif
-">
-                                            @if ($ticket->status === 'Closed')
-                                                {{ 'Closed' }}
-                                            @else
-                                                {{ 'Open' }}
-                                            @endif
-                                        </span>
-                                    </td>
-                                    <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
-                                    <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">check</a></td>
-                                </tr>
+                            @if ($ticket->name == Auth::user()->name || $ticket->assigned == Auth::user()->name)
+                                @include('tickets.result')
                             @endif
                         @else
-                            <tr>
-                                <td>{{ $ticket->id }}</td>
-                                <td>
-                                    <span
-                                        class="{{ $ticket->priority === 'Low' ? 'text-primary' : ($ticket->priority === 'Medium' ? 'text-warning' : 'text-danger') }}">
-                                        {{ $ticket->priority }}
-                                    </span>
-                                </td>
-                                <td>{{ $ticket->name }}</td>
-                                <td>{{ $ticket->client }}</td>
-                                <td>{{ $ticket->subject }}</td>
-                                {{-- <td>{{ $ticket->description }}</td> --}}
-                                <td>{{ $ticket->assigned }}</td>
-                                <td>
-                                    <span
-                                        class="rounded p-1 text-white
-                                        @if ($ticket->status !== 'Closed') bg-danger
-                                        @else bg-success @endif
-">
-                                        @if ($ticket->status === 'Closed')
-                                            {{ 'Closed' }}
-                                        @else
-                                            {{ 'Open' }}
-                                        @endif
-                                    </span>
-                                </td>
-                                <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
-                                <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">check</a></td>
-                            </tr>
+                            @include('tickets.result')
                         @endif
                     @empty
                         <tr>

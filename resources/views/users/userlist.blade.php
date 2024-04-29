@@ -35,7 +35,6 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">name</th>
                         <th scope="col">email</th>
                         <th scope="col">role</th>
@@ -45,7 +44,6 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role }}</td>

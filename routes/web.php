@@ -18,6 +18,9 @@ Route::get('/list', function (){
     return view('tickets/list');
 });
 
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->name('dashboard');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('/login', [AuthController::class, 'doLogin']);

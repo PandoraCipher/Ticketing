@@ -18,7 +18,16 @@ class TicketController extends Controller
      */
     public function index(SearchTicketsRequest $request)
     {
+        $user = Auth::user();
         $query = Ticket::orderBy('id', 'desc');
+
+        if ($user->role == "User"){
+            $query->where(function ($query) use ($user) {
+                $query->where('name', $user->name)
+                      ->orWhere('client', $user->name)
+                      ->orWhere('assigned', $user->name);
+            });
+        }
 
         if ($request->input('id') != '') {
             $id = $request->input('id');
@@ -26,9 +35,9 @@ class TicketController extends Controller
             $query->where('id', $id);
         }
         if ($request->input('client') != '') {
-            $name = $request->input('client');
+            $client = $request->input('client');
 
-            $query->where('name', $name);
+            $query->where('client', $client);
         }
         if ($request->input('assigned') != '') {
             $assigned = $request->input('assigned');
@@ -38,12 +47,11 @@ class TicketController extends Controller
         if ($request->input('status') != '') {
             $status = $request->input('status');
             if ($status == 'Open' || $status == 'AAR' || $status == 'ACR') {
-                $query->where('status', $status)->orWhere('status', 'AAR')->orWhere('status', 'ACR');
+                $query->whereIn('status', ['Open', 'AAR', 'ACR']);
             } else {
                 $query->where('status', $status);
             }
-            session()->put('status', $request->input('status'));
-        }
+        }        
 
         if ($request->input('begin') != '') {
             $begin = $request->input('begin');
@@ -140,8 +148,8 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'client' => 'required|string',
+            // 'name' => 'required|string',
+            // 'client' => 'required|string',
             'priority' => 'required|string',
             'subject' => 'required|string',
             'note' => 'required|string',
@@ -151,8 +159,8 @@ class TicketController extends Controller
         ]);
 
         $ticket->update([
-            'name' => $data['name'],
-            'client' => $data['client'],
+            // 'name' => $data['name'],
+            // 'client' => $data['client'],
             'priority' => $data['priority'],
             'subject' => $data['subject'],
             'assigned' => $data['assigned'],

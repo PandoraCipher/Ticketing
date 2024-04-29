@@ -36,9 +36,6 @@
             <div class="field">
                 <label for="password">Password</label>
                 <input class="input" name="password" type="password" placeholder="Password" id="password">
-                {{-- @error('password')
-                    <label class="text-danger" for="">{{ $message }}</label>
-                @enderror --}}
             </div>
             <div class="field">
                 <button class="button">Login</button>
