@@ -4,49 +4,52 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <h2>Tickets list</h2>
         <div class="container d-flex gap-2">
-            <form action="" method="get">
-                <div class="container p-0">
-                    <div class="container d-flex mx-0 my-1">
-                        <input class="rounded border border-dark mx-1" type="number" name="id" placeholder="id"
-                            id="" value="{{ $input['id'] ?? '' }}">
-                        <input class="rounded border border-dark mx-1" type="text" name="client" placeholder="Client"
-                            id="" value="{{ $input['client'] ?? '' }}">
-                        <input class="rounded border border-dark mx-1" type="text" name="assigned" placeholder="assigned"
-                            id="" value="{{ $input['assigned'] ?? '' }}">
-                        <select name="status" class="rounded border border-dark mx-3" id="">
-                            <option value="">Status</option>
-                            <option value="Open"
-                                {{ isset($input['status']) && $input['status'] == 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="Closed"
-                                {{ isset($input['status']) && $input['status'] == 'Closed' ? 'selected' : '' }}>Closed
-                            </option>
-                        </select>
+            <div class="table-responsive">
+                <form action="" method="get">
+                    <div class="container p-0">
+                        <div class="container d-flex mx-0 my-1">
+                            <input class="rounded border border-dark mx-1" type="number" name="id" placeholder="id"
+                                id="" value="{{ $input['id'] ?? '' }}" min="1">
+                            <input class="rounded border border-dark mx-1" type="text" name="client"
+                                placeholder="Client" id="" value="{{ $input['client'] ?? '' }}">
+                            <input class="rounded border border-dark mx-1" type="text" name="assigned"
+                                placeholder="assigned" id="" value="{{ $input['assigned'] ?? '' }}">
+                            <select name="status" class="rounded border border-dark mx-3" id="">
+                                <option value="">none</option>
+                                <option value="Open"
+                                    {{ isset($input['status']) && $input['status'] == 'Open' ? 'selected' : '' }}>Open
+                                </option>
+                                <option value="Closed"
+                                    {{ isset($input['status']) && $input['status'] == 'Closed' ? 'selected' : '' }}>Closed
+                                </option>
+                            </select>
+                        </div>
+                        <div class="container d-flex my-1">
+                            <label for=""><b>du:</b></label>
+                            <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
+                                id="" value="{{ old('begin') ?? ($input['begin'] ?? '') }}">
+                            <label for=""><b>au:</b></label>
+                            <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
+                                id="" value="{{ old('end') ?? ($input['end'] ?? '') }}">
+                        </div>
+                        <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
+                            <svg class="bi">
+                                <use xlink:href="#plus-circle" />
+                            </svg>
+                            New ticket
+                        </a>
+
+                        <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
+                            <svg class="bi">
+                                <use xlink:href="#search" />
+                            </svg>
+                            search
+                        </button>
+
                     </div>
-                    <label for=""><b>du:</b></label>
-                    <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
-                        id="" value="{{ old('begin') ?? ($input['begin'] ?? '') }}">
-                    <label for=""><b>au:</b></label>
-                    <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
-                        id="" value="{{ old('end') ?? ($input['end'] ?? '') }}">
 
-                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
-                        <svg class="bi">
-                            <use xlink:href="#plus-circle" />
-                        </svg>
-                        New ticket
-                    </a>
-
-                    <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
-                        <svg class="bi">
-                            <use xlink:href="#search" />
-                        </svg>
-                        search
-                    </button>
-
-                </div>
-
-            </form>
-
+                </form>
+            </div>
         </div>
 
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
@@ -87,7 +90,7 @@
                     <div class="col-md-8">
                         <!-- Affichage des liens de pagination -->
                         <div class="wpsc_ticket_list_nxt_pre_page">
-                            {{ $tickets->links() }}
+                            {{ $tickets->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>

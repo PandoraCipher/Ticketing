@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -12,9 +13,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SearchUserRequest $request)
     {
-        $users = User::get();
+        $query = User::orderBy('id', 'asc');
+
+        if ($request->input('name') != '') {
+            $name = $request->input('name');
+
+            $query->where('name', 'like', "%$name%");
+        }
+
+        $users = $query->paginate(10);
         return view('users.userlist', compact('users'));
     }
 
@@ -49,11 +58,10 @@ class UserController extends Controller
         $user = new User([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']), // Hasher le mot de passe
+            'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
         ]);
 
-        // Enregistrer le nouvel utilisateur dans la base de données
         $user->save();
 
         return redirect()->route('users.userlist')->with('success', 'User created successfully');

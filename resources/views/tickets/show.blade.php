@@ -27,7 +27,6 @@
                 <div class="container d-flex column p-0">
                     <label class="text-start" for="priority"><b>Priority:</b></label>
                     <div class="form-container m-0 p-0 col-3 mx-1">
-                        {{-- <input type="text" class="input" name="priority" value="{{ old('priority', $ticket->priority) }}"> --}}
                         <select class="input " name="priority" required>
                             <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
                             <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium</option>
@@ -36,7 +35,6 @@
                     </div>
                     <label class="text-start" for="status"><b>Status:</b></label>
                     <div class="form-container m-0 p-0 col-5 mx-2">
-                        {{-- <input type="text" class="input" name="status" value="{{ old('status', $ticket->status) }}"> --}}
                         <select name="status" id="status" class="input" value="{{ old('status', $ticket->status) }}">
                             <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
                             <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
@@ -59,7 +57,7 @@
                     <select name="assigned" class="input" required>
                         @foreach ($users as $user)
                             <option value="{{ $user->name }}" {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
-                                {{ $user->name }} <!-- Affiche le nom de l'utilisateur -->
+                                {{ $user->name }}
                             </option>
                         @endforeach
                     </select>
@@ -93,6 +91,7 @@
                         <th scope="col">status</th>
                         <th scope="col">by</th>
                         <th scope="col" class="col-4">description</th>
+                        <th scope="col">file</th>
                         <th scope="col" class="col-2">assigned</th>
                     </tr>
                 </thead>
@@ -106,6 +105,15 @@
                                 </span></td>
                             <td>{{ $note->author }}</td>
                             <td>{{ $note->content }}</td>
+                            <td>
+                                @if ($note->file)
+                                    <a href="{{ route('tickets.download', ['filename' => $note->file]) }}" class="btn btn-primary">
+                                        download file
+                                    </a>
+                                @else
+                                    No file attached
+                                @endif
+                            </td>
                             <td>{{ $note->assigned }}</td>
                         </tr>
                     @endforeach

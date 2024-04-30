@@ -21,11 +21,12 @@ class TicketController extends Controller
         $user = Auth::user();
         $query = Ticket::orderBy('id', 'desc');
 
-        if ($user->role == "User"){
+        if ($user->role == 'User') {
             $query->where(function ($query) use ($user) {
-                $query->where('name', $user->name)
-                      ->orWhere('client', $user->name)
-                      ->orWhere('assigned', $user->name);
+                $query
+                    ->where('name', $user->name)
+                    ->orWhere('client', $user->name)
+                    ->orWhere('assigned', $user->name);
             });
         }
 
@@ -51,7 +52,7 @@ class TicketController extends Controller
             } else {
                 $query->where('status', $status);
             }
-        }        
+        }
 
         if ($request->input('begin') != '') {
             $begin = $request->input('begin');
@@ -103,15 +104,7 @@ class TicketController extends Controller
             'assigned' => $data['assigned'],
             'status' => 'Open',
         ]);
-        if ($request->hasFile('file')) {
-            // Enregistrer le fichier dans le dossier de stockage public/files
-            $filePath = $request->file('file')->store('public/files');
 
-            // Sauvegarder le chemin du fichier dans l'instance du ticket
-            $ticket->file = $filePath;
-        }
-
-        // Enregistrer le ticket dans la base de données
         $ticket->save();
 
         $note = new Note();
@@ -120,6 +113,11 @@ class TicketController extends Controller
         $note->assigned = $data['assigned'];
         $note->content = $data['note'];
         $note->status = 'Open';
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('files', 'public');
+            $note->file = $filePath;
+        }
         $note->save();
         return redirect()->route('tickets.list');
     }
@@ -148,28 +146,21 @@ class TicketController extends Controller
     public function update(Request $request, Ticket $ticket)
     {
         $data = $request->validate([
-            // 'name' => 'required|string',
-            // 'client' => 'required|string',
             'priority' => 'required|string',
             'subject' => 'required|string',
             'note' => 'required|string',
             'assigned' => 'required|string',
             'status' => 'required|string',
-            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240', //Validation du fichier (exemple: PDF, DOCX, taille maximale 2048 Ko)
+            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
 
         $ticket->update([
-            // 'name' => $data['name'],
-            // 'client' => $data['client'],
             'priority' => $data['priority'],
             'subject' => $data['subject'],
             'assigned' => $data['assigned'],
             'status' => $data['status'],
         ]);
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('public/files');
-            $ticket->file = $filePath;
-        }
+
         $ticket->save();
 
         $note = new Note();
@@ -178,6 +169,12 @@ class TicketController extends Controller
         $note->assigned = $data['assigned'];
         $note->content = $data['note'];
         $note->status = $data['status'];
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('files', 'public');
+            $note->file = $filePath;
+        }
+
         $note->save();
 
         return redirect()->route('tickets.show', $ticket->id);
@@ -193,15 +190,13 @@ class TicketController extends Controller
 
     public function download($filename)
     {
-        // Récupérer le chemin complet du fichier
-        $filePath = storage_path('app/public/files/' . $filename);
+        $path = storage_path('app/public/' . $filename);
+        dd($path);
 
-        // Vérifier si le fichier existe
-        if (!Storage::exists('public/files/' . $filename)) {
-            abort(404);
+        if (file_exists($path)) {
+            return dd(response()->download($path));
+        } else {
+            return redirect()->back()->with('error', 'File not found');
         }
-
-        // Télécharger le fichier en utilisant le nom original
-        return response()->download($filePath, $filename);
     }
 }

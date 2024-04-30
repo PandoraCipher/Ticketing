@@ -32,11 +32,6 @@
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input" name="subject" placeholder="Subject" required>
                 </div>
-                {{-- <label class="text-start" for="description">Description:</label>
-                <div class="form-container m-0 p-0">
-                    <x-forms.tinymce-editor name="description" :content="html_entity_decode($ticket->description)" />
-                    <textarea class="input" name="description" id="description" cols="30" rows="30"></textarea>
-                </div> --}}
                 <label class="text-start" for="note"><b>Note:</b></label>
                 <div class="form-container m-0 p-0" style="height: 25vh">
                     <textarea class="input" style="height: 100vh" id="note" name="note" required></textarea>
@@ -46,6 +41,7 @@
                     <label for="formFile" class="text-start">Attach file:</label>
                     <input type="file" class="form-control" id="formFile" name="file">
                 </div>
+                
                 <label class="text-start" for="priority">Priority:</label>
                 <div class="form-container m-0 p-0">
                     <select class="input" name="priority" required>

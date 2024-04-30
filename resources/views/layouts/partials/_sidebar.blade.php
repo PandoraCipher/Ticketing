@@ -53,7 +53,7 @@
                     <ul class="nav flex-column mb-auto">
                       @if (Auth::user()->role == 'Admin')
                       <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2" href="#">
+                        <a class="nav-link d-flex align-items-center gap-2" href="{{ route('setting') }}">
                             <svg class="bi">
                                 <use xlink:href="#gear-wide-connected" />
                             </svg>

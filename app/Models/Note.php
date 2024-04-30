@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
     use HasFactory;
-    protected $fillable = [];
+    protected $fillable = ['file'];
 
     public function ticket(){
         return $this->belongsTo(Ticket::class);
