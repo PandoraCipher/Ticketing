@@ -16,6 +16,9 @@
                                 placeholder="assigned" id="" value="{{ $input['assigned'] ?? '' }}">
                             <select name="status" class="rounded border border-dark mx-3" id="">
                                 <option value="">none</option>
+                                <option value="Pending"
+                                    {{ isset($input['status']) && $input['status'] == 'Pending' ? 'selected' : '' }}>Pending
+                                </option>
                                 <option value="Open"
                                     {{ isset($input['status']) && $input['status'] == 'Open' ? 'selected' : '' }}>Open
                                 </option>
@@ -74,7 +77,7 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         @if (Auth::user()->role == 'User')
-                            @if ($ticket->name == Auth::user()->name || $ticket->assigned == Auth::user()->name)
+                            @if ($ticket->name == Auth::user()->name || $ticket->assigned == Auth::user()->name || $ticket->client == Auth::user()->name)
                                 @include('tickets.result')
                             @endif
                         @else

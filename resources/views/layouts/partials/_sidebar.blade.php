@@ -51,7 +51,7 @@
                     <hr class="my-3">
 
                     <ul class="nav flex-column mb-auto">
-                      @if (Auth::user()->role == 'Admin')
+                      {{-- @if (Auth::user()->role == 'Admin')
                       <li class="nav-item">
                         <a class="nav-link d-flex align-items-center gap-2" href="{{ route('setting') }}">
                             <svg class="bi">
@@ -60,7 +60,7 @@
                             Settings
                         </a>
                       </li>
-                      @endif
+                      @endif --}}
                         
                         <li class="nav-item">
                             <form action="{{ route('auth.logout') }}" method="post">

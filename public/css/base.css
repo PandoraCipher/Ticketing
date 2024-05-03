@@ -1,16 +1,19 @@
 .card {
 width: 400px;
 height: 400px;
-background: #F4F6FB;
+background: #f4f6fb86;
 border: 1px solid white;
-box-shadow: 10px 10px 64px 0px rgba(180, 180, 207, 0.75);
--webkit-box-shadow: 10px 10px 64px 0px rgba(186, 186, 202, 0.75);
--moz-box-shadow: 10px 10px 64px 0px rgba(208, 208, 231, 0.75);
+box-shadow: 10px 10px 64px 0px rgba(10, 10, 10, 0.75);
+-webkit-box-shadow: 10px 10px 64px 0px rgba(0, 0, 0, 0.75);
+-moz-box-shadow: 10px 10px 64px 0px rgba(0, 0, 0, 0.75);
 }
 
 body{
+  height: 100%;
+  background-image: url('../css/fond3.bmp');
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 }

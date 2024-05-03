@@ -47,8 +47,10 @@ class TicketController extends Controller
         }
         if ($request->input('status') != '') {
             $status = $request->input('status');
-            if ($status == 'Open' || $status == 'AAR' || $status == 'ACR') {
-                $query->whereIn('status', ['Open', 'AAR', 'ACR']);
+            if ($status == 'Open') {
+                $query->where('status', 'Open');
+            } elseif ($status == 'Pending') {
+                $query->whereIn('status', ['AAR', 'ACR']);
             } else {
                 $query->where('status', $status);
             }
@@ -74,6 +76,51 @@ class TicketController extends Controller
         $input = $request->validated();
 
         return view('tickets.list', compact('tickets', 'input'));
+    }
+
+    /**
+     * function to show open and pending tickets on the dashboard
+     */
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $openTicketsCount = 0;
+        $pendingTicketsCount = 0;
+
+        // Compter les tickets ouverts liés à l'utilisateur connecté
+        if ($user->role == 'User') {
+            $openTicketsCount = Ticket::where('status', 'Open')
+                ->where(function ($query) use ($user) {
+                    $query
+                        ->where('name', $user->name)
+                        ->orWhere('client', $user->name)
+                        ->orWhere('assigned', $user->name);
+                })
+                ->count();
+        } else {
+            // Compter tous les tickets ouverts
+            $openTicketsCount = Ticket::where('status', 'Open')->count();
+        }
+
+        // Compter les tickets en attente en fonction du rôle de l'utilisateur
+        if ($user->role == 'User') {
+            $pendingTicketsCount = Ticket::where(function ($query) use ($user) {
+                $query
+                    ->where('name', $user->name)
+                    ->orWhere('client', $user->name)
+                    ->orWhere('assigned', $user->name);
+            })
+                ->whereIn('status', ['AAR', 'ACR'])
+                ->count();
+        } else {
+            // Si l'utilisateur n'est pas un simple utilisateur, comptez tous les tickets en attente
+            $pendingTicketsCount = Ticket::whereIn('status', ['AAR', 'ACR'])->count();
+        }
+
+        return view('dashboard', [
+            'openTicketsCount' => $openTicketsCount,
+            'pendingTicketsCount' => $pendingTicketsCount,
+        ]);
     }
 
     /**

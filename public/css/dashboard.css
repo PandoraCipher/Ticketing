@@ -86,6 +86,25 @@ vertical-align: -.125em;
 fill: currentColor;
 }
 
+.dashboard-card{
+    justify-content: center;
+    text-align: center;
+    background: rgb(245, 240, 240);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.dashboard-text2 {
+    color: rgb(8, 8, 8);
+    font-weight: 700;
+    font-size: 1em;
+    transition: 400ms;
+  }
+  .dashboard-text1 {
+    color: rgb(104, 101, 101);
+    font-weight: 200;
+    font-size: 1em;
+    transition: 400ms;
+  }
+
 .nav-scroller {
 position: relative;
 z-index: 2;

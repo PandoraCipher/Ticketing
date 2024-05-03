@@ -13,17 +13,20 @@
         <td>
             <span
                 class="rounded p-1 text-white
-            @if ($ticket->status !== 'Closed') bg-danger
-            @else bg-success @endif
-">
+                @if ($ticket->status === 'Open') bg-danger
+                @elseif ($ticket->status === 'Closed')
+                    bg-success
+                    @else
+                    bg-warning @endif">
                 @if ($ticket->status === 'Closed')
                     {{ 'Closed' }}
-                @else
+                @elseif ($ticket->status === 'Open')
                     {{ 'Open' }}
+                @else
+                    {{ 'Pending' }}
                 @endif
             </span>
         </td>
         <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
         <td><a class="btn btn-primary" href="/tickets/{{ $ticket->id }}">check</a></td>
     </tr>
-

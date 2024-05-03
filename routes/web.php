@@ -18,9 +18,7 @@ Route::get('/list', function (){
     return view('tickets/list');
 });
 
-Route::get('/dashboard', function(){
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/dashboard', [TicketController::class, 'dashboard'])->name('dashboard');
 
 Route::get('/setting', function(){
     return view('setting');
