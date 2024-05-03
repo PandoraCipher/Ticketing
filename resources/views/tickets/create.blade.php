@@ -28,10 +28,21 @@
                         @endforeach
                     </select>
                 </div>
+
+                <label class="text-start" for="assigned">Category:</label>
+                <div class="form-container m-0 p-0">
+                    <select class="input" name="category" required>
+                        <option value="issue">issue</option>
+                        <option value="planned activity">planned activity</option>
+                        <option value="other">other</option>
+                    </select>
+                </div>
+        
                 <label class="text-start" for="subject">Subject:</label>
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input" name="subject" placeholder="Subject" required>
                 </div>
+
                 <label class="text-start" for="note"><b>Note:</b></label>
                 <div class="form-container m-0 p-0" style="height: 25vh">
                     <textarea class="input" style="height: 100vh" id="note" name="note" required></textarea>

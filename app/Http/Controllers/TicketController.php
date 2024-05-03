@@ -64,6 +64,11 @@ class TicketController extends Controller
 
             $query->whereDate('created_at', '<=', $end);
         }
+        if ($request->input('update') != '') {
+            $update = $request->input('update');
+
+            $query->whereDate('updated_at', '>=', $update);
+        }
 
         $tickets = $query->paginate(10);
         $input = $request->validated();
@@ -93,6 +98,7 @@ class TicketController extends Controller
             'subject' => 'required|string',
             'note' => 'required|string',
             'assigned' => 'required|string',
+            'category' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
 
@@ -102,6 +108,7 @@ class TicketController extends Controller
             'subject' => $data['subject'],
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
+            'category' => $data['category'],
             'status' => 'Open',
         ]);
 
@@ -115,7 +122,7 @@ class TicketController extends Controller
         $note->status = 'Open';
 
         if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('files', 'public');
+            $filePath = $request->file('file')->store();
             $note->file = $filePath;
         }
         $note->save();
@@ -145,33 +152,32 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
+        $user = Auth::user();
         $data = $request->validate([
             'priority' => 'required|string',
-            'subject' => 'required|string',
             'note' => 'required|string',
             'assigned' => 'required|string',
             'status' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
         ]);
 
+        $status = $user->role == 'User' ? 'AAR' : $data['status'];
+
         $ticket->update([
             'priority' => $data['priority'],
-            'subject' => $data['subject'],
             'assigned' => $data['assigned'],
-            'status' => $data['status'],
+            'status' => $status,
         ]);
-
-        $ticket->save();
 
         $note = new Note();
         $note->ticket_id = $ticket->id;
         $note->author = $request->user()->name;
         $note->assigned = $data['assigned'];
         $note->content = $data['note'];
-        $note->status = $data['status'];
+        $note->status = $status;
 
         if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('files', 'public');
+            $filePath = $request->file('file')->store();
             $note->file = $filePath;
         }
 
@@ -190,13 +196,13 @@ class TicketController extends Controller
 
     public function download($filename)
     {
-        $path = storage_path('app/public/' . $filename);
-        dd($path);
+        $decodedFilename = urldecode($filename);
+        $path = storage_path('app/' . $decodedFilename);
 
         if (file_exists($path)) {
-            return dd(response()->download($path));
+            return response()->download($path);
         } else {
-            return redirect()->back()->with('error', 'File not found');
+            return redirect()->back()->with('error', 'Fichier non trouvé');
         }
     }
 }

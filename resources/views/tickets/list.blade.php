@@ -25,12 +25,15 @@
                             </select>
                         </div>
                         <div class="container d-flex my-1">
-                            <label for=""><b>du:</b></label>
+                            <label for=""><b>from:</b></label>
                             <input class="rounded border border-dark mx-1" type="date" name="begin" placeholder=""
                                 id="" value="{{ old('begin') ?? ($input['begin'] ?? '') }}">
-                            <label for=""><b>au:</b></label>
+                            <label for=""><b>to:</b></label>
                             <input class="rounded border border-dark mx-1" type="date" name="end" placeholder=""
                                 id="" value="{{ old('end') ?? ($input['end'] ?? '') }}">
+                            <label for=""><b>last update:</b></label>
+                            <input class="rounded border border-dark mx-1" type="date" name="update" placeholder=""
+                                id="" value="{{ old('update') ?? ($input['update'] ?? '') }}">
                         </div>
                         <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
                             <svg class="bi">

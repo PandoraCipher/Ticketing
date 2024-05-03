@@ -20,8 +20,12 @@
                 </div>
 
                 <div class="container d-flex p-0">
-                    <label class="text-start" for="name"><b>Client:&nbsp;</b></label>
+                    <label class="text-start" for="client"><b>Client:&nbsp;</b></label>
                     <label for="client">{{ $ticket->client }}</label>
+                </div>
+                <div class="container d-flex p-0">
+                    <label class="text-start" for="category"><b>Category:&nbsp;</b></label>
+                    <label for="client">{{ $ticket->category }}</label>
                 </div>
 
                 <div class="container d-flex column p-0">
@@ -33,18 +37,36 @@
                             <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>
                         </select>
                     </div>
-                    <label class="text-start" for="status"><b>Status:</b></label>
-                    <div class="form-container m-0 p-0 col-5 mx-2">
-                        <select name="status" id="status" class="input" value="{{ old('status', $ticket->status) }}">
-                            <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
-                            <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
-                            <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
-                                reply</option>
-                            <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent reply
-                            </option>
+                    @if (Auth::user()->role == 'Admin')
+                        <label class="text-start" for="status"><b>Status:</b></label>
+                        <div class="form-container m-0 p-0 col-5 mx-2">
+                            <select name="status" id="status" class="input"
+                                value="{{ old('status', $ticket->status) }}">
+                                <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
+                                <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
 
-                        </select>
-                    </div>
+                                <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
+                                    reply</option>
+                                <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
+                                    reply
+                                </option>
+
+                            </select>
+                        </div>
+                    @else
+                        <label class="text-start" for="status"><b>Status:</b></label>
+                        <div class="form-container m-0 p-0 col-5 mx-2">
+                            <select name="status" id="status" class="input"
+                                value="{{ old('status', $ticket->status) }}">
+                                <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
+                                    reply</option>
+                                <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
+                                    reply
+                                </option>
+
+                            </select>
+                        </div>
+                    @endif
                 </div>
 
                 <label class="text-start" for="subject"><b>Subject:</b></label>
@@ -56,9 +78,12 @@
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input" required>
                         @foreach ($users as $user)
-                            <option value="{{ $user->name }}" {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
+                            @if ($user->role == 'Admin')
+                                <option value="{{ $user->name }}"
+                                    {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -72,8 +97,10 @@
                     <label for="file" class="text-start">Attach file:</label>
                     @if ($ticket->file)
                         <p>{{ $ticket->file }}</p>
-                        <a href="{{ route('tickets.download', ['filename' => $ticket->file]) }}"
-                            class="btn btn-primary">Télécharger le fichier</a>
+                        <a href="{{ route('tickets.download', ['filename' => urlencode($ticket->file)]) }}"
+                            class="btn btn-primary">
+                            Télécharger le fichier
+                        </a>
                     @else
                         <p>No file attached</p>
                     @endif
@@ -107,7 +134,8 @@
                             <td>{{ $note->content }}</td>
                             <td>
                                 @if ($note->file)
-                                    <a href="{{ route('tickets.download', ['filename' => $note->file]) }}" class="btn btn-primary">
+                                    <a href="{{ route('tickets.download', ['filename' => $note->file]) }}"
+                                        class="btn btn-primary">
                                         download file
                                     </a>
                                 @else
