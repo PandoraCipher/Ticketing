@@ -20,8 +20,54 @@
                 </div>
             </a>
         </div>
-        <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
 
+        <label class="mt-5" for=""><b><h5>Today's tickets:</h4></b></label>
+        <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Subject</th>
+                        {{-- <th scope="col">Description</th> --}}
+                        <th scope="col">Assignement</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">last update</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($tickets as $ticket)
+                        @if (Auth::user()->role == 'User')
+                            @if (
+                                $ticket->name == Auth::user()->name ||
+                                    $ticket->assigned == Auth::user()->name ||
+                                    $ticket->client == Auth::user()->name)
+                                @include('tickets.result')
+                            @endif
+                        @else
+                            @include('tickets.result')
+                        @endif
+                    @empty
+                        <tr>
+                            <td><b>No ticket found</b></h3></label></td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <!-- Affichage des liens de pagination -->
+                        <div class="wpsc_ticket_list_nxt_pre_page">
+                            {{ $tickets->appends(request()->query())->links() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </main>

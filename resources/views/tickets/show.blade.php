@@ -100,7 +100,7 @@
                     <input type="file" class="form-control" id="formFile" name="file">
                 </div>
 
-                <button type="submit">Update</button>
+                <button class="w-25" type="submit">Update</button>
             </form>
         </div>
         <div class="update-form-box col-6 mx-2 table-responsive small">

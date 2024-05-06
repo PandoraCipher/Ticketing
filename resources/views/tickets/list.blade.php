@@ -15,7 +15,7 @@
                             <input class="rounded border border-dark mx-1" type="text" name="assigned"
                                 placeholder="assigned" id="" value="{{ $input['assigned'] ?? '' }}">
                             <select name="status" class="rounded border border-dark mx-3" id="">
-                                <option class="placeholder-text" value="">priority</option>
+                                <option class="placeholder-text" value="">status</option>
                                 <option value="Pending"
                                     {{ isset($input['status']) && $input['status'] == 'Pending' ? 'selected' : '' }}>Pending
                                 </option>
