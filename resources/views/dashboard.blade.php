@@ -20,6 +20,9 @@
                 </div>
             </a>
         </div>
+        <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
+
+        </div>
 
     </main>
 @endsection

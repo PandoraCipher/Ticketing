@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 row">
-        <div class="form-box col-5">
+        <div class="update-form-box table-responsive col-5">
             <form class="form" method="POST" action="{{ route('tickets.update', $ticket) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -42,14 +42,16 @@
                         <div class="form-container m-0 p-0 col-5 mx-2">
                             <select name="status" id="status" class="input"
                                 value="{{ old('status', $ticket->status) }}">
-                                <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
-                                <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
+                                @if ($ticket->status == "Closed")
+                                    <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
+                                @endif
 
                                 <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
                                     reply</option>
                                 <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
                                     reply
                                 </option>
+                                <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
 
                             </select>
                         </div>
@@ -94,23 +96,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="file" class="text-start">Attach file:</label>
-                    @if ($ticket->file)
-                        <p>{{ $ticket->file }}</p>
-                        <a href="{{ route('tickets.download', ['filename' => urlencode($ticket->file)]) }}"
-                            class="btn btn-primary">
-                            Télécharger le fichier
-                        </a>
-                    @else
-                        <p>No file attached</p>
-                    @endif
+                    <label class="text-start"><b>Attach file:</b></label>
                     <input type="file" class="form-control" id="formFile" name="file">
                 </div>
 
                 <button type="submit">Update</button>
             </form>
         </div>
-        <div class="form-box col-6 mx-2 table-responsive small">
+        <div class="update-form-box col-6 mx-2 table-responsive small">
             <table class="table table-striped table-sm my-2">
                 <thead>
                     <tr>
@@ -125,7 +118,7 @@
                 <tbody>
                     @foreach ($notes as $note)
                         <tr>
-                            <td>{{ $note->updated_at->format('Y-m-d H:i') }}</td>
+                            <td class="w-25"><i>{{ $note->updated_at->format('Y-m-d H:i') }}</i></td>
                             <td><span
                                     class="{{ $note->status === 'Open' ? 'rounded p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
                                     {{ $note->status }}

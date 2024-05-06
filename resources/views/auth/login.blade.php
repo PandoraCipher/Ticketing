@@ -11,7 +11,7 @@
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 </head>
 
-<body class="container">
+<body class="container my-5 p-5 h-100 w-100">
     <div class="card">
         <form class="form card" action="{{ route('auth.login') }}" method="POST">
             @csrf

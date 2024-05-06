@@ -209,6 +209,7 @@ class TicketController extends Controller
         ]);
 
         $status = $user->role == 'User' ? 'AAR' : $data['status'];
+        
 
         $ticket->update([
             'priority' => $data['priority'],
