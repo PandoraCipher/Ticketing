@@ -86,8 +86,15 @@ class TicketController extends Controller
         $user = Auth::user();
         $openTicketsCount = 0;
         $pendingTicketsCount = 0;
-        $query = Ticket::orderBy('id', 'desc');
-        $query->whereDate('created_at', '=', now()->toDateString());
+        $query = Ticket::orderBy('id', 'desc')->whereDate('created_at', '=', now()->toDateString());
+
+        if ($user->role == 'User') {
+            $query->where(function ($query) use ($user) {
+                $query->where('name', $user->name)
+                      ->orWhere('client', $user->name)
+                      ->orWhere('assigned', $user->name);
+            });
+        }
 
         // Compter les tickets ouverts liés à l'utilisateur connecté
         if ($user->role == 'User') {
@@ -121,11 +128,7 @@ class TicketController extends Controller
 
         $tickets = $query->paginate(5);
 
-        return view('dashboard', compact([
-            'openTicketsCount',
-            'pendingTicketsCount',
-            'tickets'
-        ]) );
+        return view('dashboard', compact(['openTicketsCount', 'pendingTicketsCount', 'tickets']));
     }
 
     /**
@@ -214,7 +217,6 @@ class TicketController extends Controller
         ]);
 
         $status = $user->role == 'User' ? 'AAR' : $data['status'];
-        
 
         $ticket->update([
             'priority' => $data['priority'],

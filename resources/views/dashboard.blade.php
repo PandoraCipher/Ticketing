@@ -21,7 +21,9 @@
             </a>
         </div>
 
-        <label class="mt-5" for=""><b><h5>Today's tickets:</h4></b></label>
+        <label class="mt-5" for=""><b>
+                <h5>Today's tickets:</h4>
+            </b></label>
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
             <table class="table table-striped table-sm">
                 <thead>
@@ -40,19 +42,10 @@
                 </thead>
                 <tbody>
                     @forelse ($tickets as $ticket)
-                        @if (Auth::user()->role == 'User')
-                            @if (
-                                $ticket->name == Auth::user()->name ||
-                                    $ticket->assigned == Auth::user()->name ||
-                                    $ticket->client == Auth::user()->name)
-                                @include('tickets.result')
-                            @endif
-                        @else
-                            @include('tickets.result')
-                        @endif
+                        @include('tickets.result')
                     @empty
                         <tr>
-                            <td><b>No ticket found</b></h3></label></td>
+                            <td colspan="10"><b>No ticket found</b></h3></label></td>
                         </tr>
                     @endforelse
                 </tbody>
