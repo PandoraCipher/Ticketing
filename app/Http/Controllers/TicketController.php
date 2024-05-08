@@ -38,7 +38,7 @@ class TicketController extends Controller
         if ($request->input('client') != '') {
             $client = $request->input('client');
 
-            $query->where('client', $client);
+            $query->where('client', 'like', "%$client%");
         }
         if ($request->input('assigned') != '') {
             $assigned = $request->input('assigned');
@@ -84,15 +84,20 @@ class TicketController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+        
         $openTicketsCount = 0;
         $pendingTicketsCount = 0;
         $query = Ticket::orderBy('id', 'desc')->whereDate('created_at', '=', now()->toDateString());
+        $myTicketsCount = Ticket::where('assigned', $user->name)
+            ->whereIn('status', ['Open', 'AAR', 'ACR'])
+            ->count();
 
         if ($user->role == 'User') {
             $query->where(function ($query) use ($user) {
-                $query->where('name', $user->name)
-                      ->orWhere('client', $user->name)
-                      ->orWhere('assigned', $user->name);
+                $query
+                    ->where('name', $user->name)
+                    ->orWhere('client', $user->name)
+                    ->orWhere('assigned', $user->name);
             });
         }
 
@@ -126,9 +131,25 @@ class TicketController extends Controller
             $pendingTicketsCount = Ticket::whereIn('status', ['AAR', 'ACR'])->count();
         }
 
+
+        $adminUsers = User::where('role', 'Admin')->get();
+        foreach ($adminUsers as $adminUser) {
+            $adminOpenTicketsCount = Ticket::where('assigned', $adminUser->name)
+                                      ->where('status', 'Open')
+                                      ->count();
+                                      
+            $adminPendingTicketsCount = Ticket::where('assigned', $adminUser->name)
+                                         ->whereIn('status', ['AAR', 'ACR'])
+                                         ->count();
+                                         
+            // Stocker les résultats dans un tableau associatif avec le nom de l'utilisateur comme clé
+            $adminOpenTicketsCounts[$adminUser->name] = $adminOpenTicketsCount;
+            $adminPendingTicketsCounts[$adminUser->name] = $adminPendingTicketsCount;
+        }
+
         $tickets = $query->paginate(5);
 
-        return view('dashboard', compact(['openTicketsCount', 'pendingTicketsCount', 'tickets']));
+        return view('dashboard', compact(['openTicketsCount', 'pendingTicketsCount', 'myTicketsCount', 'adminOpenTicketsCounts', 'adminPendingTicketsCounts', 'tickets']));
     }
 
     /**
@@ -154,7 +175,7 @@ class TicketController extends Controller
             'note' => 'required|string',
             'assigned' => 'required|string',
             'category' => 'required|string',
-            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
+            'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
         ]);
 
         $ticket = new Ticket([
@@ -213,7 +234,7 @@ class TicketController extends Controller
             'note' => 'required|string',
             'assigned' => 'required|string',
             'status' => 'required|string',
-            'file' => 'file|mimes:pdf,docx,png,jpg,xlsx,xls|max:10240',
+            'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
         ]);
 
         $status = $user->role == 'User' ? 'AAR' : $data['status'];
@@ -238,7 +259,7 @@ class TicketController extends Controller
 
         $note->save();
 
-        return redirect()->route('tickets.show', $ticket->id);
+        return redirect()->route('tickets.show', $ticket->id)->with('message', 'Ticket updated successfully.');
     }
 
     /**

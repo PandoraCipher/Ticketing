@@ -7,6 +7,12 @@
                 @csrf
                 @method('PUT')
 
+                @if (session('message'))
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
                 <span class="title">Edit ticket</span>
                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
 
@@ -42,7 +48,7 @@
                         <div class="form-container m-0 p-0 col-5 mx-2">
                             <select name="status" id="status" class="input"
                                 value="{{ old('status', $ticket->status) }}">
-                                @if ($ticket->status == "Closed")
+                                @if ($ticket->status == 'Closed')
                                     <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
                                 @endif
 
@@ -87,6 +93,7 @@
                                 </option>
                             @endif
                         @endforeach
+                        <option value="{{ $ticket->client }}" {{ $ticket->assigned === $ticket->client ? 'selected' : '' }}>{{ $ticket->client }}</option>
                     </select>
                 </div>
 

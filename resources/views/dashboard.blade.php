@@ -13,6 +13,15 @@
                     <div class="dashboard-text2">{{ $openTicketsCount }}</div>
                 </div>
             </a>
+            @if (Auth::user()->role == 'Admin')
+                <a class="p-2 m-1 flex-grow-1 dashboard-card"
+                    href="{{ route('tickets.list', ['assigned' => Auth::user()->name]) }}">
+                    <div class="btn">
+                        <div class="dashboard-text1">My tickets</div>
+                        <div class="dashboard-text2">{{ $myTicketsCount }}</div>
+                    </div>
+                </a>
+            @endif
             <a class="p-2 m-1 flex-grow-1 dashboard-card" href="{{ route('tickets.list', ['status' => 'Pending']) }}">
                 <div class="btn">
                     <div class="dashboard-text1">Pending tickets</div>
@@ -33,7 +42,6 @@
                         <th scope="col">Name</th>
                         <th scope="col">Client</th>
                         <th scope="col">Subject</th>
-                        {{-- <th scope="col">Description</th> --}}
                         <th scope="col">Assignement</th>
                         <th scope="col">Status</th>
                         <th scope="col">last update</th>
@@ -62,6 +70,32 @@
                 </div>
             </div>
         </div>
+
+        @if (Auth::user()->role == 'Admin')
+            <label class="mt-5" for=""><b>
+                    <h5>Tickets table:</h4>
+                </b></label>
+            <div>
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Open</th>
+                            <th scope="col">Pending</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($adminOpenTicketsCounts as $userName => $openCount)
+                            <tr>
+                                <td>{{ $userName }}</td>
+                                <td>{{ $openCount }}</td>
+                                <td>{{ $adminPendingTicketsCounts[$userName] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
 
     </main>
 @endsection
