@@ -27,6 +27,10 @@ Route::get('/setting', function(){
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('/login', [AuthController::class, 'doLogin']);
+Route::get('/signup', function(){
+    return view('auth.signup');
+})->name('auth.signup');
+Route::post('/signup', [UserController::class, 'register'])->name('user.signup');
 
 Route::prefix('tickets')->middleware(Authenticate::class)->group(function () {
     Route::get('/', [TicketController::class, 'index'])->name('tickets.list');

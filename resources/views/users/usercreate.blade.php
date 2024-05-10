@@ -18,7 +18,7 @@
                         required>
                 </div>
 
-                <label class="text-start" for="subject">password:</label>
+                <label class="text-start" for="password">password:</label>
                 <div class="form-container m-0 p-0">
                     <input type="password" class="input" name="password" placeholder="password" required>
                 </div>
@@ -41,8 +41,8 @@
                 <label class="text-start" for="priority">Role:</label>
                 <div class="form-container m-0 p-0">
                     <select class="input" name="role" required>
-                        <option value="Admin" @if (old('role') == 'Admin') selected @endif>Admin</option>
                         <option value="User" @if (old('role') == 'User') selected @endif>User</option>
+                        <option value="Admin" @if (old('role') == 'Admin') selected @endif>Admin</option>
                     </select>
 
                 </div>

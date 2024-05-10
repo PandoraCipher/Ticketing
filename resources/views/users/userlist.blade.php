@@ -25,7 +25,7 @@
                     search
                 </button>
                 @if (Auth::user()->role == 'Admin')
-                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/users/usercreate">
+                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="{{ route('users.usercreate') }}">
                         <svg class="bi">
                             <use xlink:href="#plus-circle" />
                         </svg>

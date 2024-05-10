@@ -67,6 +67,33 @@ class UserController extends Controller
         return redirect()->route('users.userlist')->with('success', 'User created successfully');
     }
 
+    public function register(Request $request)
+    {
+        // Règles de validation pour l'inscription de l'utilisateur
+        $validatedData = $request->validate(
+            [
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email', // Assure l'unicité de l'email
+                'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
+            ],
+            [
+                'password.confirmed' => 'The passwords do not match.',
+            ],
+        );
+
+        // Créer un nouvel utilisateur avec les données validées
+        $user = new User([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
+
+        $user->save();
+
+        // Redirige l'utilisateur nouvellement inscrit vers une page appropriée
+        return redirect()->route('auth.login')->with('success', 'User created successfully. Please log in.');
+    }
+
     /**
      * Display the specified resource.
      */
