@@ -25,7 +25,8 @@
                     search
                 </button>
                 @if (Auth::user()->role == 'Admin')
-                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="{{ route('users.usercreate') }}">
+                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1"
+                        href="{{ route('users.usercreate') }}">
                         <svg class="bi">
                             <use xlink:href="#plus-circle" />
                         </svg>
@@ -34,6 +35,11 @@
                 @endif
             </form>
         </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="table-responsive small">
             <table class="table table-striped table-sm">

@@ -111,6 +111,11 @@
             </form>
         </div>
         <div class="update-form-box col-6 mx-2 table-responsive small">
+            @if (session('error'))
+                    <div class="alert alert-success">
+                        {{ session('error') }}
+                    </div>
+                @endif
             <table class="table table-striped table-sm my-2">
                 <thead>
                     <tr>

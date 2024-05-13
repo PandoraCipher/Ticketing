@@ -43,7 +43,7 @@ class TicketController extends Controller
         if ($request->input('assigned') != '') {
             $assigned = $request->input('assigned');
 
-            $query->where('assigned', $assigned);
+            $query->where('assigned', 'like', "%$assigned%");
         }
         if ($request->input('status') != '') {
             $status = $request->input('status');
