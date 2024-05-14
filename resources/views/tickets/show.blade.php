@@ -130,7 +130,7 @@
                 <tbody>
                     @foreach ($notes as $note)
                         <tr>
-                            <td class="w-25"><i>{{ $note->updated_at->format('Y-m-d H:i') }}</i></td>
+                            <td class=""><i>{{ $note->updated_at->format('Y-m-d H:i') }}</i></td>
                             <td><span
                                     class="{{ $note->status === 'Open' ? 'rounded p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
                                     {{ $note->status }}

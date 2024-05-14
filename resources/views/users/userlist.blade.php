@@ -5,15 +5,6 @@
 
         <h2>Users list</h2>
         <div class="d-flex table-responsive">
-            {{-- <select id="sortSelect" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-            <svg class="bi">
-                <use xlink:href="#gear-wide-connected" />
-            </svg>
-            <option value="byID">by ID</option>
-            <option value="byPriority">by priority</option>
-            <option value="byAssignement">by assignement</option>
-        </select> --}}
-
             <form action="" method="get">
                 <input class="rounded border border-dark mx-1" type="text" name="name" placeholder="name" id=""
                     value="{{ request()->input('name') ?? '' }}">
@@ -57,12 +48,9 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role }}</td>
-                            {{-- <td>{{ $ticket->description }}</td>
-                        <td>{{ $ticket->assigned }}</td> --}}
                             @if (Auth::user()->role == 'Admin')
                                 <td class="d-flex">
                                     <a class="btn btn-primary p-1" href="/users/{{ $user->id }}">modify</a>
-                                    {{-- <a class="btn btn-danger" href="/users/{{ $user->id }}">delete</a> --}}
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')

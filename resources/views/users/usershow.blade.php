@@ -32,14 +32,14 @@
                     <input type="password" class="input" name="password_confirmation" id="password_confirmation">
                 </div>
                 @if ($errors->any())
-                        <div class="alert alert-danger p-0">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <div class="alert alert-danger p-0">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <label class="text-start" for="priority">Role:</label>
                 <div class="form-container m-0 p-0">
