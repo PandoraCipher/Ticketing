@@ -84,70 +84,76 @@ class TicketController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         $openTicketsCount = 0;
         $pendingTicketsCount = 0;
-        $query = Ticket::orderBy('id', 'desc')->whereDate('created_at', '=', now()->toDateString());
-        $myTicketsCount = Ticket::where('assigned', $user->name)
-            ->whereIn('status', ['Open', 'AAR', 'ACR'])
-            ->count();
+        $myTicketsCount = 0;
+        $tickets = [];
+        $adminOpenTicketsCounts = [];
+        $adminPendingTicketsCounts = [];
 
-        if ($user->role == 'User') {
-            $query->where(function ($query) use ($user) {
-                $query
-                    ->where('name', $user->name)
-                    ->orWhere('client', $user->name)
-                    ->orWhere('assigned', $user->name);
-            });
-        }
+        if (Ticket::count() > 0) {
+            $query = Ticket::orderBy('id', 'desc')->whereDate('created_at', '=', now()->toDateString());
+            $myTicketsCount = Ticket::where('assigned', $user->name)
+                ->whereIn('status', ['Open', 'AAR', 'ACR'])
+                ->count();
 
-        // Compter les tickets ouverts liés à l'utilisateur connecté
-        if ($user->role == 'User') {
-            $openTicketsCount = Ticket::where('status', 'Open')
-                ->where(function ($query) use ($user) {
+            if ($user->role == 'User') {
+                $query->where(function ($query) use ($user) {
+                    $query
+                        ->where('name', $user->name)
+                        ->orWhere('client', $user->name)
+                        ->orWhere('assigned', $user->name);
+                });
+            }
+
+            // Compter les tickets ouverts liés à l'utilisateur connecté
+            if ($user->role == 'User') {
+                $openTicketsCount = Ticket::where('status', 'Open')
+                    ->where(function ($query) use ($user) {
+                        $query
+                            ->where('name', $user->name)
+                            ->orWhere('client', $user->name)
+                            ->orWhere('assigned', $user->name);
+                    })
+                    ->count();
+            } else {
+                // Compter tous les tickets ouverts
+                $openTicketsCount = Ticket::where('status', 'Open')->count();
+            }
+
+            // Compter les tickets en attente en fonction du rôle de l'utilisateur
+            if ($user->role == 'User') {
+                $pendingTicketsCount = Ticket::where(function ($query) use ($user) {
                     $query
                         ->where('name', $user->name)
                         ->orWhere('client', $user->name)
                         ->orWhere('assigned', $user->name);
                 })
-                ->count();
-        } else {
-            // Compter tous les tickets ouverts
-            $openTicketsCount = Ticket::where('status', 'Open')->count();
+                    ->whereIn('status', ['AAR', 'ACR'])
+                    ->count();
+            } else {
+                // Si l'utilisateur n'est pas un simple utilisateur, comptez tous les tickets en attente
+                $pendingTicketsCount = Ticket::whereIn('status', ['AAR', 'ACR'])->count();
+            }
+
+            $adminUsers = User::where('role', 'Admin')->get();
+            foreach ($adminUsers as $adminUser) {
+                $adminOpenTicketsCount = Ticket::where('assigned', $adminUser->name)
+                    ->where('status', 'Open')
+                    ->count();
+
+                $adminPendingTicketsCount = Ticket::where('assigned', $adminUser->name)
+                    ->whereIn('status', ['AAR', 'ACR'])
+                    ->count();
+
+                // Stocker les résultats dans un tableau associatif avec le nom de l'utilisateur comme clé
+                $adminOpenTicketsCounts[$adminUser->name] = $adminOpenTicketsCount;
+                $adminPendingTicketsCounts[$adminUser->name] = $adminPendingTicketsCount;
+            }
+
+            $tickets = $query->paginate(5);
         }
-
-        // Compter les tickets en attente en fonction du rôle de l'utilisateur
-        if ($user->role == 'User') {
-            $pendingTicketsCount = Ticket::where(function ($query) use ($user) {
-                $query
-                    ->where('name', $user->name)
-                    ->orWhere('client', $user->name)
-                    ->orWhere('assigned', $user->name);
-            })
-                ->whereIn('status', ['AAR', 'ACR'])
-                ->count();
-        } else {
-            // Si l'utilisateur n'est pas un simple utilisateur, comptez tous les tickets en attente
-            $pendingTicketsCount = Ticket::whereIn('status', ['AAR', 'ACR'])->count();
-        }
-
-
-        $adminUsers = User::where('role', 'Admin')->get();
-        foreach ($adminUsers as $adminUser) {
-            $adminOpenTicketsCount = Ticket::where('assigned', $adminUser->name)
-                                      ->where('status', 'Open')
-                                      ->count();
-                                      
-            $adminPendingTicketsCount = Ticket::where('assigned', $adminUser->name)
-                                         ->whereIn('status', ['AAR', 'ACR'])
-                                         ->count();
-                                         
-            // Stocker les résultats dans un tableau associatif avec le nom de l'utilisateur comme clé
-            $adminOpenTicketsCounts[$adminUser->name] = $adminOpenTicketsCount;
-            $adminPendingTicketsCounts[$adminUser->name] = $adminPendingTicketsCount;
-        }
-
-        $tickets = $query->paginate(5);
 
         return view('dashboard', compact(['openTicketsCount', 'pendingTicketsCount', 'myTicketsCount', 'adminOpenTicketsCounts', 'adminPendingTicketsCounts', 'tickets']));
     }
@@ -259,7 +265,9 @@ class TicketController extends Controller
 
         $note->save();
 
-        return redirect()->route('tickets.show', $ticket->id)->with('message', 'Ticket updated successfully.');
+        return redirect()
+            ->route('tickets.show', $ticket->id)
+            ->with('message', 'Ticket updated successfully.');
     }
 
     /**

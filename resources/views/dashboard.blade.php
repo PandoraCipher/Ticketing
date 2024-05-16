@@ -63,9 +63,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <!-- Affichage des liens de pagination -->
-                        <div class="wpsc_ticket_list_nxt_pre_page">
-                            {{ $tickets->appends(request()->query())->links() }}
-                        </div>
+                        @if ($tickets instanceof \Illuminate\Pagination\LengthAwarePaginator && $tickets->isNotEmpty())
+                            <div class="wpsc_ticket_list_nxt_pre_page">
+                                {{ $tickets->appends(request()->query())->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

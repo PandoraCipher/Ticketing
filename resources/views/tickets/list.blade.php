@@ -77,7 +77,10 @@
                 <tbody>
                     @forelse ($tickets as $ticket)
                         @if (Auth::user()->role == 'User')
-                            @if ($ticket->name == Auth::user()->name || $ticket->assigned == Auth::user()->name || $ticket->client == Auth::user()->name)
+                            @if (
+                                $ticket->name == Auth::user()->name ||
+                                    $ticket->assigned == Auth::user()->name ||
+                                    $ticket->client == Auth::user()->name)
                                 @include('tickets.result')
                             @endif
                         @else
