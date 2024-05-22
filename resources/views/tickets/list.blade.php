@@ -67,7 +67,6 @@
                         <th scope="col">Name</th>
                         <th scope="col">Client</th>
                         <th scope="col">Subject</th>
-                        {{-- <th scope="col">Description</th> --}}
                         <th scope="col">Assignement</th>
                         <th scope="col">Status</th>
                         <th scope="col">last update</th>
