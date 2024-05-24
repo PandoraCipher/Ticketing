@@ -24,7 +24,7 @@
 
                 <label class="text-start" for="subject">contact:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="number" class="input" name="contact" placeholder="contact"
+                    <input type="text" class="input" name="contact" placeholder="contact"
                         value="{{ old('email', $user->contact) }}" required>
                 </div>
 
