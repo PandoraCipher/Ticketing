@@ -18,6 +18,12 @@
                         required>
                 </div>
 
+                <label class="text-start" for="subject">contact:</label>
+                <div class="form-container m-0 p-0">
+                    <input type="number" class="input" name="contact" placeholder="contact" value="{{ old('contact') }}"
+                        required>
+                </div>
+
                 <label class="text-start" for="password">password:</label>
                 <div class="form-container m-0 p-0">
                     <input type="password" class="input" name="password" placeholder="password" required>

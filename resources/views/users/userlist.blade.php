@@ -38,6 +38,7 @@
                     <tr>
                         <th scope="col">name</th>
                         <th scope="col">email</th>
+                        <th scope="col">contact</th>
                         <th scope="col">role</th>
                         <th scope="col">action</th>
                     </tr>
@@ -47,6 +48,7 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->contact }}</td>
                             <td>{{ $user->role }}</td>
                             @if (Auth::user()->role == 'Admin')
                                 <td class="d-flex">

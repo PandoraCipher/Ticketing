@@ -17,13 +17,19 @@
             <div class="field">
                 <label for="name">name</label>
                 <input class="input" name="name" type="text" placeholder="name" id="name"
-                    value="{{ old('email') }}">
+                    value="{{ old('email') }}" required>
             </div>
 
             <div class="field">
                 <label for="email">email</label>
                 <input class="input" name="email" type="email" placeholder="email" id="email"
-                    value="{{ old('email') }}">
+                    value="{{ old('email') }}" required>
+            </div>
+
+            <div class="field">
+                <label for="email">contact</label>
+                <input class="input" name="contact" type="text" placeholder="contact" id="contact"
+                    value="{{ old('email') }}" required>
             </div>
 
             <div class="field">

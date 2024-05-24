@@ -25,10 +25,21 @@
                     <label for="name">{{ $ticket->name }}</label>
                 </div>
 
-                <div class="container d-flex p-0">
-                    <label class="text-start" for="client"><b>Client:&nbsp;</b></label>
-                    <label for="client">{{ $ticket->client }}</label>
+                <div class="container d-flex column p-0">
+                    <div class="container d-flex p-0">
+                        <label class="text-start" for="client"><b>Client:&nbsp;</b></label>
+                        <label for="client">{{ $ticket->client }}</label>
+                    </div>
+                    <div class="container d-flex p-0">
+                        <label class="text-start" for="contact"><b>Contact:&nbsp;</b></label>
+                        @foreach ($users as $user)
+                            @if ($user->name == $ticket->client)
+                                <label for="contact">{{ $user->contact }}</label>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
+
                 <div class="container d-flex p-0">
                     <label class="text-start" for="category"><b>Category:&nbsp;</b></label>
                     <label for="client">{{ $ticket->category }}</label>
@@ -37,7 +48,7 @@
                 <div class="container d-flex column p-0">
                     <label class="text-start" for="priority"><b>Priority:</b></label>
                     <div class="form-container m-0 p-0 col-3 mx-1">
-                        <select class="input " name="priority" required>
+                        <select class="input" name="priority" required>
                             <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
                             <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium</option>
                             <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>

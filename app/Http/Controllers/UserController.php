@@ -46,6 +46,7 @@ class UserController extends Controller
             [
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users,email', // Assure l'unicité de l'email
+                'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
                 'role' => 'required|string|in:Admin,User', // Le rôle doit être soit 'admin' soit 'user'
             ],
@@ -58,6 +59,7 @@ class UserController extends Controller
         $user = new User([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
+            'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
         ]);
@@ -74,6 +76,7 @@ class UserController extends Controller
             [
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users,email', // Assure l'unicité de l'email
+                'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
             ],
             [
@@ -85,6 +88,7 @@ class UserController extends Controller
         $user = new User([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
+            'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
         ]);
 
@@ -123,6 +127,7 @@ class UserController extends Controller
             [
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users,email,' . $user->id, // Assure l'unicité de l'email en excluant l'utilisateur actuel
+                'contact' => 'required|string|max:15',
                 'password' => 'nullable|string|min:4|confirmed', // Le champ est facultatif et doit être confirmé
                 'role' => 'required|string|in:Admin,User', // Le rôle doit être soit 'admin' soit 'user'
                 'password_confirmation' => 'nullable|string|min:4', // Règle pour confirmer le mot de passe
@@ -135,6 +140,7 @@ class UserController extends Controller
         // Mettre à jour les champs de l'utilisateur
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
+        $user->contact = $validatedData['contact'];
         $user->role = $validatedData['role'];
 
         // Vérifier et mettre à jour le mot de passe si fourni
