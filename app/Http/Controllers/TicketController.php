@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchTicketsRequest;
+use App\Events\TicketCreated;
+use App\Events\TicketUpdated;
 use App\Models\Note;
 use App\Models\Ticket;
 use App\Models\User;
@@ -195,6 +197,7 @@ class TicketController extends Controller
         ]);
 
         $ticket->save();
+        event(new TicketCreated($ticket));
 
         $note = new Note();
         $note->ticket_id = $ticket->id;
@@ -250,6 +253,7 @@ class TicketController extends Controller
             'assigned' => $data['assigned'],
             'status' => $status,
         ]);
+        event(new TicketUpdated($ticket));
 
         $note = new Note();
         $note->ticket_id = $ticket->id;
