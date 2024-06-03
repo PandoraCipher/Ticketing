@@ -1,5 +1,4 @@
 <head>
-    <script src="../assets/js/color-modes.js"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +12,9 @@
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.1/css/all.css') }}">
     <link href="{{ asset('css/create.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/chart.umd.js') }}" integrity="sha-384-epmLzfWUmCYTZvs5x1bnwkmzWmlp1q07ng27woKxa+v3M4Am4k//PSNbB0pgm0FC" crossorigin="anonymous"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/color-modes.js') }}"></script>
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -23,8 +24,7 @@
 
     <!-- Custom styles for this template -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
+    
     @include('components.head.tinymce-config')
     <x-head.tinymce-config />
 </head>

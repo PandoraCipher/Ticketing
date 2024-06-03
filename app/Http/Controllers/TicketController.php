@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -186,32 +187,43 @@ class TicketController extends Controller
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
         ]);
 
-        $ticket = new Ticket([
-            'name' => $data['name'],
-            'client' => $data['client'],
-            'subject' => $data['subject'],
-            'priority' => $data['priority'],
-            'assigned' => $data['assigned'],
-            'category' => $data['category'],
-            'status' => 'Open',
-        ]);
+        DB::beginTransaction();
 
-        $ticket->save();
-        event(new TicketCreated($ticket));
+        try {
+            $ticket = new Ticket([
+                'name' => $data['name'],
+                'client' => $data['client'],
+                'subject' => $data['subject'],
+                'priority' => $data['priority'],
+                'assigned' => $data['assigned'],
+                'category' => $data['category'],
+                'status' => 'Open',
+            ]);
 
-        $note = new Note();
-        $note->ticket_id = $ticket->id;
-        $note->author = $request->user()->name;
-        $note->assigned = $data['assigned'];
-        $note->content = $data['note'];
-        $note->status = 'Open';
+            $ticket->save();
+            event(new TicketCreated($ticket));
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store();
-            $note->file = $filePath;
+            $note = new Note();
+            $note->ticket_id = $ticket->id;
+            $note->author = $request->user()->name;
+            $note->assigned = $data['assigned'];
+            $note->content = $data['note'];
+            $note->status = 'Open';
+
+            if ($request->hasFile('file')) {
+                $filePath = $request->file('file')->store();
+                $note->file = $filePath;
+            }
+            $note->save();
+
+            DB::commit();
+            return redirect()->route('tickets.list');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->withErrors(['error' => $e->getMessage()]);
         }
-        $note->save();
-        return redirect()->route('tickets.list');
     }
 
     /**
@@ -248,6 +260,9 @@ class TicketController extends Controller
 
         $status = $user->role == 'User' ? 'AAR' : $data['status'];
 
+        DB::beginTransaction();
+
+        try{
         $ticket->update([
             'priority' => $data['priority'],
             'assigned' => $data['assigned'],
@@ -268,10 +283,17 @@ class TicketController extends Controller
         }
 
         $note->save();
+        DB::commit();
 
         return redirect()
             ->route('tickets.show', $ticket->id)
             ->with('message', 'Ticket updated successfully.');
+    }catch(\Exception $e){
+        DB::rollBack();
+        return redirect()
+            ->back()
+            ->withErrors(['error' => $e->getMessage()]);
+    }
     }
 
     /**

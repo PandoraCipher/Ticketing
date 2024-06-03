@@ -12,6 +12,15 @@
                         {{ session('message') }}
                     </div>
                 @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <span class="title">Edit ticket</span>
                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
@@ -122,7 +131,8 @@
                 <button class="w-25" type="submit">Update</button>
             </form>
         </div>
-        <div class="update-form-box col-6 mx-2 table-responsive small">
+
+        <div class="update-form-box col-6 mx-2 table-responsive rounded small">
             @if (session('error'))
                 <div class="alert alert-success">
                     {{ session('error') }}
@@ -164,6 +174,11 @@
                     @endforeach
                 </tbody>
             </table>
+            {{-- <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                </div>
+            </div> --}}
         </div>
     </main>
 @endsection

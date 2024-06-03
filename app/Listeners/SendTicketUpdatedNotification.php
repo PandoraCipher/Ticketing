@@ -32,8 +32,12 @@ class SendTicketUpdatedNotification
         $admins = User::where('role', 'Admin')->get();
         $users = $users->merge($admins)->unique('id');
 
+        try{
         foreach ($users as $user){
             $user->notify(new TicketUpdatedNotification($ticket));
         }
+    }catch(\Exception $e){
+        throw new \Exception($e->getMessage());
+    }
     }
 }

@@ -5,6 +5,17 @@
         <div class="form-box">
             <form class="form" method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                 @csrf
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <span class="title">New ticket</span>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
@@ -24,13 +35,16 @@
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input" required>
-                        @foreach ($users as $user)
+                        {{-- @foreach ($users as $user)
                             @if ($user->role == 'Admin')
                                 <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endif
-                        @endforeach
+                        @endforeach --}}
+                        <option value="Support Enterprise">Support Enterprise</option>
+                        <option value="ELIE RAKOTONDRANIVO">ELIE RAKOTONDRANIVO</option>
+                        <option value="Tovo RAJONSON">Tovo RAJONSON</option>
                     </select>
                 </div>
 

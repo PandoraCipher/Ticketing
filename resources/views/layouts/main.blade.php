@@ -23,7 +23,7 @@
         </symbol>
     </svg>
 
-    {{-- <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
       <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
               id="bd-theme"
               type="button"
@@ -56,7 +56,7 @@
           </button>
         </li>
       </ul>
-    </div> --}}
+    </div>
 
 
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -132,10 +132,8 @@
     </div>
     </div>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
-    <script src="{{ asset('js/chart.umd.js') }}"
-        integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous">
+    <script src="{{ asset('js/chart.umd.js') }}" integrity="sha-384-epmLzfWUmCYTZvs5x1bnwkmzWmlp1q07ng27woKxa+v3M4Am4k//PSNbB0pgm0FC" crossorigin="anonymous"></script>
     </script>
-    <script src="dashboard.js"></script>
 </body>
 
 </html>
