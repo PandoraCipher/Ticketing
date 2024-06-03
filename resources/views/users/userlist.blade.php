@@ -56,8 +56,10 @@
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger p-1 ms-1"
-                                            onclick="return confirm('Are you sure you want to delete this user?')">delete</button>
+                                        <button type="button" class="btn btn-danger p-1 ms-1" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{ $user->id }}">
+                                            delete
+                                        </button>
                                     </form>
                                 </td>
                             @else
@@ -79,5 +81,8 @@
                 </div>
             </div>
         </div>
+        @foreach ($users as $user)
+            @include('users.modals.delete', ['userId' => $user->id])
+        @endforeach
     </main>
 @endsection

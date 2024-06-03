@@ -12,30 +12,30 @@
 
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="name" placeholder="Name"
+                    <input type="text" class="input text-dark" name="name" placeholder="Name"
                         value="{{ old('name', $user->name) }}" required>
                 </div>
 
                 <label class="text-start" for="subject">email:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="email" class="input" name="email" placeholder="email"
+                    <input type="email" class="input text-dark" name="email" placeholder="email"
                         value="{{ old('email', $user->email) }}" required>
                 </div>
 
                 <label class="text-start" for="subject">contact:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="contact" placeholder="contact"
+                    <input type="text" class="input text-dark" name="contact" placeholder="contact"
                         value="{{ old('email', $user->contact) }}" required>
                 </div>
 
                 <label class="text-start" for="subject">new password:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="password" class="input" name="password" placeholder="password">
+                    <input type="password" class="input text-dark" name="password" placeholder="password">
                 </div>
 
                 <label class="text-start" for="password_confirmation">confirm password:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="password" class="input" name="password_confirmation" id="password_confirmation">
+                    <input type="password" class="input text-dark" name="password_confirmation" id="password_confirmation">
                 </div>
                 @if ($errors->any())
                     <div class="alert alert-danger p-0">
@@ -49,7 +49,7 @@
 
                 <label class="text-start" for="priority">Role:</label>
                 <div class="form-container m-0 p-0">
-                    <select class="input" name="role" required>
+                    <select class="input text-dark" name="role" required>
                         <option value="Admin" {{ $user->role === 'Admin' ? 'selected' : '' }}>Admin</option>
                         <option value="User" {{ $user->role === 'User' ? 'selected' : '' }}>User</option>
                     </select>

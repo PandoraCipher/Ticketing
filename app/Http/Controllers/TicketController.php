@@ -8,6 +8,7 @@ use App\Events\TicketUpdated;
 use App\Models\Note;
 use App\Models\Ticket;
 use App\Models\User;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -223,6 +224,11 @@ class TicketController extends Controller
             return redirect()
                 ->back()
                 ->withErrors(['error' => $e->getMessage()]);
+        } catch (RequestException $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Request timeout. Please try again.']);
         }
     }
 
@@ -262,38 +268,43 @@ class TicketController extends Controller
 
         DB::beginTransaction();
 
-        try{
-        $ticket->update([
-            'priority' => $data['priority'],
-            'assigned' => $data['assigned'],
-            'status' => $status,
-        ]);
-        event(new TicketUpdated($ticket));
+        try {
+            $ticket->update([
+                'priority' => $data['priority'],
+                'assigned' => $data['assigned'],
+                'status' => $status,
+            ]);
+            event(new TicketUpdated($ticket));
 
-        $note = new Note();
-        $note->ticket_id = $ticket->id;
-        $note->author = $request->user()->name;
-        $note->assigned = $data['assigned'];
-        $note->content = $data['note'];
-        $note->status = $status;
+            $note = new Note();
+            $note->ticket_id = $ticket->id;
+            $note->author = $request->user()->name;
+            $note->assigned = $data['assigned'];
+            $note->content = $data['note'];
+            $note->status = $status;
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store();
-            $note->file = $filePath;
+            if ($request->hasFile('file')) {
+                $filePath = $request->file('file')->store();
+                $note->file = $filePath;
+            }
+
+            $note->save();
+            DB::commit();
+
+            return redirect()
+                ->route('tickets.show', $ticket->id)
+                ->with('message', 'Ticket updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->withErrors(['error' => $e->getMessage()]);
+        } catch (RequestException $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Request timeout. Please try again.']);
         }
-
-        $note->save();
-        DB::commit();
-
-        return redirect()
-            ->route('tickets.show', $ticket->id)
-            ->with('message', 'Ticket updated successfully.');
-    }catch(\Exception $e){
-        DB::rollBack();
-        return redirect()
-            ->back()
-            ->withErrors(['error' => $e->getMessage()]);
-    }
     }
 
     /**

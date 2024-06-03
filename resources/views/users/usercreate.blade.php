@@ -8,30 +8,30 @@
                 <span class="title">New user</span>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="name" placeholder="Name" value="{{ old('name') }}"
+                    <input type="text" class="input text-dark" name="name" placeholder="Name" value="{{ old('name') }}"
                         required>
                 </div>
 
                 <label class="text-start" for="subject">email:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="email" class="input" name="email" placeholder="email" value="{{ old('email') }}"
+                    <input type="email" class="input text-dark" name="email" placeholder="email" value="{{ old('email') }}"
                         required>
                 </div>
 
                 <label class="text-start" for="subject">contact:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="contact" placeholder="contact" value="{{ old('contact') }}"
+                    <input type="text" class="input text-dark" name="contact" placeholder="contact" value="{{ old('contact') }}"
                         required>
                 </div>
 
                 <label class="text-start" for="password">password:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="password" class="input" name="password" placeholder="password" required>
+                    <input type="password" class="input text-dark" name="password" placeholder="password" required>
                 </div>
 
                 <label class="text-start" for="password_confirmation">confirm password:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="password" class="input" name="password_confirmation" id="password_confirmation"
+                    <input type="password" class="input text-dark" name="password_confirmation" id="password_confirmation"
                         placeholder="confirm" required>
                 </div>
                 @if ($errors->any())
@@ -46,9 +46,9 @@
 
                 <label class="text-start" for="priority">Role:</label>
                 <div class="form-container m-0 p-0">
-                    <select class="input" name="role" required>
-                        <option value="User" @if (old('role') == 'User') selected @endif>User</option>
-                        <option value="Admin" @if (old('role') == 'Admin') selected @endif>Admin</option>
+                    <select class="input text-dark" name="role" required>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
                     </select>
 
                 </div>

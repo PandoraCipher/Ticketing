@@ -57,7 +57,7 @@
                 <div class="container d-flex column p-0">
                     <label class="text-start" for="priority"><b>Priority:</b></label>
                     <div class="form-container m-0 p-0 col-3 mx-1">
-                        <select class="input" name="priority" required>
+                        <select class="input text-dark" name="priority" required>
                             <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
                             <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium</option>
                             <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>
@@ -66,7 +66,7 @@
                     @if (Auth::user()->role == 'Admin')
                         <label class="text-start" for="status"><b>Status:</b></label>
                         <div class="form-container m-0 p-0 col-5 mx-2">
-                            <select name="status" id="status" class="input"
+                            <select name="status" id="status" class="input text-dark"
                                 value="{{ old('status', $ticket->status) }}">
                                 @if ($ticket->status == 'Closed')
                                     <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
@@ -84,7 +84,7 @@
                     @else
                         <label class="text-start" for="status"><b>Status:</b></label>
                         <div class="form-container m-0 p-0 col-5 mx-2">
-                            <select name="status" id="status" class="input"
+                            <select name="status" id="status" class="input text-dark"
                                 value="{{ old('status', $ticket->status) }}">
                                 <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
                                     reply</option>
@@ -99,7 +99,7 @@
 
                 <label class="text-start" for="subject"><b>Subject:</b></label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="subject" value="{{ old('subject', $ticket->subject) }}">
+                    <input type="text" class="input text-dark" name="subject" value="{{ old('subject', $ticket->subject) }}">
                 </div>
 
                 <label class="text-start" for="assigned"><b>To:</b></label>

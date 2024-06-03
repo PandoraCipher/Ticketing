@@ -19,14 +19,14 @@
                 <span class="title">New ticket</span>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="name" placeholder="Name"
+                    <input type="text" class="input text-dark" name="name" placeholder="Name"
                         value=" {{ Auth::user()->name }} " required>
                 </div>
 
                 @if (Auth::user()->role == 'Admin')
                     <label class="text-start" for="name">Client:</label>
                     <div class="form-container m-0 p-0">
-                        <input type="text" class="input" name="client" placeholder="client" value="" required>
+                        <input type="text" class="input text-dark" name="client" placeholder="client" value="" required>
                     </div>
                 @else
                     <input type="hidden" name="client" value="{{ Auth::user()->name }}" required>
@@ -34,7 +34,7 @@
 
                 <label class="text-start" for="assigned">To:</label>
                 <div class="form-container m-0 p-0">
-                    <select name="assigned" class="input" required>
+                    <select name="assigned" class="input text-dark" required>
                         {{-- @foreach ($users as $user)
                             @if ($user->role == 'Admin')
                                 <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
@@ -42,15 +42,15 @@
                                 </option>
                             @endif
                         @endforeach --}}
-                        <option value="Support Enterprise">Support Enterprise</option>
-                        <option value="ELIE RAKOTONDRANIVO">ELIE RAKOTONDRANIVO</option>
-                        <option value="Tovo RAJONSON">Tovo RAJONSON</option>
+                        <option value="Support Enterprise" class="text-dark">Support Enterprise</option>
+                        <option value="ELIE RAKOTONDRANIVO" class="text-dark">ELIE RAKOTONDRANIVO</option>
+                        <option value="Tovo RAJONSON" class="text-dark">Tovo RAJONSON</option>
                     </select>
                 </div>
 
                 <label class="text-start" for="assigned">Category:</label>
                 <div class="form-container m-0 p-0">
-                    <select class="input" name="category" required>
+                    <select class="input text-dark" name="category" required>
                         <option value="issue">issue</option>
                         <option value="planned activity">planned activity</option>
                         <option value="other">other</option>
@@ -59,12 +59,12 @@
 
                 <label class="text-start" for="subject">Subject:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input" name="subject" placeholder="Subject" required>
+                    <input type="text" class="input text-dark" name="subject" placeholder="Subject" required>
                 </div>
 
                 <label class="text-start" for="note"><b>Note:</b></label>
                 <div class="form-container m-0 p-0" style="height: 25vh">
-                    <textarea class="input" style="height: 100vh" id="note" name="note" required></textarea>
+                    <textarea class="input text-dark" style="height: 100vh" id="note" name="note" required></textarea>
                 </div>
 
                 <div class="mb-3">
@@ -74,7 +74,7 @@
 
                 <label class="text-start" for="priority">Priority:</label>
                 <div class="form-container m-0 p-0">
-                    <select class="input" name="priority" required>
+                    <select class="input text-dark" name="priority" required>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
