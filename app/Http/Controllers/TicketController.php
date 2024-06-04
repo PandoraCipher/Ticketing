@@ -202,7 +202,7 @@ class TicketController extends Controller
             ]);
 
             $ticket->save();
-            event(new TicketCreated($ticket));
+            //event(new TicketCreated($ticket));
 
             $note = new Note();
             $note->ticket_id = $ticket->id;
@@ -237,7 +237,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $users = User::all();
+        $users = User::orderBy('name', 'asc')->get();
         $notes = Note::where('ticket_id', $ticket->id)->get();
         return view('tickets.show', compact('ticket', 'users', 'notes'));
     }
@@ -274,7 +274,7 @@ class TicketController extends Controller
                 'assigned' => $data['assigned'],
                 'status' => $status,
             ]);
-            event(new TicketUpdated($ticket));
+            //event(new TicketUpdated($ticket));
 
             $note = new Note();
             $note->ticket_id = $ticket->id;

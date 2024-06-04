@@ -99,28 +99,42 @@
 
                 <label class="text-start" for="subject"><b>Subject:</b></label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input text-dark" name="subject" value="{{ old('subject', $ticket->subject) }}">
+                    <input type="text" class="input text-dark" name="subject"
+                        value="{{ old('subject', $ticket->subject) }}">
                 </div>
 
                 <label class="text-start" for="assigned"><b>To:</b></label>
                 <div class="form-container m-0 p-0">
-                    <select name="assigned" class="input" required>
-                        @foreach ($users as $user)
-                            @if ($user->role == 'Admin')
+                    @if (Auth::user()->role == 'User')
+                        <select name="assigned" class="input text-dark" required>
+                            @foreach ($users as $user)
+                                @if ($user->role == 'Admin')
+                                    <option value="{{ $user->name }}"
+                                        {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endif
+                            @endforeach
+                            {{-- <option value="{{ $ticket->client }}"
+                                {{ $ticket->assigned === $ticket->client ? 'selected' : '' }}>{{ $ticket->client }}
+                            </option> --}}
+                        </select>
+                    @else
+                        <select name="assigned" class="input text-dark" required>
+                            @foreach ($users as $user)
                                 <option value="{{ $user->name }}"
                                     {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
-                            @endif
-                        @endforeach
-                        <option value="{{ $ticket->client }}"
-                            {{ $ticket->assigned === $ticket->client ? 'selected' : '' }}>{{ $ticket->client }}</option>
-                    </select>
+                            @endforeach
+                        </select>
+                    @endif
+
                 </div>
 
                 <label class="text-start" for="note"><b>Note:</b></label>
                 <div class="form-container m-0 p-0" style="height: 25vh">
-                    <textarea class="input" style="height: 100vh" id="note" name="note" required></textarea>
+                    <textarea class="input text-dark" style="height: 100vh" id="note" name="note" required></textarea>
                 </div>
 
                 <div class="mb-3">
