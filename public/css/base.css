@@ -10,7 +10,7 @@ box-shadow: 10px 10px 64px 0px rgba(10, 10, 10, 0.75);
 
 body{
   height: 100%;
-  background-image: url('../css/fond4.jpg');
+  background-image: url('../css/fond1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;

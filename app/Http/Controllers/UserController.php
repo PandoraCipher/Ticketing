@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -151,9 +152,13 @@ class UserController extends Controller
         // Enregistrer les modifications de l'utilisateur
         $user->save();
 
-        return redirect()
-            ->route('users.userlist', $user->id)
-            ->with('success', 'User updated successfully');
+        if (Auth::user()->role == 'Admin') {
+            return redirect()
+                ->route('users.userlist', $user->id)
+                ->with('success', 'User updated successfully');
+        } else {
+            return redirect()->route('dashboard')->with('success', 'Profile updated successfully');
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,7 @@ Route::get('/dashboard', [TicketController::class, 'dashboard'])
     ->name('dashboard')
     ->middleware(Authenticate::class);
 
-Route::get('/setting', function () {
-    return view('setting');
-})->name('setting');
+Route::get('/setting', [SettingController::class, 'show'])->name('setting');
 
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');

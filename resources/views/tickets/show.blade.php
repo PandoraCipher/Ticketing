@@ -188,11 +188,11 @@
                     @endforeach
                 </tbody>
             </table>
-            {{-- <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group ms-auto">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group ms-auto mb-1">
                     <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </main>
 @endsection

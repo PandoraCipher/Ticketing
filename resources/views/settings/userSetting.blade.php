@@ -47,18 +47,13 @@
                     </div>
                 @endif
 
-                @if (Auth::user()->role == 'Admin')
-                    <label class="text-start" for="priority">Role:</label>
-                    <div class="form-container m-0 p-0">
-                        <select class="input text-dark" name="role" required>
-                            <option value="Admin" {{ $user->role === 'Admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="User" {{ $user->role === 'User' ? 'selected' : '' }}>User</option>
-                        </select>
-                    </div>
-                @else
-                <input type="hidden" name="role" value="User">
-                @endif
-
+                <label class="text-start" for="priority">Role:</label>
+                <div class="form-container m-0 p-0">
+                    <select class="input text-dark" name="role" required>
+                        <option value="Admin" {{ $user->role === 'Admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="User" {{ $user->role === 'User' ? 'selected' : '' }}>User</option>
+                    </select>
+                </div>
                 <button type="submit">update</button>
             </form>
         </div>

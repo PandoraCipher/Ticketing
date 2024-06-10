@@ -51,16 +51,24 @@
                     <hr class="my-3">
 
                     <ul class="nav flex-column mb-auto">
-                      {{-- @if (Auth::user()->role == 'Admin')
                       <li class="nav-item">
+                        @if (Auth::user()->role == 'Admin')
                         <a class="nav-link d-flex align-items-center gap-2" href="{{ route('setting') }}">
                             <svg class="bi">
                                 <use xlink:href="#gear-wide-connected" />
                             </svg>
                             Settings
                         </a>
+                        @else
+                        <a class="nav-link d-flex align-items-center gap-2" href="/users/{{ Auth::user()->id }}">
+                            <svg class="bi">
+                                <use xlink:href="#profile-icon" />
+                            </svg>
+                            profile
+                        </a>
+                        @endif
                       </li>
-                      @endif --}}
+                      
                         
                         <li class="nav-item">
                             <form action="{{ route('auth.logout') }}" method="post">
