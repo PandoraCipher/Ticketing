@@ -52,13 +52,21 @@
                             <td>{{ $user->role }}</td>
                             @if (Auth::user()->role == 'Admin')
                                 <td class="d-flex">
-                                    <a class="btn btn-primary p-1" href="/users/{{ $user->id }}">modify</a>
+                                    <button class="btn btn-primary p-1" data-bs-toggle="modal"
+                                        data-bs-target="#modifyModal{{ $user->id }}">
+                                        edit
+                                        <svg class="bi">
+                                            <use xlink:href="#edit-icon" />
+                                        </svg>
+                                    </button>
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger p-1 ms-1" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{ $user->id }}">
-                                            delete
+                                            <svg class="bi">
+                                                <use xlink:href="#icon-trash" />
+                                            </svg>
                                         </button>
                                     </form>
                                 </td>
@@ -82,7 +90,9 @@
             </div>
         </div>
         @foreach ($users as $user)
+            @include('users.modals.modify', ['userId' => $user->id])
             @include('users.modals.delete', ['userId' => $user->id])
         @endforeach
     </main>
+
 @endsection

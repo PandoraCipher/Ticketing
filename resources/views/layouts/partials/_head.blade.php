@@ -5,6 +5,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Ticket system</title>
     <link class="rounded" rel="icon" type="image/png" href="../css/favicon-16.png">
 
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.1/css/all.css') }}">
     <link href="{{ asset('css/create.css') }}" rel="stylesheet">
     <script src="{{ asset('js/chart.umd.js') }}" integrity="sha-384-epmLzfWUmCYTZvs5x1bnwkmzWmlp1q07ng27woKxa+v3M4Am4k//PSNbB0pgm0FC" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/color-modes.js') }}"></script>
 

@@ -17,9 +17,9 @@
                 @endif
 
                 <span class="title">New ticket</span>
-                <label class="text-start" for="name">Name:</label>
+                {{-- <label class="text-start" for="name">Author:</label> --}}
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input text-dark" name="name" placeholder="Name"
+                    <input type="hidden" class="input text-dark" name="name" placeholder="Name"
                         value=" {{ Auth::user()->name }} " required>
                 </div>
 
@@ -32,7 +32,7 @@
                     <input type="hidden" name="client" value="{{ Auth::user()->name }}" required>
                 @endif
 
-                <label class="text-start" for="assigned">To:</label>
+                <label class="text-start" for="assigned">Assign to:</label>
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input text-dark" required>
                         {{-- @foreach ($users as $user)

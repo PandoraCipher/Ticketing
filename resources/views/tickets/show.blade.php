@@ -30,7 +30,7 @@
                 </label>
 
                 <div class="container d-flex p-0">
-                    <label class="text-start" for="name"><b>Name:&nbsp;</b></label>
+                    <label class="text-start" for="name"><b>Author:&nbsp;</b></label>
                     <label for="name">{{ $ticket->name }}</label>
                 </div>
 
@@ -53,96 +53,103 @@
                     <label class="text-start" for="category"><b>Category:&nbsp;</b></label>
                     <label for="client">{{ $ticket->category }}</label>
                 </div>
+                @if ($ticket->status != 'Closed')
 
-                <div class="container d-flex column p-0">
-                    <label class="text-start" for="priority"><b>Priority:</b></label>
-                    <div class="form-container m-0 p-0 col-3 mx-1">
-                        <select class="input text-dark" name="priority" required>
-                            <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
-                            <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>
-                        </select>
+                    <div class="container d-flex column p-0">
+                        <label class="text-start" for="priority"><b>Priority:</b></label>
+                        <div class="form-container m-0 p-0 col-3 mx-1">
+                            <select class="input text-dark" name="priority" required>
+                                <option value="Low" {{ $ticket->priority === 'Low' ? 'selected' : '' }}>Low</option>
+                                <option value="Medium" {{ $ticket->priority === 'Medium' ? 'selected' : '' }}>Medium
+                                </option>
+                                <option value="High" {{ $ticket->priority === 'High' ? 'selected' : '' }}>High</option>
+                            </select>
+                        </div>
+                        @if (Auth::user()->role == 'Admin')
+                            <label class="text-start" for="status"><b>Status:</b></label>
+                            <div class="form-container m-0 p-0 col-5 mx-2">
+                                <select name="status" id="status" class="input text-dark"
+                                    value="{{ old('status', $ticket->status) }}">
+                                    @if ($ticket->status == 'Closed')
+                                        <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open
+                                        </option>
+                                    @endif
+
+                                    <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting
+                                        customer
+                                        reply</option>
+                                    <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
+                                        reply
+                                    </option>
+                                    <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed
+                                    </option>
+
+                                </select>
+                            </div>
+                        @else
+                            <label class="text-start" for="status"><b>Status:</b></label>
+                            <div class="form-container m-0 p-0 col-5 mx-2">
+                                <select name="status" id="status" class="input text-dark"
+                                    value="{{ old('status', $ticket->status) }}">
+                                    <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting
+                                        customer
+                                        reply</option>
+                                    <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
+                                        reply
+                                    </option>
+
+                                </select>
+                            </div>
+                        @endif
                     </div>
-                    @if (Auth::user()->role == 'Admin')
-                        <label class="text-start" for="status"><b>Status:</b></label>
-                        <div class="form-container m-0 p-0 col-5 mx-2">
-                            <select name="status" id="status" class="input text-dark"
-                                value="{{ old('status', $ticket->status) }}">
-                                @if ($ticket->status == 'Closed')
-                                    <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open</option>
-                                @endif
 
-                                <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
-                                    reply</option>
-                                <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
-                                    reply
-                                </option>
-                                <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed</option>
+                    <label class="text-start" for="subject"><b>Subject:</b></label>
+                    <div class="form-container m-0 p-0">
+                        <input type="text" class="input text-dark" name="subject"
+                            value="{{ old('subject', $ticket->subject) }}">
+                    </div>
 
+                    <label class="text-start" for="assigned"><b>To:</b></label>
+                    <div class="form-container m-0 p-0">
+                        @if (Auth::user()->role == 'User')
+                            <select name="assigned" class="input text-dark" required>
+                                @foreach ($users as $user)
+                                    @if ($user->role == 'Admin')
+                                        <option value="{{ $user->name }}"
+                                            {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
+                                            {{ $user->name }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                                {{-- <option value="{{ $ticket->client }}"
+                                {{ $ticket->assigned === $ticket->client ? 'selected' : '' }}>{{ $ticket->client }}
+                            </option> --}}
                             </select>
-                        </div>
-                    @else
-                        <label class="text-start" for="status"><b>Status:</b></label>
-                        <div class="form-container m-0 p-0 col-5 mx-2">
-                            <select name="status" id="status" class="input text-dark"
-                                value="{{ old('status', $ticket->status) }}">
-                                <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting customer
-                                    reply</option>
-                                <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
-                                    reply
-                                </option>
-
-                            </select>
-                        </div>
-                    @endif
-                </div>
-
-                <label class="text-start" for="subject"><b>Subject:</b></label>
-                <div class="form-container m-0 p-0">
-                    <input type="text" class="input text-dark" name="subject"
-                        value="{{ old('subject', $ticket->subject) }}">
-                </div>
-
-                <label class="text-start" for="assigned"><b>To:</b></label>
-                <div class="form-container m-0 p-0">
-                    @if (Auth::user()->role == 'User')
-                        <select name="assigned" class="input text-dark" required>
-                            @foreach ($users as $user)
-                                @if ($user->role == 'Admin')
+                        @else
+                            <select name="assigned" class="input text-dark" required>
+                                @foreach ($users as $user)
                                     <option value="{{ $user->name }}"
                                         {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
-                                @endif
-                            @endforeach
-                            {{-- <option value="{{ $ticket->client }}"
-                                {{ $ticket->assigned === $ticket->client ? 'selected' : '' }}>{{ $ticket->client }}
-                            </option> --}}
-                        </select>
-                    @else
-                        <select name="assigned" class="input text-dark" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->name }}"
-                                    {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    @endif
+                                @endforeach
+                            </select>
+                        @endif
 
-                </div>
+                    </div>
 
-                <label class="text-start" for="note"><b>Note:</b></label>
-                <div class="form-container m-0 p-0" style="height: 25vh">
-                    <textarea class="input text-dark" style="height: 100vh" id="note" name="note" required></textarea>
-                </div>
+                    <label class="text-start" for="note"><b>Note:</b></label>
+                    <div class="form-container m-0 p-0" style="height: 25vh">
+                        <textarea class="input text-dark" style="height: 100vh" id="note" name="note" required></textarea>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="text-start"><b>Attach file:</b></label>
-                    <input type="file" class="form-control" id="formFile" name="file">
-                </div>
+                    <div class="mb-3">
+                        <label class="text-start"><b>Attach file:</b></label>
+                        <input type="file" class="form-control" id="formFile" name="file">
+                    </div>
 
-                <button class="w-25" type="submit">Update</button>
+                    <button class="w-25" type="submit">Update</button>
+                @endif
             </form>
         </div>
 

@@ -64,7 +64,7 @@
                     <tr>
                         <th scope="col">#id</th>
                         <th scope="col">Priority</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Author</th>
                         <th scope="col">Client</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Assignement</th>

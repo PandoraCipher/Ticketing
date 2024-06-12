@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -119,45 +122,65 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        // Règles de validation pour la mise à jour de l'utilisateur
-        $validatedData = $request->validate(
-            [
+            // Règles de validation pour la mise à jour de l'utilisateur
+            $validatedData = $request->validate([
                 'name' => 'required|string',
-                'email' => 'required|email|unique:users,email,' . $user->id, // Assure l'unicité de l'email en excluant l'utilisateur actuel
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->ignore($user->id),
+                    function ($attribute, $value, $fail) {
+                        if (!strpos($value, '@')) {
+                            $fail('The email must contain @');
+                        }
+                    },
+                ],
                 'contact' => 'required|string|max:15',
-                'password' => 'nullable|string|min:4|confirmed', // Le champ est facultatif et doit être confirmé
-                'role' => 'required|string|in:Admin,User', // Le rôle doit être soit 'admin' soit 'user'
-                'password_confirmation' => 'nullable|string|min:4', // Règle pour confirmer le mot de passe
+                'password' => 'nullable|string|min:4|confirmed',
+                'role' => 'required|string|in:Admin,User',
+                'password_confirmation' => 'nullable|string|min:4',
             ],
             [
                 'password.confirmed' => 'The passwords do not match.',
-            ],
+            ]
         );
 
-        // Mettre à jour les champs de l'utilisateur
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
-        $user->contact = $validatedData['contact'];
-        $user->role = $validatedData['role'];
+            // Mettre à jour les champs de l'utilisateur
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
+            $user->contact = $validatedData['contact'];
+            $user->role = $validatedData['role'];
 
-        // Vérifier et mettre à jour le mot de passe si fourni
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
+            // Vérifier et mettre à jour le mot de passe si fourni
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
 
-        // Enregistrer les modifications de l'utilisateur
-        $user->save();
+            // Enregistrer les modifications de l'utilisateur
+            $user->save();
 
-        if (Auth::user()->role == 'Admin') {
-            return redirect()
-                ->route('users.userlist', $user->id)
-                ->with('success', 'User updated successfully');
-        } else {
-            return redirect()->route('dashboard')->with('success', 'Profile updated successfully');
+            $successMessage = 'User updated successfully';
+
+            Session::flash('success', $successMessage);
+
+            // Redirection avec un message de succès approprié
+            if (Auth::user()->role == 'Admin') {
+                return response()->json(['redirect_url' => route('users.userlist', $user->id), 'message' => $successMessage], 200);
+            } else {
+                return response()->json(['redirect_url' => route('dashboard'), 'message' => 'Profil updated successfully'], 200);
+            }
+        } catch (ValidationException $e) {
+            // Renvoyer les erreurs de validation en tant que réponse JSON
+            return response()->json(['errors' => $e->validator->errors()], 422);
+        } catch (\Exception $e) {
+            // Renvoyer une réponse JSON avec une erreur générale
+            return response()->json(['message' => 'An error occurred while updating user.'], 500);
         }
     }
 

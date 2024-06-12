@@ -1,4 +1,3 @@
-<!-- Modal de confirmation de suppression -->
 <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $user->id }}" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
