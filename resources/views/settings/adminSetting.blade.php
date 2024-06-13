@@ -7,8 +7,28 @@
         </div>
         <div>
             <h3 class="h3">Status list</h3>
+            <div class="table-responsive small">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Abreviation</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Awaiting customer reply</td>
+                            <td>ACR</td>
+                            <td>delete</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <h3 class="h3">Category list</h3>
         </div>
 
-        
     </main>
 @endsection

@@ -141,7 +141,7 @@ class UserController extends Controller
                         }
                     },
                 ],
-                'contact' => 'required|string|max:15',
+                'contact' => ['required', 'string', 'max:15', 'regex:/^\+?[0-9]+$/'],
                 'password' => 'nullable|string|min:4|confirmed',
                 'role' => 'required|string|in:Admin,User',
                 'password_confirmation' => 'nullable|string|min:4',

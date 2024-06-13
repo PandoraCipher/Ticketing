@@ -95,6 +95,9 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     // Nettoyer les messages d'erreur précédents
+                    $('#nameError{{ $user->id }}').text('');
+                    $('#emailError{{ $user->id }}').text('');
+                    $('#contactError{{ $user->id }}').text('');
                     $('#passwordError{{ $user->id }}').text('');
                     $('#passwordConfirmationError{{ $user->id }}').text('');
                     console.log('Il y a une putain d\'erreur dans ton foutu code');
@@ -105,9 +108,18 @@
                     if (jqXHR.status ===
                         422) { // Code 422 indique des erreurs de validation
                         var errors = jqXHR.responseJSON.errors;
+                        if (errors.name) {
+                            $('#nameError{{ $user->id }}').text(errors.name[0]);
+                        }
+                        if (errors.email) {
+                            $('#emailError{{ $user->id }}').text(errors.email[0]);
+                        }
+                        if (errors.contact) {
+                            $('#contactError{{ $user->id }}').text(errors.contact[0]);
+                        }
                         if (errors.password) {
                             $('#passwordError{{ $user->id }}').text(errors.password[
-                            0]);
+                                0]);
                         }
                         if (errors.password_confirmation) {
                             $('#passwordConfirmationError{{ $user->id }}').text(errors

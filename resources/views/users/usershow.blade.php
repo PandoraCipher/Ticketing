@@ -15,18 +15,21 @@
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input text-dark" name="name" placeholder="Name"
                         value="{{ old('name', $user->name) }}" required>
+                    <span class="text-danger" id="nameError"></span>
                 </div>
 
                 <label class="text-start" for="email">email:</label>
                 <div class="form-container m-0 p-0">
                     <input type="email" class="input text-dark" name="email" placeholder="email"
                         value="{{ old('email', $user->email) }}" required>
+                    <span class="text-danger" id="emailError"></span>
                 </div>
 
                 <label class="text-start" for="contact">contact:</label>
                 <div class="form-container m-0 p-0">
                     <input type="text" class="input text-dark" name="contact" placeholder="contact"
                         value="{{ old('contact', $user->contact) }}" required>
+                    <span class="text-danger" id="contactError"></span>
                 </div>
 
                 <label class="text-start" for="password">new password:</label>
@@ -92,10 +95,13 @@
                         $('#modifyModal').modal('hide'); // Assurez-vous que #modifyModal existe
                         // Exemple de redirection après succès
                         window.location.href = response
-                        .redirect_url; // Assurez-vous que la réponse contient redirect_url
+                            .redirect_url; // Assurez-vous que la réponse contient redirect_url
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         // Nettoyer les messages d'erreur précédents
+                        $('#nameError').text('');
+                        $('#emailError').text('');
+                        $('#contactError').text('');
                         $('#passwordError').text('');
                         $('#passwordConfirmationError').text('');
 
@@ -103,6 +109,15 @@
                         if (jqXHR.status ===
                             422) { // Code 422 indique des erreurs de validation
                             var errors = jqXHR.responseJSON.errors;
+                            if (errors.name) {
+                                $('#nameError').text(errors.name[0]);
+                            }
+                            if (errors.email) {
+                                $('#emailError').text(errors.email[0]);
+                            }
+                            if (errors.contact) {
+                                $('#contactError').text(errors.contact[0]);
+                            }
                             if (errors.password) {
                                 $('#passwordError').text(errors.password[0]);
                             }

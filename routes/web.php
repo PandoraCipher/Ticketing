@@ -23,7 +23,7 @@ Route::get('/dashboard', [TicketController::class, 'dashboard'])
     ->name('dashboard')
     ->middleware(Authenticate::class);
 
-Route::get('/setting', [SettingController::class, 'show'])->name('setting');
+Route::get('/setting', [SettingController::class, 'show'])->name('setting')->middleware(Authenticate::class);
 
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
