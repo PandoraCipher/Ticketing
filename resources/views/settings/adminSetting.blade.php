@@ -8,12 +8,12 @@
         <div>
             <h3 class="h3">Status list</h3>
             <div class="table-responsive small">
-                <table class="table table-striped table-sm">
+                <table class="table table-hover table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Abreviation</th>
-                            <th>action</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Abreviation</th>
+                            <th scope="col">action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +28,22 @@
         </div>
         <div>
             <h3 class="h3">Category list</h3>
+            <div class="table-responsive small">
+                <table class="table table-hover table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>name</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>other</td>
+                            <td>delete</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </main>

@@ -41,7 +41,7 @@ class TicketCreated extends Notification
                     ->subject('Ticket Created')
                     ->greeting('Hello!')
                     ->line('A new ticket has been successfully created.')
-                    ->line('Ticket ID: ' . $this->ticket->id)
+                    ->line('Ticket ID: #' . $this->ticket->id)
                     ->line('Subject: ' . $this->ticket->subject)
                     ->action('View Ticket', url('/tickets/' . $this->ticket->id))
                     ->line('Thank you for using our application!');

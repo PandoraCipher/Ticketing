@@ -43,8 +43,8 @@
                             @endif
                         @endforeach --}}
                         <option value="Support Enterprise" class="text-dark">Support Enterprise</option>
-                        <option value="ELIE RAKOTONDRANIVO" class="text-dark">ELIE RAKOTONDRANIVO</option>
                         <option value="Tovo RAJONSON" class="text-dark">Tovo RAJONSON</option>
+                        <option value="ELIE RAKOTONDRANIVO" class="text-dark">ELIE RAKOTONDRANIVO</option>
                     </select>
                 </div>
 

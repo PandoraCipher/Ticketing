@@ -202,7 +202,6 @@ class TicketController extends Controller
             ]);
 
             $ticket->save();
-            //event(new TicketCreated($ticket));
 
             $note = new Note();
             $note->ticket_id = $ticket->id;
@@ -218,6 +217,7 @@ class TicketController extends Controller
             $note->save();
 
             DB::commit();
+            event(new TicketCreated($ticket));
             return redirect()->route('tickets.list');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -274,7 +274,6 @@ class TicketController extends Controller
                 'assigned' => $data['assigned'],
                 'status' => $status,
             ]);
-            //event(new TicketUpdated($ticket));
 
             $note = new Note();
             $note->ticket_id = $ticket->id;
@@ -290,6 +289,7 @@ class TicketController extends Controller
 
             $note->save();
             DB::commit();
+            event(new TicketUpdated($ticket));
 
             return redirect()
                 ->route('tickets.show', $ticket->id)

@@ -175,7 +175,7 @@
                         <tr>
                             <td class=""><i>{{ $note->updated_at->format('Y-m-d H:i') }}</i></td>
                             <td><span
-                                    class="{{ $note->status === 'Open' ? 'rounded p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
+                                    class="{{ $note->status === 'Open' ? 'badge p-1 text-white bg-danger' : ($note->status === 'Closed' ? 'rounded p-1 text-white bg-success' : 'rounded p-1 text-white bg-warning') }}">
                                     {{ $note->status }}
                                 </span></td>
                             <td>{{ $note->author }}</td>

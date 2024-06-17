@@ -25,6 +25,7 @@
                                     <use xlink:href="#list" />
                                 </svg>
                                 Tickets List
+                                {{-- <span class="badge bg-danger">3</span> --}}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -64,7 +65,7 @@
                             <svg class="bi">
                                 <use xlink:href="#profile-icon" />
                             </svg>
-                            profile
+                            profil
                         </a>
                         @endif
                       </li>

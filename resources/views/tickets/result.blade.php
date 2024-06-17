@@ -12,7 +12,7 @@
         <td>{{ $ticket->assigned }}</td>
         <td>
             <span
-                class="rounded p-1 text-white
+                class="badge p-1 text-white
                 @if ($ticket->status === 'Open') bg-danger
                 @elseif ($ticket->status === 'Closed')
                     bg-success

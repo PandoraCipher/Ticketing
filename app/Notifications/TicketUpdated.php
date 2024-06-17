@@ -41,7 +41,7 @@ class TicketUpdated extends Notification
                     ->Subject('Ticket updated')
                     ->greeting('Hello!')
                     ->line('A ticket has been updated.')
-                    ->line('Ticket ID: ' . $this->ticket->id)
+                    ->line('Ticket ID: #' . $this->ticket->id)
                     ->line('Ticket subject: ' . $this->ticket->subject)
                     ->action('View ticket: ', url('/tickets/' . $this->ticket->id));
     }
