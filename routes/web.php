@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +25,9 @@ Route::get('/dashboard', [TicketController::class, 'dashboard'])
     ->name('dashboard')
     ->middleware(Authenticate::class);
 
-Route::get('/setting', [SettingController::class, 'show'])->name('setting')->middleware(Authenticate::class);
+Route::get('/setting', [SettingController::class, 'index'])
+    ->name('setting')
+    ->middleware(Authenticate::class);
 
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -55,3 +59,19 @@ Route::prefix('users')
         Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
+
+Route::prefix('status')
+->middleware(Authenticate::class)
+->group(function (){
+    Route::get('/statuscreate', [StatusController::class, 'create'])->name('status.statuscreate');
+    Route::post('/statuscreate', [StatusController::class, 'store'])->name('status.store');
+    Route::delete('/{status}', [StatusController::class, 'destroy'])->name('status.destroy');
+});
+
+Route::prefix('category')
+->middleware(Authenticate::class)
+->group(function (){
+    Route::get('/categorycreate', [CategoryController::class, 'create'])->name('category.statuscreate');
+    Route::post('/categorycreate', [CategoryController::class, 'store'])->name('category.store');
+    Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+});

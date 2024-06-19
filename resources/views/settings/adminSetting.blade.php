@@ -8,19 +8,43 @@
         <div>
             <h3 class="h3">Status list</h3>
             <div class="table-responsive small">
-                <table class="table table-hover table-striped table-sm">
+                <table class="table table-hover table-bordered rounded table-sm">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Abreviation</th>
-                            <th scope="col">action</th>
+                            <th class="text-center" scope="col">action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse ($statuses as $status)
+                            <tr>
+                                <td>{{ $status->name }}</td>
+                                <td>{{ $status->abreviation }}</td>
+                                <td class="text-center">
+                                    <button type="button" class="badge bg-danger p-1" data-bs-toggle="modal"
+                                        data-bs-target="#deleteStatusModal{{ $status->id }}">
+                                        <svg class="bi">
+                                            <use xlink:href="#icon-trash" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3">no status found</td>
+                            </tr>
+                        @endforelse
                         <tr>
-                            <td>Awaiting customer reply</td>
-                            <td>ACR</td>
-                            <td>delete</td>
+                            <td colspan="3">
+                                <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal"
+                                    data-bs-target="#createStatusModal">
+                                    add
+                                    <svg class="bi">
+                                        <use xlink:href="#plus-circle" />
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -29,22 +53,44 @@
         <div>
             <h3 class="h3">Category list</h3>
             <div class="table-responsive small">
-                <table class="table table-hover table-striped table-sm">
+                <table class="table table-hover table-bordered rounded table-sm">
                     <thead>
                         <tr>
                             <th>name</th>
-                            <th>action</th>
+                            <th class="text-center">action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>other</td>
-                            <td>delete</td>
+                            <td class="text-center">
+                                <button type="button" class="badge bg-danger p-1" data-bs-toggle="modal"
+                                    data-bs-target="#deleteCategoryModal">
+                                    <svg class="bi">
+                                        <use xlink:href="#icon-trash" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal"
+                                    data-bs-target="#createCategoryModal">
+                                    add
+                                    <svg class="bi">
+                                        <use xlink:href="#plus-circle" />
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
+        @foreach ($statuses as $status)
+            @include('settings.modals.deleteStatusModal', ['statusId' => $status->id])
+        @endforeach
+        @include('settings.modals.createStatusModal')
     </main>
 @endsection
