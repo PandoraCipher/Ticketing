@@ -70,17 +70,11 @@
                             <div class="form-container m-0 p-0 col-5 mx-2">
                                 <select name="status" id="status" class="input text-dark"
                                     value="{{ old('status', $ticket->status) }}">
-                                    @if ($ticket->status == 'Closed')
-                                        <option value="Open" {{ $ticket->status === 'Open' ? 'selected' : '' }}>Open
-                                        </option>
-                                    @endif
-
-                                    <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting
-                                        customer
-                                        reply</option>
-                                    <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
-                                        reply
-                                    </option>
+                                    @foreach ($statuses as $status)
+                                        <option value="ACR"
+                                            {{ $ticket->status === $status->abreviation ? 'selected' : '' }}>
+                                            {{ $status->name }}</option>
+                                    @endforeach
                                     <option value="Closed" {{ $ticket->status === 'Closed' ? 'selected' : '' }}>Closed
                                     </option>
 
@@ -91,12 +85,11 @@
                             <div class="form-container m-0 p-0 col-5 mx-2">
                                 <select name="status" id="status" class="input text-dark"
                                     value="{{ old('status', $ticket->status) }}">
-                                    <option value="ACR" {{ $ticket->status === 'ACR' ? 'selected' : '' }}>Awaiting
-                                        customer
-                                        reply</option>
-                                    <option value="AAR" {{ $ticket->status === 'AAR' ? 'selected' : '' }}>Awaiting agent
-                                        reply
-                                    </option>
+                                    @foreach ($statuses as $status)
+                                        <option value="ACR"
+                                            {{ $ticket->status === $status->abreviation ? 'selected' : '' }}>
+                                            {{ $status->name }}</option>
+                                    @endforeach
 
                                 </select>
                             </div>

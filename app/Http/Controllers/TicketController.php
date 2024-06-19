@@ -6,6 +6,7 @@ use App\Http\Requests\SearchTicketsRequest;
 use App\Events\TicketCreated;
 use App\Events\TicketUpdated;
 use App\Models\Note;
+use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\User;
 use GuzzleHttp\Exception\RequestException;
@@ -53,10 +54,10 @@ class TicketController extends Controller
             $status = $request->input('status');
             if ($status == 'Open') {
                 $query->where('status', 'Open');
+            } elseif ($status == 'Closed') {
+                $query->where('status', 'Closed');
             } elseif ($status == 'Pending') {
-                $query->whereIn('status', ['AAR', 'ACR']);
-            } else {
-                $query->where('status', $status);
+                $query->whereNotIn('status', ['Open', 'Closed']);
             }
         }
 
@@ -239,7 +240,8 @@ class TicketController extends Controller
     {
         $users = User::orderBy('name', 'asc')->get();
         $notes = Note::where('ticket_id', $ticket->id)->get();
-        return view('tickets.show', compact('ticket', 'users', 'notes'));
+        $statuses = Status::get();
+        return view('tickets.show', compact('ticket', 'users', 'notes', 'statuses'));
     }
 
     /**

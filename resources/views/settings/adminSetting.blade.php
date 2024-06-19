@@ -8,7 +8,7 @@
         <div>
             <h3 class="h3">Status list</h3>
             <div class="table-responsive small">
-                <table class="table table-hover table-bordered rounded table-sm">
+                <table class="table table-hover rounded table-sm">
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -53,7 +53,7 @@
         <div>
             <h3 class="h3">Category list</h3>
             <div class="table-responsive small">
-                <table class="table table-hover table-bordered rounded table-sm">
+                <table class="table table-hover rounded table-sm">
                     <thead>
                         <tr>
                             <th>name</th>
