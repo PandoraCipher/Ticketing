@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchTicketsRequest;
 use App\Events\TicketCreated;
 use App\Events\TicketUpdated;
+use App\Models\Category;
 use App\Models\Note;
 use App\Models\Status;
 use App\Models\Ticket;
@@ -170,7 +171,8 @@ class TicketController extends Controller
     {
         $ticket = new Ticket();
         $users = User::all();
-        return view('tickets.create', ['ticket' => $ticket], ['users' => $users]);
+        $categories = Category::get();
+        return view('tickets.create', ['ticket' => $ticket, 'users' => $users, 'categories' => $categories]);
     }
 
     /**

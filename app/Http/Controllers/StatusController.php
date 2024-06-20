@@ -83,7 +83,6 @@ class StatusController extends Controller
 
         $status->delete();
 
-        // Redirection avec message de succès
         return redirect()->route('setting')->with('success', 'status deleted successfully');
     }
 }

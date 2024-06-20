@@ -83,12 +83,12 @@
                     <h5>Tickets table:</h4>
                 </b></label>
             <div>
-                <table class="table table-striped table-sm">
+                <table class="table table-hover table-bordered table-sm">
                     <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Open</th>
-                            <th scope="col">Pending</th>
+                            <th class="bg-secondary text-white" scope="col">Name</th>
+                            <th class="bg-secondary text-white" scope="col">Open</th>
+                            <th class="bg-secondary text-white" scope="col">Pending</th>
                         </tr>
                     </thead>
                     <tbody>

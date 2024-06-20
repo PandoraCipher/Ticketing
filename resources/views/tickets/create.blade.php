@@ -51,8 +51,9 @@
                 <label class="text-start" for="assigned">Category:</label>
                 <div class="form-container m-0 p-0">
                     <select class="input text-dark" name="category" required>
-                        <option value="issue">issue</option>
-                        <option value="planned activity">planned activity</option>
+                        @foreach ($categories as $category)
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
                         <option value="other">other</option>
                     </select>
                 </div>

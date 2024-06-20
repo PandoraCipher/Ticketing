@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -28,7 +29,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'stdResolutionTime' => 'required|numeric'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $category = new Category([
+                'name' => $data['name'],
+                'stdResolutionTime' => $data['stdResolutionTime'],
+            ]);
+            $category->save();
+            DB::commit();
+
+            return redirect()->route('setting');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -58,8 +77,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(String $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return redirect()->route('setting')->with('success', 'category deleted successfully');
     }
 }
