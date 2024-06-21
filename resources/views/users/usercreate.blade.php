@@ -8,20 +8,32 @@
                 <span class="title">New user</span>
                 <label class="text-start" for="name">Name:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input text-dark" name="name" placeholder="Name" value="{{ old('name') }}"
-                        required>
+                    <input type="text" class="input text-dark" name="name" placeholder="Name"
+                        value="{{ old('name') }}" required>
                 </div>
 
-                <label class="text-start" for="subject">email:</label>
+                <label class="text-start" for="email">email:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="email" class="input text-dark" name="email" placeholder="email" value="{{ old('email') }}"
-                        required>
+                    <input type="email" class="input text-dark" name="email" placeholder="email"
+                        value="{{ old('email') }}" required>
                 </div>
 
-                <label class="text-start" for="subject">contact:</label>
+                <label class="text-start" for="contact">contact:</label>
                 <div class="form-container m-0 p-0">
-                    <input type="text" class="input text-dark" name="contact" placeholder="contact" value="{{ old('contact') }}"
-                        required>
+                    <input type="text" class="input text-dark" name="contact" placeholder="contact"
+                        value="{{ old('contact') }}" required>
+                </div>
+
+                <div class="field">
+                    <label for="department_id">Department</label>
+                    <select name="department_id" id="department_id">
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ $user->department_id == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <label class="text-start" for="password">password:</label>

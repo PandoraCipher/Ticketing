@@ -32,6 +32,18 @@
                     <span class="text-danger" id="contactError"></span>
                 </div>
 
+                <label class="text-start" for="department_id">Department:</label>
+                <div class="form-container m-0 p-0">
+                    <select class="input text-dark" name="department_id" id="department_id">
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->id }}"
+                                {{ $user->department_id == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <label class="text-start" for="password">new password:</label>
                 <div class="form-container m-0 p-0">
                     <input type="password" class="input text-dark" name="password" placeholder="password">

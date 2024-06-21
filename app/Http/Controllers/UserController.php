@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchUserRequest;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Validation\Rule;
@@ -19,7 +20,8 @@ class UserController extends Controller
      */
     public function index(SearchUserRequest $request)
     {
-        $query = User::orderBy('id', 'asc');
+        $departments = Department::all();
+        $query = User::with('department')->orderBy('id', 'asc');
 
         if ($request->input('name') != '') {
             $name = $request->input('name');
@@ -27,8 +29,14 @@ class UserController extends Controller
             $query->where('name', 'like', "%$name%");
         }
 
+        if ($request->input('department_id') != '') {
+            $department_id = $request->input('department_id');
+
+            $query->where('department_id', $department_id);
+        }
+
         $users = $query->paginate(10);
-        return view('users.userlist', compact('users'));
+        return view('users.userlist', compact('users', 'departments'));
     }
 
     /**
@@ -37,7 +45,8 @@ class UserController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('users.usercreate', ['users' => $users]);
+        $departments = Department::all();
+        return view('users.usercreate', ['users' => $users, 'departments' => $departments]);
     }
 
     /**
@@ -53,6 +62,7 @@ class UserController extends Controller
                 'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
                 'role' => 'required|string|in:Admin,User', // Le rôle doit être soit 'admin' soit 'user'
+                'department_id' => 'required|exists:departments,id'
             ],
             [
                 'password.confirmed' => 'The passwords do not match.',
@@ -66,6 +76,7 @@ class UserController extends Controller
             'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
+            'department_id' => $validatedData['department_id']
         ]);
 
         $user->save();
@@ -82,6 +93,7 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users,email', // Assure l'unicité de l'email
                 'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
+                'department_id' => 'required|exists:departments,id'
             ],
             [
                 'password.confirmed' => 'The passwords do not match.',
@@ -94,6 +106,7 @@ class UserController extends Controller
             'email' => $validatedData['email'],
             'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
+            'department_id' => $validatedData['department_id']
         ]);
 
         $user->save();
@@ -108,7 +121,8 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        return view('users.usershow', compact('user'));
+        $departments = Department::all();
+        return view('users.usershow', compact('user', 'departments'));
     }
 
     /**
@@ -142,6 +156,7 @@ class UserController extends Controller
                     },
                 ],
                 'contact' => ['required', 'string', 'max:15', 'regex:/^\+?[0-9]+$/'],
+                'department_id' => 'required|exists:departments,id',
                 'password' => 'nullable|string|min:4|confirmed',
                 'role' => 'required|string|in:Admin,User',
                 'password_confirmation' => 'nullable|string|min:4',
@@ -155,6 +170,7 @@ class UserController extends Controller
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
             $user->contact = $validatedData['contact'];
+            $user->department_id = $validatedData['department_id'];
             $user->role = $validatedData['role'];
 
             // Vérifier et mettre à jour le mot de passe si fourni

@@ -104,6 +104,47 @@
                 </button>
             </div>
         </div>
+        &nbsp;
+        &nbsp;
+        <div>
+            <h3 class="h3">Department list</h3>
+            <div class="table-responsive small">
+                <table class="table table-hover rounded table-sm">
+                    <thead>
+                        <tr>
+                            <th class="bg-secondary text-white">name</th>
+                            <th class="text-center bg-secondary text-white">action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($departments as $department)
+                            <tr>
+                                <td>{{ $department->name }}</td>
+                                <td class="text-center">
+                                    <button type="button" class="badge bg-danger p-1" data-bs-toggle="modal"
+                                        data-bs-target="#deleteDepartmentModal{{ $department->id }}">
+                                        <svg class="bi">
+                                            <use xlink:href="#icon-trash" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3">no department found</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal"
+                    data-bs-target="#createDepartmentModal">
+                    add
+                    <svg class="bi">
+                        <use xlink:href="#plus-circle" />
+                    </svg>
+                </button>
+            </div>
+        </div>
 
         @foreach ($statuses as $status)
             @include('settings.modals.deleteStatusModal', ['statusId' => $status->id])
@@ -113,5 +154,9 @@
             @include('settings.modals.deleteCategoryModal', ['categoryId' => $category->id])
         @endforeach
         @include('settings.modals.createCategoryModal')
+        @foreach ($departments as $department)
+            @include('settings.modals.deleteDepartmentModal', ['departmentId' => $department->id])
+        @endforeach
+        @include('settings.modals.createDepartmentModal')
     </main>
 @endsection

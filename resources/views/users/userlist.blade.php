@@ -9,6 +9,17 @@
                 <input class="rounded border border-dark mx-1" type="text" name="name" placeholder="name" id=""
                     value="{{ request()->input('name') ?? '' }}">
 
+                <select class="rounded border border-dark mx-3" name="department_id" id="department_id">
+                    <option value="" disabled selected>Department</option>
+                    @foreach ($departments as $department)
+                        <option value="{{ $department->id }}"
+                            {{ $department->id === request()->input('department_id') ? 'selected' : '' }}>
+                            {{ $department->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+
                 <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                     <svg class="bi">
                         <use xlink:href="#search" />
@@ -39,6 +50,7 @@
                         <th scope="col">name</th>
                         <th scope="col">email</th>
                         <th scope="col">contact</th>
+                        <th scope="col">Department</th>
                         <th scope="col">role</th>
                         <th scope="col">action</th>
                     </tr>
@@ -49,6 +61,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->contact }}</td>
+                            <td>{{ $user->department ? $user->department->name : 'N/A' }}</td>
                             <td>{{ $user->role }}</td>
                             @if (Auth::user()->role == 'Admin')
                                 <td class="d-flex">
@@ -94,5 +107,4 @@
             @include('users.modals.delete', ['userId' => $user->id])
         @endforeach
     </main>
-
 @endsection

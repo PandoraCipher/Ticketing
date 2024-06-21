@@ -25,11 +25,23 @@
                         <span class="text-danger" id="emailError{{ $user->id }}"></span>
                     </div>
 
-                    <label class="text-start" for="contact">Contact:</label>
+                    <label  for="contact">Contact:</label>
                     <div class="form-container m-0 p-0">
                         <input type="text" class="input text-dark" name="contact" id="contact{{ $user->id }}"
                             placeholder="Contact" value="{{ old('contact', $user->contact) }}" required>
                         <span class="text-danger" id="contactError{{ $user->id }}"></span>
+                    </div>
+
+                    <label class="text-start" for="department_id">Department</label>
+                    <div class="form-container m-0 p-0">
+                        <select class="input text-dark" name="department_id" id="department_id">
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}"
+                                    {{ $user->department_id == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <label class="text-start" for="password">New Password:</label>

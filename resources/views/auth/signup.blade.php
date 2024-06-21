@@ -27,9 +27,20 @@
             </div>
 
             <div class="field">
-                <label for="email">contact</label>
+                <label for="contact">contact</label>
                 <input class="input" name="contact" type="text" placeholder="contact" id="contact"
                     value="{{ old('email') }}" required>
+            </div>
+
+            <div class="field">
+                <label for="department_id">Department</label>
+                <select class="input" name="department_id" id="department_id">
+                    @foreach ($departments as $department)
+                        <option value="{{ $department->id }}">
+                            {{ $department->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="field">

@@ -22,7 +22,8 @@ class SearchUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'nullable']
+            'name' => ['string', 'nullable'],
+            'department_id' => ['numeric', 'nullable']
         ];
     }
 }

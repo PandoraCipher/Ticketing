@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StatusController;
@@ -32,9 +33,7 @@ Route::get('/setting', [SettingController::class, 'index'])
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('/login', [AuthController::class, 'doLogin']);
-Route::get('/signup', function () {
-    return view('auth.signup');
-})->name('auth.signup');
+Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('auth.signup');
 Route::post('/signup', [UserController::class, 'register'])->name('user.signup');
 
 Route::prefix('tickets')
@@ -74,4 +73,12 @@ Route::prefix('category')
     Route::get('/categorycreate', [CategoryController::class, 'create'])->name('category.statuscreate');
     Route::post('/categorycreate', [CategoryController::class, 'store'])->name('category.store');
     Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+});
+
+Route::prefix('department')
+->middleware(Authenticate::class)
+->group(function (){
+    Route::get('/departmentcreate', [DepartmentController::class, 'create'])->name('department.statuscreate');
+    Route::post('/departmentcreate', [DepartmentController::class, 'store'])->name('department.store');
+    Route::delete('/{department}', [DepartmentController::class, 'destroy'])->name('department.destroy');
 });
