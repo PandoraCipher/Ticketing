@@ -24,12 +24,11 @@
                         value="{{ old('contact') }}" required>
                 </div>
 
-                <div class="field">
-                    <label for="department_id">Department</label>
-                    <select name="department_id" id="department_id">
+                <label class="text-start" for="department_id">Department</label>
+                <div class="form-container m-0 p-0">
+                    <select class="input text-dark" name="department_id" id="department_id">
                         @foreach ($departments as $department)
-                            <option value="{{ $department->id }}"
-                                {{ $user->department_id == $department->id ? 'selected' : '' }}>
+                            <option value="{{ $department->id }}">
                                 {{ $department->name }}
                             </option>
                         @endforeach
