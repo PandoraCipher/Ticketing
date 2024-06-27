@@ -1,83 +1,78 @@
-.card {
-width: 400px;
-height: 400px;
-background: #f4f6fb86;
-border: 1px solid white;
-box-shadow: 10px 10px 64px 0px rgba(10, 10, 10, 0.75);
--webkit-box-shadow: 10px 10px 64px 0px rgba(0, 0, 0, 0.75);
--moz-box-shadow: 10px 10px 64px 0px rgba(0, 0, 0, 0.75);
-}
-
 body{
-  height: 100%;
-  background-image: url('../css/fond1.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: antiquewhite;
+}
+html {
+    background: white;
 }
 
-.form {
-padding: 25px;
+section.login {
+    background: url("../css/fond1.jpg") no-repeat;
+    width: 1100px;
+    height: 500px;
+    background-size: 1100px 500px;
+    background-position: center;
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
-.card_header {
-display: flex;
+.formulaire {
+    background: white;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 40px;
+    flex-direction: column;
+    display: flex;
+    gap: 20px;
+}
+
+.form_heading{
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+label{
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgb(100,100,100);
+}
+
+.input{
+    width: 200px;
+    border: none;
+    border-bottom: 2px solid #333;
+    padding: 10px 0px;
+    outline: none;
+}
+
+input:focus{
+    border-bottom: 2px solid #e0c445;
+}
+
+.button{
+    margin-top: 20px;
+    width: 150px;
+    border: none;
+    background: #333;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px;
+    box-shadow: 2px 2px 0px #e0c445;
+}
+
+/*body {
+    height: 100%;
+    background-image: url("../css/fond1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
 align-items: center;
-}
-
-.card svg {
-color: #7878bd;
-margin-bottom: 20px;
-margin-right: 5px;
-}
-
-.form_heading {
-padding-bottom: 20px;
-font-size: 21px;
-color: #7878bd;
-}
-
-.field {
-padding-bottom: 10px;
-}
-
-.input {
-border-radius: 5px;
-background-color: #e9e9f7;
-padding: 5px;
-width: 100%;
-color: #7a7ab3;
-border: 1px solid #dadaf7
-}
-
-.input:focus-visible {
-outline: 1px solid #aeaed6;
-}
-
-.input::placeholder {
-color: #bcbcdf;
-}
-
-label {
-color: #B2BAC8;
-font-size: 14px;
-display: block;
-padding-bottom: 4px;
-}
-
-button {
-background-color: #7878bd;
-margin-top: 10px;
-font-size: 14px;
-padding: 7px 12px;
-height: auto;
-font-weight: 500;
-color: white;
-border: none;
-}
-
-button:hover {
-background-color: #5f5f9c;
-}
+}*/
