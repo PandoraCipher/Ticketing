@@ -54,18 +54,18 @@
             </div>
         </div>
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
-            <table class="table table-hover table-sm">
+            <table class="table table-bordered table-hover table-sm">
                 <thead>
                     <tr>
                         {{--<th class="bg-secondary" scope="col">#id</th>--}}
                         <th class="bg-danger" scope="col">Incident start</th>
                         <th class="bg-success" scope="col">Intervention start</th>
-                        <th class="bg-warning" scope="col">Intervention end</th>
+                        <th class="bg-info" scope="col">Intervention end</th>
                         <th class="bg-primary" scope="col">Restored date</th>
                         <th class="bg-success" scope="col">Downtime Resolution</th>
-                        <th class="bg-success" scope="col">Intervention duration</th>
-                        <th class="bg-success" scope="col">Category</th>
-                        <th class="bg-success" scope="col">Ticket</th>
+                        <th class="bg-secondary" scope="col">Intervention duration</th>
+                        <th class="bg-info" scope="col">Category</th>
+                        <th class="bg-danger" scope="col">Ticket</th>
                         <th class="bg-warning" scope="col">KPI</th>
                     </tr>
                 </thead>
@@ -77,6 +77,17 @@
                             <td><b>No intervention found</b></h3></label></td>
                         </tr>
                     @endforelse--}}
+                    <tr>
+                        <td>hello</td>
+                        <td>hello</td>
+                        <td>hello</td>
+                        <td>hello</td>
+                        <td>Hello</td>
+                        <td>hello</td>
+                        <td>hello</td>
+                        <td>hello</td>
+                        <td>hello</td>
+                    </tr>
                 </tbody>
             </table>
 
