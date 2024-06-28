@@ -47,6 +47,17 @@
                                 </a>
                             </li>
                         @endif
+                        @if (Auth::user()->role == 'Admin')
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2"
+                                    href="{{ route('intervention.list') }}">
+                                    <svg class="bi">
+                                        <use xlink:href="#people" />
+                                    </svg>
+                                    Interevention list
+                                </a>
+                            </li>
+                        @endif
                     </ul>
 
                     <hr class="my-3">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StatusController;
@@ -35,6 +36,17 @@ Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout')
 Route::post('/login', [AuthController::class, 'doLogin']);
 Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('auth.signup');
 Route::post('/signup', [UserController::class, 'register'])->name('user.signup');
+
+Route::prefix('intervention')
+    ->middleware(Authenticate::class)
+    ->group(function () {
+        Route::get('/', [InterventionController::class, 'index'])->name('intervention.list');
+        Route::get('/create', [InterventionController::class, 'create'])->name('intervention.create');
+        Route::post('/create', [InterventionController::class, 'store'])->name('intervention.store');
+        Route::get('/{intervention}', [InterventionController::class, 'show'])->name('intervention.show');
+        Route::put('/{intervention}', [InterventionController::class, 'update'])->name('intervention.update');
+        Route::get('/print', [InterventionController::class, 'show'])->name('intervention.print');
+    });
 
 Route::prefix('tickets')
     ->middleware(Authenticate::class)
