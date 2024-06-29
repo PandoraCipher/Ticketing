@@ -59,7 +59,7 @@
         </div>
 
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
-            <table class="table table-striped table-sm">
+            <table id="mytable" class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">#id</th>
@@ -106,5 +106,12 @@
 
         </div>
     </main>
+    {{--<script>
+        new DataTable('#mytable', {
+            order: [
+                [3, 'desc']
+            ]
+        });
+    </script>--}}
 
 @endsection

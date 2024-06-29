@@ -4,7 +4,7 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <h2>Intervention list</h2>
         <div class="container d-flex gap-2">
-            <div class="table-responsive">
+            {{--<div class="table-responsive">
                 <form action="" method="get">
                     <div class="container p-0">
                         <div class="container d-flex mx-0 my-1">
@@ -17,7 +17,7 @@
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            {{-- <select name="status" class="rounded border border-dark mx-3" id="">
+                            <select name="status" class="rounded border border-dark mx-3" id="">
                                 <option class="placeholder-text" value="">status</option>
                                 <option value="Pending"
                                     {{ isset($input['status']) && $input['status'] == 'Pending' ? 'selected' : '' }}>Pending
@@ -28,7 +28,7 @@
                                 <option value="Closed"
                                     {{ isset($input['status']) && $input['status'] == 'Closed' ? 'selected' : '' }}>Closed
                                 </option>
-                            </select> --}}
+                            </select> 
                         </div>
                         <div class="container d-flex my-1">
                             <label for=""><b>from:</b></label>
@@ -51,13 +51,13 @@
 
                     </div>
                 </form>
-            </div>
+            </div>--}}
         </div>
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
-            <table class="table table-bordered table-hover table-sm">
+            <table id="example" class="table table-bordered table-hover table-sm">
                 <thead>
                     <tr>
-                        {{--<th class="bg-secondary" scope="col">#id</th>--}}
+                        {{-- <th class="bg-secondary" scope="col">#id</th> --}}
                         <th class="bg-danger" scope="col">Incident start</th>
                         <th class="bg-success" scope="col">Intervention start</th>
                         <th class="bg-info" scope="col">Intervention end</th>
@@ -70,13 +70,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{--@forelse ($tickets as $ticket)
+                    {{-- @forelse ($tickets as $ticket)
                         
                     @empty
                         <tr>
                             <td><b>No intervention found</b></h3></label></td>
                         </tr>
-                    @endforelse--}}
+                    @endforelse --}}
                     <tr>
                         <td>hello</td>
                         <td>hello</td>
@@ -95,13 +95,20 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <!-- Affichage des liens de pagination -->
-                        {{--<div class="wpsc_ticket_list_nxt_pre_page">
+                        {{-- <div class="wpsc_ticket_list_nxt_pre_page">
                             {{ $interventions->appends(request()->query())->links() }}
-                        </div>--}}
+                        </div> --}}
                     </div>
                 </div>
             </div>
 
         </div>
     </main>
+    <script>
+        new DataTable('#example', {
+            order: [
+                [3, 'desc']
+            ]
+        });
+    </script>
 @endsection

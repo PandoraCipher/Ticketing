@@ -10,11 +10,14 @@
     <link class="rounded" rel="icon" type="image/png" href="../css/favicon-16.png">
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+    <link href="{{ asset('datatable/css/dataTables.bootstrap5.css') }}">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.1/css/all.css') }}">
     <link href="{{ asset('css/create.css') }}" rel="stylesheet">
     <script src="{{ asset('js/chart.umd.js') }}" integrity="sha-384-epmLzfWUmCYTZvs5x1bnwkmzWmlp1q07ng27woKxa+v3M4Am4k//PSNbB0pgm0FC" crossorigin="anonymous"></script>
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('datatable/js/dataTables.min.js') }}"></script>
+    <script src="{{ asset('datatable/js/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/color-modes.js') }}"></script>
 
