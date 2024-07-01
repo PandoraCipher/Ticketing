@@ -4,7 +4,7 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <h2>Intervention list</h2>
         <div class="container d-flex gap-2">
-            {{--<div class="table-responsive">
+            {{-- <div class="table-responsive">
                 <form action="" method="get">
                     <div class="container p-0">
                         <div class="container d-flex mx-0 my-1">
@@ -51,7 +51,7 @@
 
                     </div>
                 </form>
-            </div>--}}
+            </div> --}}
         </div>
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
             <table id="example" class="table table-bordered table-hover table-sm">
@@ -61,33 +61,33 @@
                         <th class="bg-danger" scope="col">Incident start</th>
                         <th class="bg-success" scope="col">Intervention start</th>
                         <th class="bg-info" scope="col">Intervention end</th>
+                        <th class="bg-secondary" scope="col">Intervention duration</th>
                         <th class="bg-primary" scope="col">Restored date</th>
                         <th class="bg-success" scope="col">Downtime Resolution</th>
-                        <th class="bg-secondary" scope="col">Intervention duration</th>
                         <th class="bg-info" scope="col">Category</th>
                         <th class="bg-danger" scope="col">Ticket</th>
-                        <th class="bg-warning" scope="col">KPI</th>
+                        <th class="bg-warning" scope="col">KPI(%)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @forelse ($tickets as $ticket)
-                        
+                    @forelse ($interventions as $intervention)
+                        <tr>
+                            <td>{{ $intervention->start_incident }}</td>
+                            <td>{{ $intervention->start_interv }}</td>
+                            <td>{{ $intervention->end_interv }}</td>
+                            <td>{{ $intervention->intervention_duration }}</td>
+                            <td>{{ $intervention->restore_date }}</td>
+                            <td>{{ $intervention->downtime_resolution }}</td>
+                            <td>{{ $intervention->category->name }}</td>
+                            <td><a class=" badge btn btn-primary" href="/tickets/{{ $intervention->ticket->id }}">{{ $intervention->ticket->id }}</a></td>
+                            <td>{{ $intervention->kpi_intervention }}</td>
+                        </tr>
                     @empty
                         <tr>
                             <td><b>No intervention found</b></h3></label></td>
                         </tr>
-                    @endforelse --}}
-                    <tr>
-                        <td>hello</td>
-                        <td>hello</td>
-                        <td>hello</td>
-                        <td>hello</td>
-                        <td>Hello</td>
-                        <td>hello</td>
-                        <td>hello</td>
-                        <td>hello</td>
-                        <td>hello</td>
-                    </tr>
+                    @endforelse
+
                 </tbody>
             </table>
 

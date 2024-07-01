@@ -52,9 +52,9 @@
                                 <a class="nav-link d-flex align-items-center gap-2"
                                     href="{{ route('intervention.list') }}">
                                     <svg class="bi">
-                                        <use xlink:href="#people" />
+                                        <use xlink:href="#list" />
                                     </svg>
-                                    Interevention list
+                                    Operation list
                                 </a>
                             </li>
                         @endif

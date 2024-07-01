@@ -7,7 +7,7 @@
             <div class="table-responsive">
                 <form action="" method="get">
                     <div class="container p-0">
-                        <div class="container d-flex mx-0 my-1">
+                        {{-- <div class="container d-flex mx-0 my-1">
                             <input class="rounded border border-dark mx-1" type="number" name="id" placeholder="id"
                                 id="" value="{{ $input['id'] ?? '' }}" min="1">
                             <input class="rounded border border-dark mx-1" type="text" name="client"
@@ -37,20 +37,20 @@
                             <label for=""><b>last update:</b></label>
                             <input class="rounded border border-dark mx-1" type="date" name="update" placeholder=""
                                 id="" value="{{ old('update') ?? ($input['update'] ?? '') }}">
-                        </div>
-                        <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1" href="/tickets/create">
+                        </div> --}}
+                        <a class=" btn btn-sm btn-outline-primary align-items-center gap-1" href="/tickets/create">
                             <svg class="bi">
                                 <use xlink:href="#plus-circle" />
                             </svg>
                             New ticket
                         </a>
 
-                        <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
+                        {{-- <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                             <svg class="bi">
                                 <use xlink:href="#search" />
                             </svg>
                             search
-                        </button>
+                        </button> --}}
 
                     </div>
 
@@ -59,7 +59,7 @@
         </div>
 
         <div class="table-responsive small" style="border-top: 1px solid grey; margin-top: 5px">
-            <table id="mytable" class="table table-striped table-sm">
+            <table id="ticketTable" class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">#id</th>
@@ -106,12 +106,12 @@
 
         </div>
     </main>
-    {{--<script>
-        new DataTable('#mytable', {
+    <script>
+        new DataTable('#ticketTable', {
             order: [
                 [3, 'desc']
             ]
         });
-    </script>--}}
+    </script>
 
 @endsection

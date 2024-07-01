@@ -220,7 +220,7 @@ class TicketController extends Controller
             $note->save();
 
             DB::commit();
-            event(new TicketCreated($ticket));
+            //event(new TicketCreated($ticket));
             return redirect()->route('tickets.list');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -293,7 +293,7 @@ class TicketController extends Controller
 
             $note->save();
             DB::commit();
-            event(new TicketUpdated($ticket));
+            //event(new TicketUpdated($ticket));
 
             return redirect()
                 ->route('tickets.show', $ticket->id)

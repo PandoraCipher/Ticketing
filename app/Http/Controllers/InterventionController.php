@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Intervention;
 use Illuminate\Http\Request;
 
 class InterventionController extends Controller
@@ -13,8 +14,9 @@ class InterventionController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $interventions = Intervention::all();
 
-        return view('intervention.interventionList', compact('categories'));
+        return view('intervention.interventionList', compact('categories', 'interventions'));
     }
 
     /**

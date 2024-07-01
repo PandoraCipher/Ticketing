@@ -6,7 +6,7 @@
         <h2>Users list</h2>
         <div class="d-flex table-responsive">
             <form action="" method="get">
-                <input class="rounded border border-dark mx-1" type="text" name="name" placeholder="name" id=""
+                {{-- <input class="rounded border border-dark mx-1" type="text" name="name" placeholder="name" id=""
                     value="{{ request()->input('name') ?? '' }}">
 
                 <select class="rounded border border-dark mx-3" name="department_id" id="department_id">
@@ -17,17 +17,17 @@
                             {{ $department->name }}
                         </option>
                     @endforeach
-                </select>
+                </select> --}}
 
 
-                <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
+                {{-- <button type="submit" class="btn btn-sm btn-outline-secondary align-items-center gap-1">
                     <svg class="bi">
                         <use xlink:href="#search" />
                     </svg>
                     search
-                </button>
+                </button> --}}
                 @if (Auth::user()->role == 'Admin')
-                    <a class=" btn btn-sm mx-3 btn-outline-primary align-items-center gap-1"
+                    <a class=" btn btn-sm btn-outline-primary align-items-center gap-1"
                         href="{{ route('users.usercreate') }}">
                         <svg class="bi">
                             <use xlink:href="#plus-circle" />
@@ -44,7 +44,7 @@
         @endif
 
         <div class="table-responsive small">
-            <table class="table table-striped table-sm">
+            <table id="usertable" class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">name</th>
@@ -107,4 +107,11 @@
             @include('users.modals.delete', ['userId' => $user->id])
         @endforeach
     </main>
+    <script>
+        new DataTable('#usertable', {
+            order: [
+                [3, 'desc']
+            ]
+        });
+    </script>
 @endsection
