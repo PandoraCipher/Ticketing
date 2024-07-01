@@ -30,8 +30,10 @@
                 </div>
 
                 @if (Auth::user()->role == 'Admin')
+                    <label class="text-start" for="Client">Client:</label>
                     <div class="form-container m-0 p-0">
-                        <input type="text" class="input text-dark" name="client" placeholder="client" value="" required>
+                        <input type="text" class="input text-dark" name="client" placeholder="client" value=""
+                            required>
                     </div>
                 @else
                     <input type="hidden" name="client" value="{{ Auth::user()->name }}" required>
@@ -57,7 +59,7 @@
                 <div class="form-container m-0 p-0">
                     <select class="input text-dark" name="category" required>
                         @foreach ($categories as $category)
-                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                         <option value="other">other</option>
                     </select>
@@ -91,25 +93,25 @@
         </div>
     </main>
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             var dateTimeInput = document.getElementById('datetime');
             var dateElement = document.createElement('span');
             var timeElement = document.createElement('span');
-        
+
             dateTimeInput.addEventListener('change', function() {
                 var dateTime = this.value.split('T');
                 dateElement.textContent = dateTime[0]; // Format YYYY-MM-DD
                 timeElement.textContent = dateTime[1].substring(0, 5); // Format HH:mm
             });
-        
+
             dateElement.style.display = 'inline-block';
             timeElement.style.display = 'inline-block';
-        
+
             // Afficher les éléments à côté du champ input
             dateTimeInput.parentNode.insertBefore(dateElement, dateTimeInput.nextSibling);
             dateTimeInput.parentNode.insertBefore(timeElement, dateTimeInput.nextSibling);
         });
-        </script>
-        
+    </script> --}}
+
 @endsection

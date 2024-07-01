@@ -58,15 +58,15 @@
                 <thead>
                     <tr>
                         {{-- <th class="bg-secondary" scope="col">#id</th> --}}
-                        <th class="bg-danger" scope="col">Incident start</th>
-                        <th class="bg-success" scope="col">Intervention start</th>
-                        <th class="bg-info" scope="col">Intervention end</th>
-                        <th class="bg-secondary" scope="col">Intervention duration</th>
-                        <th class="bg-primary" scope="col">Restored date</th>
-                        <th class="bg-success" scope="col">Downtime Resolution</th>
-                        <th class="bg-info" scope="col">Category</th>
-                        <th class="bg-danger" scope="col">Ticket</th>
-                        <th class="bg-warning" scope="col">KPI(%)</th>
+                        <th class="text-center bg-danger" scope="col">Incident start</th>
+                        <th class="text-center bg-success" scope="col">Operation start</th>
+                        <th class="text-center bg-info" scope="col">Operation end</th>
+                        <th class="text-center bg-secondary" scope="col">Operation duration</th>
+                        <th class="text-center bg-primary" scope="col">Restored date</th>
+                        <th class="text-center bg-success wrap-content" scope="col">Downtime Resolution</th>
+                        <th class="text-center bg-info" scope="col">Category</th>
+                        <th class="text-center bg-danger" scope="col">Ticket</th>
+                        <th class="text-center bg-warning" scope="col">KPI(%)</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -29,9 +29,22 @@
                     <h3>[ticket #{{ $ticket->id }}] {{ $ticket->subject }}</h2>
                 </label>
 
-                <div class="container d-flex p-0">
-                    <label class="text-start" for="name"><b>Author:&nbsp;</b></label>
-                    <label for="name">{{ $ticket->name }}</label>
+                <div class="container d-flex column p-0">
+                    <div class="container d-flex p-0">
+                        <label class="text-start" for="name"><b>Author:&nbsp;</b></label>
+                        <label for="name">{{ $ticket->name }}</label>
+                    </div>
+                    @if (Auth::user()->role == 'Admin')
+                        <div class="container d-flex p-0">
+                            <label class="text-start" for="intervention"><b>Intervention:&nbsp;</b></label>
+                            @if ($ticket->intervention_id != null)
+                                <a href="#" class="badge btn btn-primary"
+                                    for="intervention">{{ $ticket->intervention_id }}</a>
+                            @else
+                                <label class="text-start" for="intervention">no intervention</label>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <div class="container d-flex column p-0">
