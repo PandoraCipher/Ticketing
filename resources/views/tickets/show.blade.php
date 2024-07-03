@@ -48,15 +48,11 @@
                 <div class="container d-flex column p-0">
                     <div class="container d-flex p-0">
                         <label class="text-start" for="client"><b>Client:&nbsp;</b></label>
-                        <label for="client">{{ $ticket->client }}</label>
+                        <label for="client">{{ $ticket->client->name }}</label>
                     </div>
                     <div class="container d-flex p-0">
                         <label class="text-start" for="contact"><b>Contact:&nbsp;</b></label>
-                        @foreach ($users as $user)
-                            @if ($user->name == $ticket->client)
-                                <label for="contact">{{ $user->contact }}</label>
-                            @endif
-                        @endforeach
+                        <label for="contact">{{ $ticket->client->contact }}</label>
                     </div>
                 </div>
 
@@ -72,7 +68,7 @@
                         @include('tickets.operationDetails.userDetail')
                     @endif
 
-                
+
                     <div class="container d-flex column p-0">
                         <label class="text-start" for="priority"><b>Priority:</b></label>
                         <div class="form-container m-0 p-0 col-3 mx-1">
@@ -141,7 +137,7 @@
                                 @foreach ($users as $user)
                                     <option value="{{ $user->name }}"
                                         {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
-                                        {{ $user->name }}
+                                        {{ $user->name }}/{{ $user->department->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -208,7 +204,8 @@
             </table>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group ms-auto mb-1">
-                    <a href="{{ route('export', $ticket->id) }}" type="button" class="btn btn-sm btn-outline-secondary">Export</a>
+                    <a href="{{ route('export', $ticket->id) }}" type="button"
+                        class="btn btn-sm btn-outline-secondary">Export</a>
                 </div>
             </div>
         </div>

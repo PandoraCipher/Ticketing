@@ -185,7 +185,7 @@ class TicketController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'client' => 'required|string',
+            'client' => 'required|integer',
             'priority' => 'required|string',
             'subject' => 'required|string',
             'note' => 'required|string',
@@ -201,7 +201,7 @@ class TicketController extends Controller
         try {
             $ticket = new Ticket([
                 'name' => $data['name'],
-                'client' => $data['client'],
+                'client_id' => $data['client'],
                 'subject' => $data['subject'],
                 'priority' => $data['priority'],
                 'assigned' => $data['assigned'],

@@ -7,7 +7,7 @@
             </span>
         </td>
         <td>{{ $ticket->name }}</td>
-        <td>{{ $ticket->client }}</td>
+        <td>{{ $ticket->client->name }}</td>
         <td>{{ $ticket->subject }}</td>
         <td>{{ $ticket->assigned }}</td>
         <td>

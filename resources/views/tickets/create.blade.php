@@ -30,17 +30,17 @@
                 </div>
 
                 @if (Auth::user()->role == 'Admin')
-                    <label class="text-start" for="Client">Client:</label>
+                    <label class="text-start" for="Client">Client id:</label>
                     <div class="form-container m-0 p-0">
                         <input class="input text-dark" list="users" name="client" id="client">
                         <datalist id="users">
                             @foreach ($users as $user)
-                                <option value="{{ $user->name }}">{{ $user->name }}/{{ $user->department->name ?? '' }}</option>
+                                <option value="{{ $user->id }}">{{ $user->name }}/{{ $user->department->name ?? '' }}</option>
                             @endforeach
                         </datalist>
                     </div>
                 @else
-                    <input type="hidden" name="client" value="{{ Auth::user()->name }}" required>
+                    <input type="hidden" name="client" value="{{ Auth::user()->id }}" required>
                 @endif
 
                 <label class="text-start" for="assigned">Assign to:</label>
