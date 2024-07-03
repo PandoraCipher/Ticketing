@@ -382,4 +382,8 @@ class TicketController extends Controller
             return redirect()->back()->with('error', 'Fichier non trouvé');
         }
     }
+
+    public function export(){
+        
+    }
 }
