@@ -13,5 +13,13 @@ class Ticket extends Model
     public function notes(){
         return $this->hasMany(Note::class);
     }
+
+    public function intervention(){
+        return $this->belongsTo(Intervention::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }
 

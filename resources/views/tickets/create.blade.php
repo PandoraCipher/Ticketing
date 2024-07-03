@@ -23,10 +23,10 @@
                         value=" {{ Auth::user()->name }} " required>
                 </div>
 
-                <label class="text-start" for="incident_start">Incident start(Date & time):</label>
+                <label class="text-start" for="incident_start">Incident start(if incident):</label>
                 <div class="form-container m-0 p-0">
                     <input type="datetime-local" class="input text-dark" name="incident_start" placeholder="" id="datetime"
-                        value="" required>
+                        value="">
                 </div>
 
                 @if (Auth::user()->role == 'Admin')
@@ -59,7 +59,7 @@
                 <div class="form-container m-0 p-0">
                     <select class="input text-dark" name="category" required>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                         <option value="other">other</option>
                     </select>
@@ -93,25 +93,26 @@
         </div>
     </main>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var dateTimeInput = document.getElementById('datetime');
-            var dateElement = document.createElement('span');
-            var timeElement = document.createElement('span');
+    <script>
 
-            dateTimeInput.addEventListener('change', function() {
-                var dateTime = this.value.split('T');
-                dateElement.textContent = dateTime[0]; // Format YYYY-MM-DD
-                timeElement.textContent = dateTime[1].substring(0, 5); // Format HH:mm
-            });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     var dateTimeInput = document.getElementById('datetime');
+        //     var dateElement = document.createElement('span');
+        //     var timeElement = document.createElement('span');
 
-            dateElement.style.display = 'inline-block';
-            timeElement.style.display = 'inline-block';
+        //     dateTimeInput.addEventListener('change', function() {
+        //         var dateTime = this.value.split('T');
+        //         dateElement.textContent = dateTime[0]; // Format YYYY-MM-DD
+        //         timeElement.textContent = dateTime[1].substring(0, 5); // Format HH:mm
+        //     });
 
-            // Afficher les éléments à côté du champ input
-            dateTimeInput.parentNode.insertBefore(dateElement, dateTimeInput.nextSibling);
-            dateTimeInput.parentNode.insertBefore(timeElement, dateTimeInput.nextSibling);
-        });
-    </script> --}}
+        //     dateElement.style.display = 'inline-block';
+        //     timeElement.style.display = 'inline-block';
+
+        //     // Afficher les éléments à côté du champ input
+        //     dateTimeInput.parentNode.insertBefore(dateElement, dateTimeInput.nextSibling);
+        //     dateTimeInput.parentNode.insertBefore(timeElement, dateTimeInput.nextSibling);
+        // });
+    </script>
 
 @endsection

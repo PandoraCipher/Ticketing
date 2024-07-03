@@ -36,12 +36,10 @@
                     </div>
                     @if (Auth::user()->role == 'Admin')
                         <div class="container d-flex p-0">
-                            <label class="text-start" for="intervention"><b>Intervention:&nbsp;</b></label>
+                            <label class="text-start" for="intervention"><b>operation:&nbsp;</b></label>
                             @if ($ticket->intervention_id != null)
                                 <a href="#" class="badge btn btn-primary"
                                     for="intervention">{{ $ticket->intervention_id }}</a>
-                            @else
-                                <label class="text-start" for="intervention">no intervention</label>
                             @endif
                         </div>
                     @endif
@@ -68,6 +66,13 @@
                 </div>
                 @if ($ticket->status != 'Closed')
 
+                    @if (Auth::user()->role == 'Admin')
+                        @include('tickets.operationDetails.adminDetail')
+                    @else
+                        @include('tickets.operationDetails.userDetail')
+                    @endif
+
+                
                     <div class="container d-flex column p-0">
                         <label class="text-start" for="priority"><b>Priority:</b></label>
                         <div class="form-container m-0 p-0 col-3 mx-1">
@@ -115,7 +120,7 @@
                             value="{{ old('subject', $ticket->subject) }}">
                     </div>
 
-                    <label class="text-start" for="assigned"><b>To:</b></label>
+                    <label class="text-start" for="assigned"><b>Assign to:</b></label>
                     <div class="form-container m-0 p-0">
                         @if (Auth::user()->role == 'User')
                             <select name="assigned" class="input text-dark" required>

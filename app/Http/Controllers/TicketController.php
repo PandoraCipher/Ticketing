@@ -6,10 +6,12 @@ use App\Http\Requests\SearchTicketsRequest;
 use App\Events\TicketCreated;
 use App\Events\TicketUpdated;
 use App\Models\Category;
+use App\Models\Intervention;
 use App\Models\Note;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\User;
+use Carbon\Carbon;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -189,9 +191,11 @@ class TicketController extends Controller
             'assigned' => 'required|string',
             'category' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
+            'incident_start' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
         DB::beginTransaction();
+        $category = Category::findOrFail($data['category']);
 
         try {
             $ticket = new Ticket([
@@ -200,11 +204,19 @@ class TicketController extends Controller
                 'subject' => $data['subject'],
                 'priority' => $data['priority'],
                 'assigned' => $data['assigned'],
-                'category' => $data['category'],
+                'category' => $category->name,
                 'status' => 'Open',
             ]);
 
             $ticket->save();
+
+            $intervention = new Intervention();
+            $intervention->start_incident = isset($data['start_incident']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_incident'])->toDateTimeString() : null;
+            $intervention->category_id = $data['category'];
+            $intervention->ticket_id = $ticket->id;
+            $intervention->save();
+
+            $ticket->intervention()->associate($intervention)->save();
 
             $note = new Note();
             $note->ticket_id = $ticket->id;
@@ -266,6 +278,10 @@ class TicketController extends Controller
             'assigned' => 'required|string',
             'status' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
+            'start_incident' => 'nullable|date_format:Y-m-d\TH:i',
+            'start_operation' => 'nullable|date_format:Y-m-d\TH:i',
+            'end_operation' => 'nullable|date_format:Y-m-d\TH:i',
+            'restore_date' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
         $status = $user->role == 'User' ? 'AAR' : $data['status'];
@@ -277,6 +293,38 @@ class TicketController extends Controller
                 'priority' => $data['priority'],
                 'assigned' => $data['assigned'],
                 'status' => $status,
+            ]);
+
+            $intervention = $ticket->intervention;
+            if (!$intervention) {
+                $intervention = new Intervention(['ticket_id' => $ticket->id]);
+            }
+            $durationInSeconds = 0;
+            if (!empty($data['start_operation'])) {
+                $startOperationTimestamp = strtotime($data['start_operation']);
+                if (!empty($data['end_operation'])) {
+                    $endOperationTimestamp = strtotime($data['end_operation']);
+                    $durationInSeconds = abs($endOperationTimestamp - $startOperationTimestamp);
+                }
+            }
+            if (!empty($data['start_incident'])) {
+                $startIncidentTimestamp = strtotime($data['start_incident']);
+                if (!empty($data['restore_date'])) {
+                    $restoreDateTimestamp = strtotime($data['restore_date']);
+                    $downtimeDurationInSeconds = abs($restoreDateTimestamp - $startIncidentTimestamp);
+                }
+            }
+
+            $interventionDurationMinutes = $durationInSeconds / 60;
+            $DowntimeResolutionMinutes = $downtimeDurationInSeconds / 60;
+
+            $intervention->update([
+                'start_incident' => isset($data['start_incident']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_incident'])->toDateTimeString() : null,
+                'start_interv' => isset($data['start_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_operation'])->toDateTimeString() : null,
+                'end_interv' => isset($data['end_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['end_operation'])->toDateTimeString() : null,
+                'restore_date' => isset($data['restore_date']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['restore_date'])->toDateTimeString() : null,
+                'intervention_duration' => $interventionDurationMinutes,
+                'downtime_resolution' => $DowntimeResolutionMinutes,
             ]);
 
             $note = new Note();
@@ -298,6 +346,8 @@ class TicketController extends Controller
             return redirect()
                 ->route('tickets.show', $ticket->id)
                 ->with('message', 'Ticket updated successfully.');
+            // echo json_encode($data, JSON_PRETTY_PRINT);
+            // echo json_encode($intervention, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()
