@@ -191,7 +191,7 @@ class TicketController extends Controller
             'assigned' => 'required|string',
             'category' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
-            'incident_start' => 'nullable|date_format:Y-m-d\TH:i',
+            'start_incident' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
         DB::beginTransaction();
@@ -234,6 +234,7 @@ class TicketController extends Controller
             DB::commit();
             //event(new TicketCreated($ticket));
             return redirect()->route('tickets.list');
+            //echo json_encode($intervention, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()
@@ -307,6 +308,7 @@ class TicketController extends Controller
                     $durationInSeconds = abs($endOperationTimestamp - $startOperationTimestamp);
                 }
             }
+            $downtimeDurationInSeconds = 0;
             if (!empty($data['start_incident'])) {
                 $startIncidentTimestamp = strtotime($data['start_incident']);
                 if (!empty($data['restore_date'])) {

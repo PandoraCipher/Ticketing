@@ -25,15 +25,19 @@
 
                 <label class="text-start" for="incident_start">Incident start(if incident):</label>
                 <div class="form-container m-0 p-0">
-                    <input type="datetime-local" class="input text-dark" name="incident_start" placeholder="" id="datetime"
+                    <input type="datetime-local" class="input text-dark" name="start_incident" id="datetime"
                         value="">
                 </div>
 
                 @if (Auth::user()->role == 'Admin')
                     <label class="text-start" for="Client">Client:</label>
                     <div class="form-container m-0 p-0">
-                        <input type="text" class="input text-dark" name="client" placeholder="client" value=""
-                            required>
+                        <input class="input text-dark" list="users" name="client" id="client">
+                        <datalist id="users">
+                            @foreach ($users as $user)
+                                <option value="{{ $user->name }}">{{ $user->name }}/{{ $user->department->name ?? '' }}</option>
+                            @endforeach
+                        </datalist>
                     </div>
                 @else
                     <input type="hidden" name="client" value="{{ Auth::user()->name }}" required>
