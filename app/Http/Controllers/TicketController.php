@@ -11,6 +11,7 @@ use App\Models\Note;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
@@ -383,7 +384,19 @@ class TicketController extends Controller
         }
     }
 
-    public function export(){
-        
+    public function exportPDF($ticketId)
+    {
+        $ticket = Ticket::with(['intervention', 'notes'])->find($ticketId);
+        $user = User::where('name',$ticket->client)->first();
+
+        $data = [
+            'ticket' => $ticket,
+            'user' => $user,
+            'intervention' => $ticket->intervention,
+            'notes' => $ticket->notes,
+        ];
+        $pdf = Pdf::loadView('intervention.interventionDoc', $data);
+        //return $pdf->download('ticket_' . $ticketId . '.pdf');
+        echo json_encode(([$user]), JSON_PRETTY_PRINT);
     }
 }
