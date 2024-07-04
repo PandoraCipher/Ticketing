@@ -317,8 +317,11 @@ class TicketController extends Controller
                     $downtimeDurationInSeconds = abs($restoreDateTimestamp - $startIncidentTimestamp);
                 }
             }
-
+            $kpiIntervention = 0;
             $interventionDurationMinutes = $durationInSeconds / 60;
+            $kpiInterventionInitial = $interventionDurationMinutes / $intervention->category->stdResolutionTime;
+            $kpiInterventionFormatted = number_format($kpiInterventionInitial, 4);
+            $kpiIntervention = $kpiInterventionFormatted * 100;
             $DowntimeResolutionMinutes = $downtimeDurationInSeconds / 60;
 
             if (Auth::user()->role == 'Admin') {
@@ -329,6 +332,7 @@ class TicketController extends Controller
                     'restore_date' => isset($data['restore_date']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['restore_date'])->toDateTimeString() : null,
                     'intervention_duration' => $interventionDurationMinutes,
                     'downtime_resolution' => $DowntimeResolutionMinutes,
+                    'kpi_intervention' => $kpiIntervention,
                 ]);
             }
 

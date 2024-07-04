@@ -45,8 +45,8 @@
         <p><strong>Incident Start Date:</strong> {{ $intervention->start_incident }}</p>
         <p><strong>Restore Date:</strong> {{ $intervention->restore_date }}</p>
     @endif
-    <p><strong>Intervention Start Date:</strong> {{ $intervention->start_interv }}</p>
-    <p><strong>Intervention End Date:</strong> {{ $intervention->end_interv }}</p>
+    <p><strong>Operation Start Date:</strong> {{ $intervention->start_interv }}</p>
+    <p><strong>Operation End Date:</strong> {{ $intervention->end_interv }}</p>
     {{-- <p><strong>Contact:</strong> {{ $user->contact ?? 'N/A' }}</p> --}}
     <p><strong>Category:</strong> {{ $ticket->category->name }}</p>
     <p><strong>Subject:</strong> {{ $ticket->subject }}</p>
