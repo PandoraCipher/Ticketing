@@ -34,52 +34,52 @@ class TicketController extends Controller
             $query->where(function ($query) use ($user) {
                 $query
                     ->where('name', $user->name)
-                    ->orWhere('client', $user->name)
-                    ->orWhere('assigned', $user->name);
+                    ->orWhere('client_id', $user->id)
+                    ->orWhere('assigned_id', $user->id);
             });
         }
 
-        if ($request->input('id') != '') {
-            $id = $request->input('id');
+        //if ($request->input('id') != '') {
+        //    $id = $request->input('id');
 
-            $query->where('id', $id);
-        }
-        if ($request->input('client') != '') {
-            $client = $request->input('client');
+        //    $query->where('id', $id);
+        //}
+        //if ($request->input('client') != '') {
+        //    $client = $request->input('client');
 
-            $query->where('client', 'like', "%$client%");
-        }
-        if ($request->input('assigned') != '') {
-            $assigned = $request->input('assigned');
+        //    $query->where('client', 'like', "%$client%");
+        //}
+        //if ($request->input('assigned') != '') {
+        //    $assigned = $request->input('assigned');
 
-            $query->where('assigned', 'like', "%$assigned%");
-        }
-        if ($request->input('status') != '') {
-            $status = $request->input('status');
-            if ($status == 'Open') {
-                $query->where('status', 'Open');
-            } elseif ($status == 'Closed') {
-                $query->where('status', 'Closed');
-            } elseif ($status == 'Pending') {
-                $query->whereNotIn('status', ['Open', 'Closed']);
-            }
-        }
+        //    $query->where('assigned', 'like', "%$assigned%");
+        //}
+        //if ($request->input('status') != '') {
+        //    $status = $request->input('status');
+        //    if ($status == 'Open') {
+        //        $query->where('status', 'Open');
+        //    } elseif ($status == 'Closed') {
+        //        $query->where('status', 'Closed');
+        //    } elseif ($status == 'Pending') {
+        //        $query->whereNotIn('status', ['Open', 'Closed']);
+        //    }
+        //}
 
-        if ($request->input('begin') != '') {
-            $begin = $request->input('begin');
+        //if ($request->input('begin') != '') {
+        //  $begin = $request->input('begin');
 
-            $query->whereDate('created_at', '>=', $begin);
-        }
-        if ($request->input('end') != '') {
-            $end = $request->input('end');
+        //    $query->whereDate('created_at', '>=', $begin);
+        //}
+        //if ($request->input('end') != '') {
+        //    $end = $request->input('end');
 
-            $query->whereDate('created_at', '<=', $end);
-        }
-        if ($request->input('update') != '') {
-            $update = $request->input('update');
+        //    $query->whereDate('created_at', '<=', $end);
+        //}
+        //if ($request->input('update') != '') {
+        //    $update = $request->input('update');
 
-            $query->whereDate('updated_at', '>=', $update);
-        }
+        //    $query->whereDate('updated_at', '>=', $update);
+        //}
 
         $tickets = $query->paginate(10);
         $input = $request->validated();
@@ -233,7 +233,7 @@ class TicketController extends Controller
             $note->save();
 
             DB::commit();
-            //event(new TicketCreated($ticket));
+            event(new TicketCreated($ticket));
             return redirect()->route('tickets.list');
             //echo json_encode($intervention, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
@@ -350,7 +350,7 @@ class TicketController extends Controller
 
             $note->save();
             DB::commit();
-            //event(new TicketUpdated($ticket));
+            event(new TicketUpdated($ticket));
 
             return redirect()
                 ->route('tickets.show', $ticket->id)
