@@ -9,7 +9,7 @@
         <td>{{ $ticket->name }}</td>
         <td>{{ $ticket->client->name }}</td>
         <td>{{ $ticket->subject }}</td>
-        <td>{{ $ticket->assigned }}</td>
+        <td>{{ $ticket->assigned->name }}</td>
         <td>
             <span
                 class="badge p-1 text-white

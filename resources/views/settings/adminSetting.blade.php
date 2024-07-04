@@ -75,6 +75,12 @@
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->stdResolutionTime }}</td>
                                 <td class="text-center">
+                                    <button type="button" class="badge bg-primary p-1" data-bs-toggle="modal"
+                                        data-bs-target="#modifyCategoryModal{{ $category->id }}">
+                                        <svg class="bi">
+                                            <use xlink:href="#edit-icon" />
+                                        </svg>
+                                    </button>
                                     <button type="button" class="badge bg-danger p-1" data-bs-toggle="modal"
                                         data-bs-target="#deleteCategoryModal{{ $category->id }}">
                                         <svg class="bi">
@@ -152,6 +158,7 @@
         @include('settings.modals.createStatusModal')
         @foreach ($categories as $category)
             @include('settings.modals.deleteCategoryModal', ['categoryId' => $category->id])
+            @include('settings.modals.modifyCategoryModal', ['categoryId' => $category->id])
         @endforeach
         @include('settings.modals.createCategoryModal')
         @foreach ($departments as $department)

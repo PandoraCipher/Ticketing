@@ -42,6 +42,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <div class="table-responsive small">
             <table id="usertable" class="table table-striped table-sm">

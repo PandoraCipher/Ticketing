@@ -25,7 +25,7 @@ class SendTicketCreatedNotification
     public function handle(TicketCreated $event)
     {
         $ticket = $event->ticket;
-        $users = collect([User::where('id', $ticket->client->id)->first(), User::where('name', $ticket->assigned)->first()])
+        $users = collect([User::where('id', $ticket->client->id)->first(), User::where('id', $ticket->assigned->id)->first()])
             ->filter()
             ->unique('id');
 

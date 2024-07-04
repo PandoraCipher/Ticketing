@@ -71,7 +71,24 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'stdResolutionTime' => 'required|numeric'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $category->update([
+                'name' => $data['name'],
+                'stdResolutionTime' => $data['stdResolutionTime'],
+            ]);
+            DB::commit();
+
+            return redirect()->route('setting');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**

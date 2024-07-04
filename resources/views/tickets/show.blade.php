@@ -58,7 +58,7 @@
 
                 <div class="container d-flex p-0">
                     <label class="text-start" for="category"><b>Category:&nbsp;</b></label>
-                    <label for="client">{{ $ticket->category }}</label>
+                    <label for="client">{{ $ticket->category->name }}</label>
                 </div>
                 @if ($ticket->status != 'Closed')
 
@@ -122,8 +122,8 @@
                             <select name="assigned" class="input text-dark" required>
                                 @foreach ($users as $user)
                                     @if ($user->role == 'Admin')
-                                        <option value="{{ $user->name }}"
-                                            {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
+                                        <option value="{{ $user->id }}"
+                                            {{ $ticket->assigned->id === $user->id ? 'selected' : '' }}>
                                             {{ $user->name }}
                                         </option>
                                     @endif
@@ -135,8 +135,8 @@
                         @else
                             <select name="assigned" class="input text-dark" required>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->name }}"
-                                        {{ $ticket->assigned === $user->name ? 'selected' : '' }}>
+                                    <option value="{{ $user->id }}"
+                                        {{ $ticket->assigned->id === $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}/{{ $user->department->name }}
                                     </option>
                                 @endforeach
@@ -197,7 +197,7 @@
                                     No file attached
                                 @endif
                             </td>
-                            <td>{{ $note->assigned }}</td>
+                            <td>{{ $note->assigned->name }}</td>
                         </tr>
                     @endforeach
                 </tbody>

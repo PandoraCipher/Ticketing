@@ -46,16 +46,16 @@
                 <label class="text-start" for="assigned">Assign to:</label>
                 <div class="form-container m-0 p-0">
                     <select name="assigned" class="input text-dark" required>
-                        {{-- @foreach ($users as $user)
+                        @foreach ($users as $user)
                             @if ($user->role == 'Admin')
-                                <option value="{{ $user->name }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
+                                <option value="{{ $user->id }}" {{ $ticket->assigned === $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endif
-                        @endforeach --}}
-                        <option value="Support Enterprise" class="text-dark">Support Enterprise</option>
+                        @endforeach
+                        {{-- <option value="Support Enterprise" class="text-dark">Support Enterprise</option>
                         <option value="Tovo RAJONSON" class="text-dark">Tovo RAJONSON</option>
-                        <option value="ELIE RAKOTONDRANIVO" class="text-dark">ELIE RAKOTONDRANIVO</option>
+                        <option value="ELIE RAKOTONDRANIVO" class="text-dark">ELIE RAKOTONDRANIVO</option> --}}
                     </select>
                 </div>
 

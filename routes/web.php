@@ -82,8 +82,9 @@ Route::prefix('status')
 Route::prefix('category')
 ->middleware(Authenticate::class)
 ->group(function (){
-    Route::get('/categorycreate', [CategoryController::class, 'create'])->name('category.statuscreate');
+    Route::get('/categorycreate', [CategoryController::class, 'create'])->name('category.categorycreate');
     Route::post('/categorycreate', [CategoryController::class, 'store'])->name('category.store');
+    Route::put('/{category}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 });
 

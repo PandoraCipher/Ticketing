@@ -103,7 +103,7 @@ class TicketController extends Controller
 
         if (Ticket::count() > 0) {
             $query = Ticket::orderBy('id', 'desc')->whereDate('created_at', '=', now()->toDateString());
-            $myTicketsCount = Ticket::where('assigned', $user->name)
+            $myTicketsCount = Ticket::where('assigned_id', $user->id)
                 ->whereIn('status', ['Open', 'AAR', 'ACR'])
                 ->count();
 
@@ -111,8 +111,8 @@ class TicketController extends Controller
                 $query->where(function ($query) use ($user) {
                     $query
                         ->where('name', $user->name)
-                        ->orWhere('client', $user->name)
-                        ->orWhere('assigned', $user->name);
+                        ->orWhere('client_id', $user->id)
+                        ->orWhere('assigned_id', $user->id);
                 });
             }
 
@@ -122,8 +122,8 @@ class TicketController extends Controller
                     ->where(function ($query) use ($user) {
                         $query
                             ->where('name', $user->name)
-                            ->orWhere('client', $user->name)
-                            ->orWhere('assigned', $user->name);
+                            ->orWhere('client_id', $user->id)
+                            ->orWhere('assigned_id', $user->id);
                     })
                     ->count();
             } else {
@@ -136,8 +136,8 @@ class TicketController extends Controller
                 $pendingTicketsCount = Ticket::where(function ($query) use ($user) {
                     $query
                         ->where('name', $user->name)
-                        ->orWhere('client', $user->name)
-                        ->orWhere('assigned', $user->name);
+                        ->orWhere('client_id', $user->id)
+                        ->orWhere('assigned_id', $user->id);
                 })
                     ->whereIn('status', ['AAR', 'ACR'])
                     ->count();
@@ -148,11 +148,11 @@ class TicketController extends Controller
 
             $adminUsers = User::where('role', 'Admin')->get();
             foreach ($adminUsers as $adminUser) {
-                $adminOpenTicketsCount = Ticket::where('assigned', $adminUser->name)
+                $adminOpenTicketsCount = Ticket::where('assigned_id', $adminUser->id)
                     ->where('status', 'Open')
                     ->count();
 
-                $adminPendingTicketsCount = Ticket::where('assigned', $adminUser->name)
+                $adminPendingTicketsCount = Ticket::where('assigned_id', $adminUser->id)
                     ->whereIn('status', ['AAR', 'ACR'])
                     ->count();
 
@@ -189,14 +189,14 @@ class TicketController extends Controller
             'priority' => 'required|string',
             'subject' => 'required|string',
             'note' => 'required|string',
-            'assigned' => 'required|string',
-            'category' => 'required|string',
+            'assigned' => 'required|integer',
+            'category' => 'required|integer',
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
             'start_incident' => 'nullable|date_format:Y-m-d\TH:i',
         ]);
 
         DB::beginTransaction();
-        $category = Category::findOrFail($data['category']);
+        //$category = Category::findOrFail($data['category']);
 
         try {
             $ticket = new Ticket([
@@ -204,8 +204,8 @@ class TicketController extends Controller
                 'client_id' => $data['client'],
                 'subject' => $data['subject'],
                 'priority' => $data['priority'],
-                'assigned' => $data['assigned'],
-                'category' => $category->name,
+                'assigned_id' => $data['assigned'],
+                'category_id' => $data['category'],
                 'status' => 'Open',
             ]);
 
@@ -222,7 +222,7 @@ class TicketController extends Controller
             $note = new Note();
             $note->ticket_id = $ticket->id;
             $note->author = $request->user()->name;
-            $note->assigned = $data['assigned'];
+            $note->assigned_id = $data['assigned'];
             $note->content = $data['note'];
             $note->status = 'Open';
 
@@ -277,7 +277,7 @@ class TicketController extends Controller
         $data = $request->validate([
             'priority' => 'required|string',
             'note' => 'required|string',
-            'assigned' => 'required|string',
+            'assigned' => 'required|integer',
             'status' => 'required|string',
             'file' => 'file|mimes:pdf,docx,png,jpg,jpeg,xlsx,xls,msg|max:10240',
             'start_incident' => 'nullable|date_format:Y-m-d\TH:i',
@@ -293,7 +293,7 @@ class TicketController extends Controller
         try {
             $ticket->update([
                 'priority' => $data['priority'],
-                'assigned' => $data['assigned'],
+                'assigned_id' => $data['assigned'],
                 'status' => $status,
             ]);
 
@@ -321,19 +321,21 @@ class TicketController extends Controller
             $interventionDurationMinutes = $durationInSeconds / 60;
             $DowntimeResolutionMinutes = $downtimeDurationInSeconds / 60;
 
-            $intervention->update([
-                'start_incident' => isset($data['start_incident']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_incident'])->toDateTimeString() : null,
-                'start_interv' => isset($data['start_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_operation'])->toDateTimeString() : null,
-                'end_interv' => isset($data['end_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['end_operation'])->toDateTimeString() : null,
-                'restore_date' => isset($data['restore_date']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['restore_date'])->toDateTimeString() : null,
-                'intervention_duration' => $interventionDurationMinutes,
-                'downtime_resolution' => $DowntimeResolutionMinutes,
-            ]);
+            if (Auth::user()->role == 'Admin') {
+                $intervention->update([
+                    'start_incident' => isset($data['start_incident']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_incident'])->toDateTimeString() : null,
+                    'start_interv' => isset($data['start_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['start_operation'])->toDateTimeString() : null,
+                    'end_interv' => isset($data['end_operation']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['end_operation'])->toDateTimeString() : null,
+                    'restore_date' => isset($data['restore_date']) ? Carbon::createFromFormat('Y-m-d\TH:i', $data['restore_date'])->toDateTimeString() : null,
+                    'intervention_duration' => $interventionDurationMinutes,
+                    'downtime_resolution' => $DowntimeResolutionMinutes,
+                ]);
+            }
 
             $note = new Note();
             $note->ticket_id = $ticket->id;
             $note->author = $request->user()->name;
-            $note->assigned = $data['assigned'];
+            $note->assigned_id = $data['assigned'];
             $note->content = $data['note'];
             $note->status = $status;
 
@@ -387,7 +389,7 @@ class TicketController extends Controller
     public function exportPDF($ticketId)
     {
         $ticket = Ticket::with(['intervention', 'notes'])->find($ticketId);
-        $user = User::where('name',$ticket->client)->first();
+        $user = $ticket->client;
 
         $data = [
             'ticket' => $ticket,
@@ -396,7 +398,7 @@ class TicketController extends Controller
             'notes' => $ticket->notes,
         ];
         $pdf = Pdf::loadView('intervention.interventionDoc', $data);
-        //return $pdf->download('ticket_' . $ticketId . '.pdf');
-        echo json_encode(([$user]), JSON_PRETTY_PRINT);
+        return $pdf->download('ticket_' . $ticketId . '.pdf');
+        //echo json_encode(([$user]), JSON_PRETTY_PRINT);
     }
 }

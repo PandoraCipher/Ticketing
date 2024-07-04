@@ -25,9 +25,8 @@ class SendTicketUpdatedNotification
     {
         $ticket = $event->ticket;
         $users = collect([
-            User::where('name', $ticket->name)->first(),
-            User::where('name', $ticket->client)->first(),
-            User::where('name', $ticket->assigned)->first(),
+            User::where('id', $ticket->client->id)->first(),
+            User::where('name', $ticket->assigned->id)->first(),
         ])->filter()->unique('id');
 
         $admins = User::where('role', 'Admin')->get();

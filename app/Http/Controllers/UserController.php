@@ -6,12 +6,14 @@ use App\Http\Requests\SearchUserRequest;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Ramsey\Uuid\Type\Integer;
 
 class UserController extends Controller
 {
@@ -62,7 +64,7 @@ class UserController extends Controller
                 'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
                 'role' => 'required|string|in:Admin,User', // Le rôle doit être soit 'admin' soit 'user'
-                'department_id' => 'required|exists:departments,id'
+                'department_id' => 'required|exists:departments,id',
             ],
             [
                 'password.confirmed' => 'The passwords do not match.',
@@ -76,7 +78,7 @@ class UserController extends Controller
             'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
-            'department_id' => $validatedData['department_id']
+            'department_id' => $validatedData['department_id'],
         ]);
 
         $user->save();
@@ -93,7 +95,7 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users,email', // Assure l'unicité de l'email
                 'contact' => 'required|string|max:15',
                 'password' => 'required|string|min:4|confirmed', // Le champ est obligatoire et doit être confirmé
-                'department_id' => 'required|exists:departments,id'
+                'department_id' => 'required|exists:departments,id',
             ],
             [
                 'password.confirmed' => 'The passwords do not match.',
@@ -106,7 +108,7 @@ class UserController extends Controller
             'email' => $validatedData['email'],
             'contact' => $validatedData['contact'],
             'password' => Hash::make($validatedData['password']),
-            'department_id' => $validatedData['department_id']
+            'department_id' => $validatedData['department_id'],
         ]);
 
         $user->save();
@@ -143,28 +145,29 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             // Règles de validation pour la mise à jour de l'utilisateur
-            $validatedData = $request->validate([
-                'name' => 'required|string',
-                'email' => [
-                    'required',
-                    'email',
-                    Rule::unique('users')->ignore($user->id),
-                    function ($attribute, $value, $fail) {
-                        if (!strpos($value, '@')) {
-                            $fail('The email must contain @');
-                        }
-                    },
+            $validatedData = $request->validate(
+                [
+                    'name' => 'required|string',
+                    'email' => [
+                        'required',
+                        'email',
+                        Rule::unique('users')->ignore($user->id),
+                        function ($attribute, $value, $fail) {
+                            if (!strpos($value, '@')) {
+                                $fail('The email must contain @');
+                            }
+                        },
+                    ],
+                    'contact' => ['required', 'string', 'max:15', 'regex:/^\+?[0-9]+$/'],
+                    'department_id' => 'required|exists:departments,id',
+                    'password' => 'nullable|string|min:4|confirmed',
+                    'role' => 'required|string|in:Admin,User',
+                    'password_confirmation' => 'nullable|string|min:4',
                 ],
-                'contact' => ['required', 'string', 'max:15', 'regex:/^\+?[0-9]+$/'],
-                'department_id' => 'required|exists:departments,id',
-                'password' => 'nullable|string|min:4|confirmed',
-                'role' => 'required|string|in:Admin,User',
-                'password_confirmation' => 'nullable|string|min:4',
-            ],
-            [
-                'password.confirmed' => 'The passwords do not match.',
-            ]
-        );
+                [
+                    'password.confirmed' => 'The passwords do not match.',
+                ],
+            );
 
             // Mettre à jour les champs de l'utilisateur
             $user->name = $validatedData['name'];
@@ -203,15 +206,24 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+
+    public function destroy(String $id)
     {
-        // Rechercher l'utilisateur par ID
-        $user = User::findOrFail($id);
+        try {
+            // Rechercher l'utilisateur par ID
+            $user = User::findOrFail($id);
 
-        // Supprimer l'utilisateur
-        $user->delete();
+            // Supprimer l'utilisateur
+            $user->delete();
 
-        // Redirection avec message de succès
-        return redirect()->route('users.userlist')->with('success', 'User deleted successfully');
+            // Redirection avec message de succès
+            return redirect()->route('users.userlist')->with('success', 'User deleted successfully');
+        } catch (ModelNotFoundException $e) {
+            // Gestion de l'erreur lorsque l'utilisateur n'est pas trouvé
+            return redirect()->route('users.userlist')->with('error', 'User not found');
+        } catch (\Exception $e) {
+            // Gestion générale des autres erreurs
+            return redirect()->route('users.userlist')->with('error', 'cannot delete this user');
+        }
     }
 }
