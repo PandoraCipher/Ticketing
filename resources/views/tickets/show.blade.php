@@ -204,8 +204,8 @@
             </table>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group ms-auto mb-1">
-                    <a href="{{ route('export', $ticket->id) }}" type="button"
-                        class="btn btn-sm btn-outline-secondary">Export</a>
+                    <a href="{{ route('showPDF', $ticket->id) }}" type="button"
+                        class="btn btn-sm btn-outline-secondary">Show</a>
                 </div>
             </div>
         </div>

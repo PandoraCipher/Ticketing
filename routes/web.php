@@ -59,6 +59,7 @@ Route::prefix('tickets')
         Route::get('/download/{filename}', [TicketController::class, 'download'])->name('tickets.download');
     });
 Route::get('/export/{ticket}', [TicketController::class, 'exportPDF'])->name('export');
+Route::get('/show/{ticket}', [TicketController::class, 'showPDF'])->name('showPDF');
 
 Route::prefix('users')
     ->middleware(Authenticate::class)

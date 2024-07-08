@@ -37,7 +37,7 @@ class UserController extends Controller
             $query->where('department_id', $department_id);
         }
 
-        $users = $query->paginate(10);
+        $users = $query->paginate(100);
         return view('users.userlist', compact('users', 'departments'));
     }
 

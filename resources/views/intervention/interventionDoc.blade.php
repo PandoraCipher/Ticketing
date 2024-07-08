@@ -38,6 +38,12 @@
 </head>
 
 <body>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group ms-auto mb-1">
+            <a href="{{ route('export', $ticket->id) }}" type="button"
+                class="btn btn-sm btn-outline-secondary">Download</a>
+        </div>
+    </div>
     <h2>Ticket #{{ $ticket->id }} - {{ $ticket->subject }}</h2>
     <p><strong>Author:</strong> {{ $ticket->name }}</p>
     <p><strong>Client name:</strong> {{ $ticket->client->name }}</p>

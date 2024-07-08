@@ -81,7 +81,7 @@ class TicketController extends Controller
         //    $query->whereDate('updated_at', '>=', $update);
         //}
 
-        $tickets = $query->paginate(10);
+        $tickets = $query->paginate(100);
         $input = $request->validated();
 
         return view('tickets.list', compact('tickets', 'input'));
@@ -404,5 +404,17 @@ class TicketController extends Controller
         $pdf = Pdf::loadView('intervention.interventionDoc', $data);
         return $pdf->download('ticket_' . $ticketId . '.pdf');
         //echo json_encode(([$user]), JSON_PRETTY_PRINT);
+    }
+
+    public function showPDF($ticketId){
+        $ticket = Ticket::with(['intervention', 'notes'])->find($ticketId);
+        $user = $ticket->client;
+        $data = [
+            'ticket' => $ticket,
+            'user' => $user,
+            'intervention' => $ticket->intervention,
+            'notes' => $ticket->notes,
+        ];
+        return view('intervention.interventionDoc', $data);
     }
 }
