@@ -19,7 +19,7 @@
                     <label class="text-start" for="stdResolutionTime">Standard resolution time(min):</label>
                     <div class="form-container m-0 p-0">
                         <input type="number" class="input text-dark" name="stdResolutionTime" id="stdResolutionTime"
-                            placeholder="resolution Time" value="{{ old('stdResolutionTime') }}" min="1" required>
+                            placeholder="resolution Time" value="{{ old('stdResolutionTime') }}" min="0" required>
                     </div>
                 </div>
                 <div class="modal-footer">

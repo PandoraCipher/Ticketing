@@ -94,11 +94,11 @@
                                 <td colspan="3">no category found</td>
                             </tr>
                         @endforelse
-                        <tr>
+                        {{-- <tr>
                             <td>other</td>
                             <td>0</td>
                             <td class="text-center">no action</td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-primary p-1" data-bs-toggle="modal"

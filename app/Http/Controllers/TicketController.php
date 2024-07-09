@@ -406,7 +406,8 @@ class TicketController extends Controller
         //echo json_encode(([$user]), JSON_PRETTY_PRINT);
     }
 
-    public function showPDF($ticketId){
+    public function showPDF($ticketId)
+    {
         $ticket = Ticket::with(['intervention', 'notes'])->find($ticketId);
         $user = $ticket->client;
         $data = [
