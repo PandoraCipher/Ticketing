@@ -113,6 +113,12 @@
         @endforeach
     </main>
     <script>
+        $.extend(true, $.fn.dataTable.defaults, {
+            columnDefs: [{
+                targets: '_all',
+                defaultContent: "" 
+            }]
+        });
         new DataTable('#usertable', {
             order: [
                 [3, 'desc']

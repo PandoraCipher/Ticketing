@@ -28,10 +28,14 @@
                             <td>{{ $intervention->start_incident }}</td>
                             <td>{{ $intervention->start_interv }}</td>
                             <td>{{ $intervention->end_interv }}</td>
-                            <td>{{ floor($intervention->intervention_duration / 60) }}h{{ str_pad(($intervention->intervention_duration % 60), 2, '0', STR_PAD_LEFT) }}m</td>
+                            <td>{{ floor($intervention->intervention_duration / 60) }}h{{ str_pad($intervention->intervention_duration % 60, 2, '0', STR_PAD_LEFT) }}m
+                            </td>
                             <td>{{ $intervention->restore_date }}</td>
-                            <td>{{ floor($intervention->downtime_resolution / 60) }}h{{ str_pad(($intervention->intervention_duration % 60), 2, '0', STR_PAD_LEFT) }}m</td>
-                            <td><a class=" badge btn btn-primary" href="/tickets/{{ $intervention->ticket->id }}">{{ $intervention->ticket->id }}</a></td>
+                            <td>{{ floor($intervention->downtime_resolution / 60) }}h{{ str_pad($intervention->intervention_duration % 60, 2, '0', STR_PAD_LEFT) }}m
+                            </td>
+                            <td><a class=" badge btn btn-primary"
+                                    href="/tickets/{{ $intervention->ticket->id }}">{{ $intervention->ticket->id }}</a>
+                            </td>
                             <td>{{ $intervention->kpi_intervention }}</td>
                         </tr>
                     @empty
@@ -57,6 +61,12 @@
         </div>
     </main>
     <script>
+        $.extend(true, $.fn.dataTable.defaults, {
+            columnDefs: [{
+                targets: '_all',
+                defaultContent: ""
+            }]
+        });
         new DataTable('#example', {
             order: [
                 [3, 'desc']

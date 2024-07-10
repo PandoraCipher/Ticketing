@@ -107,11 +107,19 @@
         </div>
     </main>
     <script>
+        $.extend(true, $.fn.dataTable.defaults, {
+            columnDefs: [{
+                targets: '_all',
+                defaultContent: "",
+            }, ]
+        });
+
         new DataTable('#ticketTable', {
             order: [
                 [3, 'desc']
             ]
         });
     </script>
+
 
 @endsection

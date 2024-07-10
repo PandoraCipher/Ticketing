@@ -34,7 +34,7 @@
 
                     <label class="text-start" for="department_id">Department</label>
                     <div class="form-container m-0 p-0">
-                        <select class="input text-dark" name="department_id" id="department_id">
+                        <select class="input text-dark" name="department_id" id="department_id{{ $user->id }}">
                             @foreach ($departments as $department)
                                 <option value="{{ $department->id }}"
                                     {{ $user->department_id == $department->id ? 'selected' : '' }}>
