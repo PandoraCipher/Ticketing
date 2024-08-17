@@ -137,7 +137,7 @@
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}"
                                         {{ $ticket->assigned->id === $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}/{{ $user->department->name }}
+                                        {{ $user->name }}/{{ $user->department != null ? $user->department->name : "no department" }}
                                     </option>
                                 @endforeach
                             </select>

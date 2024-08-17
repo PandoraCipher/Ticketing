@@ -1,6 +1,6 @@
 <header class="navbar bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
     <div class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white">
-        <img src="/css/Afrotel.jpg" alt=".ico" width="32" height="32">
+        <img src="/css/Airtel.png" alt=".ico" width="32" height="32">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Ticket system</a>
     </div>
 
